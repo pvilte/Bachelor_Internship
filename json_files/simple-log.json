@@ -1,0 +1,21 @@
+[
+    {
+        "events": [
+            {
+                "concept:name": "Add item to cart",
+                "time:timestamp": "2025-04-13 19:36:50.494900+00:00",
+                "org:resource": "Resource A"
+            },
+            {
+                "concept:name": "Go to cart",
+                "time:timestamp": "2025-04-13 19:37:05.494900+00:00",
+                "org:resource": "Resource A"
+            },
+            {
+                "concept:name": "Checkout",
+                "time:timestamp": "2025-04-13 19:37:20.494900+00:00",
+                "org:resource": "Resource A"
+            }
+        ]
+    }
+]

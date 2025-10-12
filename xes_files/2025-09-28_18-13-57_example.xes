@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<log xes.version="1.0" xmlns="http://www.xes-standard.org/">
+	<extension name="Concept" prefix="concept" uri="http://www.xes-standard.org/concept.xesext" />
+	<extension name="Lifecycle" prefix="lifecycle" uri="http://www.xes-standard.org/lifecycle.xesext" />
+	<extension name="Time" prefix="time" uri="http://www.xes-standard.org/time.xesext" />
+	<extension name="Organizational" prefix="org" uri="http://www.xes-standard.org/org.xesext" />
+	<extension name="Adaptation" prefix="adaptation" uri="http://www.xes-standard.org/adaptation.xesext" />
+	<global scope="trace" />
+	<global scope="event">
+		<string key="concept:name" value="string" />
+		<string key="processId" value="string" />
+		<string key="instanceId" value="string" />
+		<string key="org:resource" value="string" />
+		<date key="time:timestamp" value="string" />
+		<string key="adaptation:type" value="string" />
+		<date key="adaptation:timestamp" value="string" />
+		<string key="adaptation:change" value="string" />
+		<string key="adaption:initiator" value="string" />
+	</global>
+	<classifier name="org:resource" keys="org:resource" />
+	<classifier name="concept:name" keys="concept:name" />
+	<trace>
+		<event>
+			<string key="concept:name" value="Register" />
+			<string key="processId" value="contract-drafting" />
+			<string key="instanceId" value="Instance-50156" />
+			<string key="org:resource" value="Resource-9311" />
+			<date key="time:timestamp" value="2025-07-28T18:27:57.864267" />
+		</event>
+		<event>
+			<string key="concept:name" value="Negotiate" />
+			<string key="processId" value="contract-drafting" />
+			<string key="instanceId" value="Instance-50156" />
+			<string key="org:resource" value="Resource-9311" />
+			<date key="time:timestamp" value="2025-07-28T18:27:15.822267" />
+		</event>
+		<event>
+			<string key="concept:name" value="Negotiate" />
+			<string key="processId" value="contract-drafting" />
+			<string key="instanceId" value="Instance-50156" />
+			<string key="org:resource" value="Resource-9311" />
+			<date key="time:timestamp" value="2025-07-28T18:26:33.780267" />
+		</event>
+		<event>
+			<string key="concept:name" value="Sign" />
+			<string key="processId" value="contract-drafting" />
+			<string key="instanceId" value="Instance-50156" />
+			<string key="org:resource" value="Resource-9311" />
+			<date key="time:timestamp" value="2025-07-28T18:25:51.738267" />
+		</event>
+		<event>
+			<string key="concept:name" value="Sendoff" />
+			<string key="processId" value="contract-drafting" />
+			<string key="instanceId" value="Instance-50156" />
+			<string key="org:resource" value="Resource-9311" />
+			<date key="time:timestamp" value="2025-07-28T18:25:09.696267" />
+		</event>
+	</trace>
+	<trace>
+		<event>
+			<string key="concept:name" value="Register" />
+			<string key="processId" value="contract-drafting" />
+			<string key="instanceId" value="Instance-50156" />
+			<string key="org:resource" value="Resource-9311" />
+			<date key="time:timestamp" value="2025-07-28T18:24:27.654267" />
+		</event>
+		<event>
+			<string key="concept:name" value="Negotiate" />
+			<string key="processId" value="contract-drafting" />
+			<string key="instanceId" value="Instance-50156" />
+			<string key="org:resource" value="Resource-9311" />
+			<date key="time:timestamp" value="2025-07-28T18:23:45.612267" />
+		</event>
+		<event>
+			<string key="concept:name" value="Sign" />
+			<string key="processId" value="contract-drafting" />
+			<string key="instanceId" value="Instance-50156" />
+			<string key="org:resource" value="Resource-9311" />
+			<date key="time:timestamp" value="2025-07-28T18:23:03.570267" />
+		</event>
+		<event>
+			<string key="concept:name" value="Sendoff" />
+			<string key="processId" value="contract-drafting" />
+			<string key="instanceId" value="Instance-50156" />
+			<string key="org:resource" value="Resource-9311" />
+			<date key="time:timestamp" value="2025-07-28T18:22:21.528267" />
+		</event>
+	</trace>
+	<trace>
+		<event>
+			<string key="concept:name" value="Register" />
+			<string key="processId" value="contract-drafting" />
+			<string key="instanceId" value="Instance-50156" />
+			<string key="org:resource" value="Resource-9311" />
+			<date key="time:timestamp" value="2025-07-28T18:21:39.486267" />
+		</event>
+		<event>
+			<string key="concept:name" value="Negotiate" />
+			<string key="processId" value="contract-drafting" />
+			<string key="instanceId" value="Instance-50156" />
+			<string key="org:resource" value="Resource-9311" />
+			<date key="time:timestamp" value="2025-07-28T18:20:57.444267" />
+		</event>
+		<event>
+			<string key="concept:name" value="Sign" />
+			<string key="processId" value="contract-drafting" />
+			<string key="instanceId" value="Instance-50156" />
+			<string key="org:resource" value="Resource-9311" />
+			<date key="time:timestamp" value="2025-07-28T18:20:15.402267" />
+		</event>
+		<event>
+			<string key="concept:name" value="Negotiate" />
+			<string key="processId" value="contract-drafting" />
+			<string key="instanceId" value="Instance-50156" />
+			<string key="org:resource" value="Resource-9311" />
+			<date key="time:timestamp" value="2025-07-28T18:19:33.360267" />
+		</event>
+		<event>
+			<string key="concept:name" value="Sendoff" />
+			<string key="processId" value="contract-drafting" />
+			<string key="instanceId" value="Instance-50156" />
+			<string key="org:resource" value="Resource-9311" />
+			<date key="time:timestamp" value="2025-07-28T18:18:51.318267" />
+		</event>
+	</trace>
+	<trace>
+		<event>
+			<string key="concept:name" value="Register" />
+			<string key="processId" value="contract-drafting" />
+			<string key="instanceId" value="Instance-50156" />
+			<string key="org:resource" value="Resource-9311" />
+			<date key="time:timestamp" value="2025-07-28T18:18:09.276267" />
+		</event>
+		<event>
+			<string key="concept:name" value="Sign" />
+			<string key="processId" value="contract-drafting" />
+			<string key="instanceId" value="Instance-50156" />
+			<string key="org:resource" value="Resource-9311" />
+			<date key="time:timestamp" value="2025-07-28T18:17:27.234267" />
+		</event>
+		<event>
+			<string key="concept:name" value="Sendoff" />
+			<string key="processId" value="contract-drafting" />
+			<string key="adaptation:type" value="insert" />
+			<string key="instanceId" value="Instance-50156" />
+			<string key="org:resource" value="Resource-9311" />
+			<date key="time:timestamp" value="2025-07-28T18:16:45.192267" />
+			<date key="adaptation:timestamp" value="2025-07-27T18:28:17.888678" />
+			<string key="adaptation:change" value="insert Sendoff" />
+			<string key="adaption:initiator" value="Mary" />
+		</event>
+	</trace>
+	<trace>
+		<event>
+			<string key="concept:name" value="Register" />
+			<string key="processId" value="contract-drafting" />
+			<string key="instanceId" value="Instance-50156" />
+			<string key="org:resource" value="Resource-9311" />
+			<date key="time:timestamp" value="2025-07-28T18:16:03.150267" />
+		</event>
+		<event>
+			<string key="concept:name" value="Sign" />
+			<string key="processId" value="contract-drafting" />
+			<string key="instanceId" value="Instance-50156" />
+			<string key="org:resource" value="Resource-9311" />
+			<date key="time:timestamp" value="2025-07-28T18:15:21.108267" />
+		</event>
+		<event>
+			<string key="concept:name" value="Sendoff" />
+			<string key="processId" value="contract-drafting" />
+			<string key="instanceId" value="Instance-50156" />
+			<string key="org:resource" value="Resource-9311" />
+			<date key="time:timestamp" value="2025-07-28T18:14:39.066267" />
+		</event>
+		<event>
+			<string key="concept:name" value="Cancel" />
+			<string key="processId" value="contract-drafting" />
+			<string key="adaptation:type" value="delete" />
+			<string key="instanceId" value="Instance-50156" />
+			<date key="adaptation:timestamp" value="2025-07-27T18:27:34.845678" />
+			<string key="adaptation:change" value="delete Cancel" />
+			<string key="adaption:initiator" value="Mary" />
+		</event>
+	</trace>
+</log>

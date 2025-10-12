@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<log xes.version="1.0" xmlns="http://www.xes-standard.org/">
+   <trace>
+      <event>
+         <string key="concept:name" value="Add item to cart" />
+         <date key="time:timestamp" value="2025-04-13T19:36:50.494900" />
+         <string key="org:resource" value="Resource A" />
+      </event>
+      <event>
+         <string key="concept:name" value="Go to cart" />
+         <date key="time:timestamp" value="2025-04-13T19:37:05.494900" />
+         <string key="org:resource" value="Resource A" />
+         <string key="adaptation:type" value="insert"/>
+         <string key="adaptation:change" value="Insert Go to cart"/>
+         <string key="adaptation:initiator" value="Person A"/>
+         <date key="adaptation:timestamp" value="2025-04-13T19:37:00.000+00:00"/>
+      </event>
+      <event>
+         <string key="concept:name" value="Checkout" />
+         <date key="time:timestamp" value="2025-04-13T19:37:20.494900" />
+         <string key="org:resource" value="Resource A" />
+      </event>
+   </trace>
+</log>
