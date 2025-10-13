@@ -42,7 +42,12 @@ def xes_to_json_converter(xes_location, json_dir_name):
             json_data = []
             #In each trace, there are several events (one trace is one process instance)
             for trace in log:
+                trace_attributes = {}
+                for key, value in trace.attributes.items():
+                    trace_attributes[key] = str(value)
+
                 case = {
+                    "trace_attributes": trace_attributes,
                     "events": []
                 }
                 for event in trace:

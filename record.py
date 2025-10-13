@@ -57,7 +57,8 @@ def create_adaptation_event_relationship(tx, adaptation, event):
 def create_initiator_adaptation_relationship(tx, initiator, adaptation):
     tx.run("""
         MATCH (initiator:Initiator{name: $initiator_name}), (adaptation:Adaptation{type: $adaptation_type, time: $time, change: $change})
-    """, initiation=initiator.name, adaptation_type=adaptation.adaptation_type, time=adaptation.time, change=adaptation.change)
+        MERGE (initiator)-[:INVOKES]->(adaptation)
+    """, initiator_name=initiator.name, adaptation_type=adaptation.adaptation_type, time=adaptation.time, change=adaptation.change)
 
 
 def record(json_dir):
@@ -78,7 +79,7 @@ def record(json_dir):
                 process = Process(None, file_name)
                 session.execute_write(create_update_process, process.name)
 
-                for case in data["traces"]:
+                for case in data:
 
                     #Loop through all events
                     for e in case["events"]:
