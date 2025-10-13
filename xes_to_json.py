@@ -36,6 +36,7 @@ def xes_to_json_converter(xes_location, json_dir_name):
             #Join the JSON path with the JSON directory
             json_path = os.path.join(json_dir_name, json_file_name)
             #Recognizes the trace and event tags, the log becomes an object here
+            #With the following line I make a list of traces
             log = xes_importer.apply(xes_path)
             #Prepare an empty list where to store the json data
             json_data = []
