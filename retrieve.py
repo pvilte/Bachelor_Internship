@@ -23,29 +23,15 @@ def match_all(tx):
     #Return the result as a dictionary
     return [record.data() for record in result]
 
-def all_initiators_adaptations(tx):
-    result = tx.run("""
-        MATCH (initiator:Initiator)-[:INVOKES]->(adaptation:Adaptation)
-        RETURN labels(initiator) AS initiator_labels, properties(initiator) AS initiator_properties,
-               COLLECT(properties(adaptation)) AS adaptations
+def direct_neighbors_query(tx, name1, name2):
+    result = tx.run(f"""
+        MATCH (n1:{name1})-[r]-(n2:{name2})
+        RETURN labels(n1) AS node1_labels, properties(n1) AS node1_properties,
+               COLLECT(properties(n2)) AS collect,
+               type(r) as relationship
     """)
+
     return [record.data() for record in result]
-
-def all_processes_instances(tx):
-    result = tx.run("""
-        MATCH (instance:Instance)-[:INSTANCE_OF]->(process:Process)
-        RETURN labels(process) AS process_labels, properties(process) AS process_properties,
-               COLLECT(properties(instance)) AS instance_properties
-    """)
-    return [record.data() for record in result]
-
-def all_instances_events(tx):
-    result = tx.run("""
-        MATCH (event:Event)-[:STEP_OF]->(instance:Instance)
-        RETURN labels(instance) AS instance_labels, properties(instance) AS instance_properties,
-               COLLECT(properties(event)) AS event_properties
-    """)
-
 
 #This function retrieves the entire contents of the database
 #It writes the contents to one JSON file
@@ -58,29 +44,14 @@ def retrieve_all():
 
     driver.close()
 
-def retrieve_pre_made():
-    print("Available queries:\n")
-    print("1 - Retrieve all initiators and show which adaptations were invoked by each of them\n")
-    print("2 - Show all processes and the instances of each of these processes\n")
-    print("3 - Show all instances and all events in each of those instances\n")
-    choice = int(input())
+def direct_neighbors():
+    node1 = input("The first node:")
+    node2 = input("The second node (the collect will be performed on this one):")
     driver = GraphDatabase.driver(uri, auth=auth)
     with driver.session() as session:
-        match choice:
-            case 1:
-                to_json = session.execute_read(all_initiators_adaptations)
-                with open("query1.json", "w") as outfile:
-                    json.dump(to_json, outfile, indent=4)
-            case 2:
-                to_json = session.execute_read(all_processes_instances)
-                with open("query1.json", "w") as outfile:
-                    json.dump(to_json, outfile, indent=4)
-            case 3:
-                to_json = session.execute_read(all_instances_events)
-                with open("query1.json", "w") as outfile:
-                    json.dump(to_json, outfile, indent=4)
-            case _:
-                print("Please double-check your input")
+        to_json = session.execute_read(direct_neighbors_query, node1.capitalize(), node2.capitalize())
+        with open("query1.json", "w") as outfile:
+            json.dump(to_json, outfile, indent=4)
 
     driver.close()
 
@@ -88,14 +59,14 @@ def retrieve_pre_made():
 def use_case():
     print("Choose your preferred use case for the retrieve method:\n")
     print("1 - retrieve all contents from the database\n")
-    print("2 - retrieve contents based on a pre-made query\n")
+    print("2 - retrieve nodes and their direct neighbors using COLLECT\n")
     print("3 - retrieve contents based on a query of your choice\n")
     choice = int(input())
     match choice:
         case 1:
             retrieve_all()
         case 2:
-            retrieve_pre_made()
+            direct_neighbors()
         case _:
             print("Are you sure you have chosen a number 1-3?\n")
 
