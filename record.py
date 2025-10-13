@@ -45,7 +45,7 @@ def create_instance_process_relationship(tx, instance_id, process_id):
 def create_event_instance_relationship(tx, event, instance_id):
     tx.run("""
         MATCH (event:Event{name: $name, time: $time, resource: $resource}), (instance:Instance {id: $instance_id})
-        MERGE (event)-[:STEP_OF]->(event)
+        MERGE (event)-[:STEP_OF]->(instance)
     """, name=event.name, time=event.time, resource=event.resource, instance_id=instance_id)
 
 def create_adaptation_event_relationship(tx, adaptation, event):
