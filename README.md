@@ -6,10 +6,16 @@ have a folder 'json_files' with the converted files.
 
 Next, to record the store the information of the folder in a graph 
 database, make sure your graph database is running. Go to 
-[record.py](record.py), run this file. Now the data is stored in the database.
+[record.py](record/record.py), run this file.
 
-To retrieve data from the database, go to directory [retrieval](retrieval), then
-[retrieve.py](retrieve.py). Run this file by this command:
+```
+python -m record.record
+```
+
+Now the data is stored in the database.
+
+To retrieve data from the database, go to directory [retrieval](retrieve), then
+[retrieve.py](retrieve/retrieve.py). Run this file by this command:
 ```
 python -m retrieval.retrieve
 ```
