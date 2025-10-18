@@ -3,14 +3,8 @@ This file contains all queries to be executed by the record.py file
 """
 
 
-def create_update_process(tx, name, id_num=None):
-    if id_num is None:
-        tx.run("MERGE (:Process {name: $name})", name=name)
-    else:
-        tx.run("""
-            MERGE (p:Process {name: $name})
-            SET p.id = $id_num
-        """, name=name, id_num=id_num)
+def create_process(tx, id_num):
+    tx.run("MERGE (:Process {id: $id_num})", id_num=id_num)
 
 
 def create_event(tx, name, time, resource):

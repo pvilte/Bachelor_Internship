@@ -2,7 +2,6 @@ from model.Node import Node
 
 
 class Process(Node):
-    def __init__(self, id_number, name):
+    def __init__(self, id_proc):
         super().__init__("Process")
-        self.id_number = id_number
-        self.name = name
+        self.id_proc = id_proc

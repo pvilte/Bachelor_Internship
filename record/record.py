@@ -5,8 +5,6 @@ import re
 
 from model.Event import Event
 from model.Initiator import Initiator
-from model.Instance import Instance
-from model.Process import Process
 from model.Adaptation import Adaptation
 from . import queries
 
@@ -21,16 +19,30 @@ def run_query(query_func, *args):
 
 
 def populate_database(e, file_name):
-    instance_id = None
-    process_id = None
     adaptation = None
     initiator = None
-    event = None
+
+    # I try to find process by looking at the ID
+    # If I find an explicitly given process ID, I should replace the default
+    if "processId" in e:
+        process_id = e.get("processId")
+    else:
+        process_id = file_name
+
+    # I try to find an instance
+    # If there is no instance ID given, then I just give the file name + "_instance"
+    # That's because I just assume there is one instance of the process in that case
+    if "instanceId" in e:
+        instance_id = e.get("instanceId")
+    else:
+        instance_id = file_name + "_instance"
 
     # Event has properties name, time, resource
     # Get these properties and create an event object
-    event = Event(e.get("concept:name", ""), e.get("time:timestamp", ""), e.get("org:resource", ""))
-    # Create the node of the event in the database
+    event = Event(e.get("concept:name", ""), e.get("time:timestamp", ""), e.get("org:resource", ""), instance_id, process_id)
+
+    run_query(queries.create_process, process_id)
+    run_query(queries.create_instance, instance_id)
     run_query(queries.create_event, event.name, event.time, event.resource)
 
     # I try to find any label that starts with 'adaptation:type' or 'adaptation:change'
@@ -39,31 +51,18 @@ def populate_database(e, file_name):
                                 e.get("adaptation:change", ""))
         run_query(queries.create_adaptation, adaptation.adaptation_type, adaptation.time, adaptation.change)
 
-    # In a similar way, I should try to find instance
-    if "instanceId" in e:
-        instance = Instance(e.get("instanceId", ""))
-        run_query(queries.create_instance, instance.instance_id)
-        instance_id = instance.instance_id
-
-    # Now I try to find process
-    if "processId" in e:
-        process = Process(e.get("processId", ""), file_name)
-        run_query(queries.create_update_process, file_name, process.id_number)
-        process_id = process.id_number
-
     # I have to fill in also the initiator class
     if "adaptation:initiator" in e:
         initiator = Initiator(e.get("adaptation:initiator", ""))
         run_query(queries.create_initiator, initiator.name)
 
+
     # Now I create the relationships
-    if instance_id is not None and process_id is not None:
-        run_query(queries.create_instance_process_relationship, instance_id, process_id)
+    run_query(queries.create_instance_process_relationship, instance_id, process_id)
 
-    if event is not None and instance_id is not None:
-        run_query(queries.create_event_instance_relationship, event, instance_id)
+    run_query(queries.create_event_instance_relationship, event, instance_id)
 
-    if adaptation is not None and event is not None:
+    if adaptation is not None:
         run_query(queries.create_adaptation_event_relationship, adaptation, event)
 
     if initiator is not None and adaptation is not None:
@@ -76,14 +75,10 @@ def record(json_dir):
         for file in files:
             #Merge the directory with the file name
             file_path = os.path.join(path, file)
+            file_name = file.replace(".json", "")
             with open(file_path, "r", encoding="utf-8") as f:
                 #Load the data from the JSON file
                 data = json.load(f)
-
-            #Instanitate the process, the process ID for now is the name of the file
-            file_name = file.replace(".json", "")
-            process = Process(None, file_name)
-            run_query(queries.create_update_process, process.name)
 
             for case in data:
 
