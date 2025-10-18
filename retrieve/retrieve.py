@@ -1,3 +1,5 @@
+import datetime
+
 from neo4j import GraphDatabase
 import json
 from . import queries
@@ -25,6 +27,11 @@ def property_check(node, node_property):
         return False
 
     return True
+
+def value_property_check(value, node_property):
+    if node_property == "time" and isinstance(value, datetime.datetime):
+        return True
+    return False
 
 #Safety check to see if the given label of the node really exists
 def label_check(node):
@@ -99,7 +106,7 @@ def nodes_property_value():
         node = str(input("Label: ")).capitalize()
         node_property = str(input("Property: ")).lower()
         property_value = str(input("Value: "))
-        if label_check(node) and property_check(node, node_property):
+        if label_check(node) and property_check(node, node_property) and value_property_check(property_value, node_property):
             write_json(run_query(queries.nodes_property_value_query, node, node_property, property_value))
             break
 
