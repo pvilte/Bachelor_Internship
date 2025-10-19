@@ -20,6 +20,9 @@ def match_all(tx):
 def direct_neighbors_collect_query(tx, name1, name2):
     """
     Retrieves collected direct neighbors of node1, giving properties, labels and relationships of the nodes
+
+    :param name1: label of the first node
+    :param name2: label of the second node
     """
     result = tx.run(f"""
         MATCH (n1:{name1})-[r]-(n2:{name2})
@@ -32,7 +35,10 @@ def direct_neighbors_collect_query(tx, name1, name2):
 def direct_neighbors_count_query(tx, name1, name2):
     """
     This function retrieves the labels and properties of node1 and node2,
-     counts the collected direct neighbors
+     counts the collected direct neighbors on node2
+
+     :param name1: label of the first node
+     :param name2: label of the second node
     """
     result = tx.run(f"""
         MATCH (n1:{name1})-[r]-(n2:{name2})
@@ -57,6 +63,8 @@ def count_all_nodes_query(tx):
 def count_nodes_label_query(tx, label):
     """
     This function counts the number of nodes with the given label
+
+    :param label: label of the node
     """
     result = tx.run(f"""
         MATCH (node:{label})
@@ -68,6 +76,10 @@ def count_property_query(tx, label, node_property, property_value):
     """
     This function counts the number of nodes with the given label and the given property value, returns the number
     and the labels of the node
+
+    :param label: label of the node
+    :param node_property: property key of the node
+    :param property_value: value of the property
     """
     result = tx.run(f"""
         MATCH (node: {label})
@@ -79,6 +91,10 @@ def count_property_query(tx, label, node_property, property_value):
 def nodes_property_value_query(tx, label, node_property, property_value):
     """
     This function retrieves the labels and properties of nodes with the given property value
+
+    :param label: label of the node
+    :param node_property: property key of the node
+    :param property_value: value of the property
     """
     result = tx.run(f"""
         MATCH (node: {label})
@@ -90,6 +106,9 @@ def nodes_property_value_query(tx, label, node_property, property_value):
 def two_node_relationship_query(tx, label1, label2):
     """
     This function retrieves distinct relationship type and the properties of the given two nodes
+
+    :param label1: label of the first node
+    :param label2: label of the second node
     """
     result = tx.run(f"""
         MATCH (node1:{label1})-[r]-(node2:{label2})
@@ -101,6 +120,8 @@ def two_node_relationship_query(tx, label1, label2):
 def property_keys_query(tx, label):
     """
     This function retrieves the property keys of the given label
+
+    :param label: label of the node
     """
     result = tx.run(f"""
         MATCH (node:{label})
@@ -123,7 +144,7 @@ def all_labels_query(tx):
 
 def all_relationships_query(tx):
     """
-    This function retrieves all relationships in the database
+    This function retrieves all relationship types in the database
     """
     result = tx.run(f"""
         MATCH (n)-[r]-(n2)
@@ -143,6 +164,13 @@ def disconnected_nodes_query(tx):
     return [record.data() for record in result]
 
 def most_incoming_relationships_to_nodes_query(tx, label):
+    """
+    This function retrieves labels and properties of the node of the given label
+    that has the most incoming relationships
+
+    :param label: label of the node
+    """
+
     result = tx.run(f"""
         MATCH (n1:{label})<-[r]-(n2)
         RETURN labels(n1) as labels,
@@ -154,6 +182,9 @@ def most_incoming_relationships_to_nodes_query(tx, label):
     return [record.data() for record in result]
 
 def count_all_relationships_query(tx):
+    """
+    This function retrieves the count of all relationships in the database
+    """
     result = tx.run(f"""
         MATCH (n1)-[r]-(n2)
         RETURN COUNT (DISTINCT r) AS NrRelationships

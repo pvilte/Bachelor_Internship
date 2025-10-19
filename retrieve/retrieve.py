@@ -43,6 +43,7 @@ def convert_neo4j_to_json(data):
 def write_json(to_json):
     """
     This function writes the given JSON string to file 'result.json'
+
     :param to_json: the string to be written to file
     :return: void
     """
@@ -53,6 +54,7 @@ def write_json(to_json):
 def time_conversion(property_value, property_key):
     """
     If the given property key is "time", then the datatype of property value should be adjusted accordingly
+
     :param property_value: the property value to be adjusted
     :param property_key: the key of the property to be checked
     :return: the adjusted property value based on the datatype
@@ -67,9 +69,9 @@ def time_conversion(property_value, property_key):
 
 def property_check(node, node_property):
     """
-    This function checks if the given node has the property.
+    This function checks if the given label of a node has the property.
 
-    :param node: the node to be checked
+    :param node: the label of a node to be checked
     :param node_property: the property to be checked
     """
 
@@ -87,7 +89,6 @@ def property_check(node, node_property):
         return False
 
 
-#Safety check to see if the given label of the node really exists
 def label_check(node):
     """
     This function checks if the node label given by the user has one of the supported names
@@ -103,7 +104,6 @@ def label_check(node):
         return False
 
 
-#This function retrieves the entire contents of the database
 def retrieve_all():
     """
     This function calls the query function to retrieve all contents from the database and calls the function
@@ -140,7 +140,7 @@ def count_direct_neighbors():
 
 def count_all_nodes():
     """
-    This function calls a function to count the number of all nodes in the database,
+    This function calls the function to count the number of all nodes in the database,
     then calls the function to write the result to a JSON file
     """
     write_json(run_query(queries.count_all_nodes_query))
@@ -148,7 +148,8 @@ def count_all_nodes():
 
 def count_nodes_label():
     """
-    This function counts the number of nodes in the database with the provided label
+    This function calls the function to count the number of nodes in the database with the provided label,
+    then calls the function to write the result to a JSON file
     """
     while True:
         node = str(input("Label: ")).capitalize()
@@ -159,7 +160,8 @@ def count_nodes_label():
 
 def count_based_on_property_value():
     """
-    This function counts the number of nodes based on a specific label and a specific property value
+    This function calls the function to count the number of nodes based on a specific label and a specific property value,
+    then calls the function to write the result to a JSON file
     """
     while True:
         node = str(input("Label: ")).capitalize()
@@ -173,7 +175,8 @@ def count_based_on_property_value():
 
 def nodes_property_value():
     """
-    This function retrieves all nodes based on a label and a specific property value
+    This function calls a function to retrieve all nodes based on a label and a specific property value,
+    and then calls the function to write the result to a JSON file
     """
     while True:
         node = str(input("Label: ")).capitalize()
@@ -185,6 +188,10 @@ def nodes_property_value():
             break
 
 def count_all_relationships():
+    """
+    This function calls the function to count the number of all relationships in the database,
+    then calls the function to write the result to a JSON file
+    """
     write_json(run_query(queries.count_all_relationships_query))
 
 
@@ -214,7 +221,8 @@ def choose_count_application():
 
 def two_node_relationships():
     """
-    This function retrieves the relationship between two nodes
+    This function calls the function to retrieve the relationship between two nodes,
+    then calls the function to write the result to a JSON file
     """
     while True:
         node1 = str(input("The first node: ")).capitalize()
@@ -226,7 +234,8 @@ def two_node_relationships():
 
 def property_keys():
     """
-    Given the label, this function retrieves the property keys
+    This function calls the query function that, given the label, retrieves the property keys,
+    then calls the function to write the result to a JSON file
     """
     while True:
         node = str(input("Label: ")).capitalize()
@@ -236,23 +245,30 @@ def property_keys():
 
 def all_labels():
     """
-    This function retrieves all labels in the database
+    This function calls the function to retrieve all labels in the database,
+    then calls the function to write the result to a JSON file
     """
     write_json(run_query(queries.all_labels_query))
 
 def all_relationships():
     """
-    This function retrieves all relationships in the database
+    This function calls the function to retrieve all relationships in the database,
+    then calls the function to write the result to a JSON file
     """
     write_json(run_query(queries.all_relationships_query))
 
 def disconnected_nodes():
     """
-    This function retrieves all disconnected nodes in the database
+    This function calls the function to retrieve all disconnected nodes in the database,
+    then calls the function to write the result to a JSON file
     """
     write_json(run_query(queries.disconnected_nodes_query))
 
 def most_incoming_relationships_to_nodes():
+    """
+    This function calls the function to retrieve the node based on a label of most incoming relationships in the database,
+    then calls the function to write the result to a JSON file
+    """
     while True:
         label = input("Label: ").capitalize()
         if label_check(label):
