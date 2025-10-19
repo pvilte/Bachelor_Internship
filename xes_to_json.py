@@ -6,9 +6,8 @@ def xes_to_json_converter(xes_location, json_dir_name):
     """
     This function converts XES files to JSON files.
 
-    Attributes:
-        xes_location(string) - the name of the directory of the XES files
-        json_dir_name(string) - the name of the directory where to store the JSON files
+    :param xes_location: the name of the directory of the XES files
+    :param json_dir_name: the name of the directory where to store the JSON files
     """
 
     try:
@@ -58,6 +57,8 @@ def xes_to_json_converter(xes_location, json_dir_name):
             # Write to JSON, ensure_ascii=False doesn't skip any unusual characters
             with open(json_path, "w", encoding="utf-8") as f:
                 json.dump(json_data, f, ensure_ascii=False, indent=4)
+
+            print("Conversion to JSON completed.\n")
 
 
 # Call the converter function. Attributes can be changed according to the desired locations of directories.

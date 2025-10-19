@@ -9,9 +9,21 @@ from model.Adaptation import Adaptation
 from . import queries
 
 # Change the values here based on your environment
-uri = "bolt://localhost:7687"
+uri = "bolt://127.0.0.1:7687"
 auth = ("neo4j", "internship123")
 
+def find_time(time):
+    """
+    This function tries to convert the datatype from JSON string to time. If it is not successful, return current time
+    :param time: JSON string representing time
+    :return: final time as a datetime object
+    """
+    try:
+        result_time = datetime.fromisoformat(time)
+    except:
+        result_time = datetime.now()
+
+    return result_time
 
 def run_query(query_func, *args):
 
@@ -56,18 +68,21 @@ def populate_database(e, file_name):
     else:
         instance_id = file_name + "_instance"
 
-
-    event = Event(e.get("concept:name", ""), datetime.fromisoformat(e.get("time:timestamp", "")), e.get("org:resource", ""), instance_id, process_id)
+    event = Event(e.get("concept:name", ""), find_time(e.get("time:timestamp")), e.get("org:resource", ""), instance_id, process_id)
     run_query(queries.create_process, process_id)
     run_query(queries.create_instance, instance_id)
     run_query(queries.create_event, event.name, event.time, event.resource)
 
-    # If any label starts with 'adaptation:type' or 'adaptation:change', an adaptation has happened
+    # If any label starts with 'adaptation:type' or 'adaptation:change', or 'adaptation:time', an adaptation has happened
     # There must be an initiator
-    if any(re.match(r"adaptation:(type|change)", key) for key in e.keys()):
-        adaptation = Adaptation(e.get("adaptation:type", ""), datetime.fromisoformat(e.get("adaptation:timestamp", "")), e.get("adaptation:change", ""))
+    if any(re.match(r"adaptation:(type|change|time)", key) for key in e.keys()):
+        adaptation = Adaptation(e.get("adaptation:type", ""), find_time(e.get("adaptation:timestamp")), e.get("adaptation:change", ""))
         run_query(queries.create_adaptation, adaptation.adaptation_type, adaptation.time, adaptation.change)
-        initiator = Initiator(e.get("adaptation:initiator", ""))
+        # Sometimes it is written as 'adaption:initiator', sometimes "adaptation:initiator"
+        initiator_name = e.get("adaptation:initiator", "") or e.get("adaption:initiator", "")
+        if initiator_name == "":
+            initiator_name = "Unknown"
+        initiator = Initiator(initiator_name)
         run_query(queries.create_initiator, initiator.name)
 
 
@@ -104,8 +119,6 @@ def record(json_dir):
 
 
 
-
-
 if __name__ == "__main__":
     # Change the parameter here based on your environment
-    record("../json_files")
+    record("json_files")

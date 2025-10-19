@@ -1,27 +1,78 @@
 import datetime
-
 from neo4j import GraphDatabase
 import json
 from . import queries
+from datetime import datetime
+from neo4j.time import DateTime
 
-uri = "bolt://localhost:7687"
+# Change the values here based on your environment
+uri = "bolt://127.0.0.1:7687"
 auth = ("neo4j", "internship123")
 
-#Function for running the queries
 def run_query(query_func, *args):
+    """
+    This function creates a connection to a neo4j database, creates a session, and executes a read query.
+    Then, the driver is closed to release any resources still held by it.
+
+    :param query_func: the function to execute; these functions reside in queries.py directory
+    :param args: unfixed number of arguments to be given to the query function
+    :return: string to be written to JSON
+    """
     driver = GraphDatabase.driver(uri=uri, auth=auth)
     with driver.session() as session:
         result = session.execute_read(query_func, *args)
     driver.close()
     return result
 
-#Function for writing the result to a JSON file
-def write_json(to_json):
-    with open("result.json", "w") as outfile:
-        json.dump(to_json, outfile, indent=4)
+def convert_neo4j_to_json(data):
+    """
+    This function converts Neo4j data types to JSON types
 
-#Safety check function to see if the given node really has the property
+    :param data: Neo4j data types to be converted
+    :return: string to be written to JSON
+    """
+    if isinstance(data, (DateTime, datetime)):
+        return data.isoformat()
+    elif isinstance(data, list):
+        return [convert_neo4j_to_json(item) for item in data]
+    elif isinstance(data, dict):
+        return {key: convert_neo4j_to_json(value) for key, value in data.items()}
+    else:
+        return data
+
+def write_json(to_json):
+    """
+    This function writes the given JSON string to file 'result.json'
+    :param to_json: the string to be written to file
+    :return: void
+    """
+
+    with open("result.json", "w") as outfile:
+        json.dump(convert_neo4j_to_json(to_json), outfile, indent=4)
+
+def time_conversion(property_value, property_key):
+    """
+    If the given property key is "time", then the datatype of property value should be adjusted accordingly
+    :param property_value: the property value to be adjusted
+    :param property_key: the key of the property to be checked
+    :return: the adjusted property value based on the datatype
+    """
+    if property_key == "time":
+        try:
+            property_value = datetime.fromisoformat(property_value)
+        except:
+            return property_value
+
+    return property_value
+
 def property_check(node, node_property):
+    """
+    This function checks if the given node has the property.
+
+    :param node: the node to be checked
+    :param node_property: the property to be checked
+    """
+
     properties = {
         "Adaptation": ["time", "type", "change"],
         "Event": ["time", "name", "resource"],
@@ -36,95 +87,116 @@ def property_check(node, node_property):
         return False
 
 
-def value_property_check(value, node_property):
-    if node_property == "time" and isinstance(value, datetime.datetime):
-        return True
-    return False
-
 #Safety check to see if the given label of the node really exists
 def label_check(node):
+    """
+    This function checks if the node label given by the user has one of the supported names
+
+    :param node: the node to be checked
+    """
+
     model_list = ["Adaptation", "Event", "Initiator", "Instance", "Process"]
     if node in model_list:
         return True
     else:
-        print("Are you sure you have spelled the label correctly?")
+        print("Are you sure you have spelled the labels correctly?")
         return False
 
 
 #This function retrieves the entire contents of the database
 def retrieve_all():
+    """
+    This function calls the query function to retrieve all contents from the database and calls the function
+    to write the result to a JSON file
+    """
     write_json(run_query(queries.match_all))
 
 
 def direct_neighbors_collect():
+    """
+    This function calls the query function to retrieve all direct neighbors collected on a label
+    and calls the function to write the result to a JSON file
+    """
     while True:
-        node1 = str(input("The first node:"))
-        node2 = str(input("The second node (the collect will be performed on this one):"))
+        node1 = str(input("The first node: ")).capitalize()
+        node2 = str(input("The second node (the collect will be performed on this one): ")).capitalize()
         if label_check(node1) and label_check(node2):
-            write_json(run_query(queries.direct_neighbors_collect_query, node1.capitalize(), node2.capitalize()))
+            write_json(run_query(queries.direct_neighbors_collect_query, node1, node2))
             break
 
 
 def count_direct_neighbors():
+    """
+    This function calls function to retrieve the number of all direct neighbors collected on a certain label,
+    then calls function to write the result to a JSON file
+    """
     while True:
-        node1 = str(input("The first node:"))
-        node2 = str(input("The second node (the collect will be performed on this one):"))
+        node1 = str(input("The first node: ")).capitalize()
+        node2 = str(input("The second node (nodes of this label will be counted): ")).capitalize()
         if label_check(node1) and label_check(node2):
-            write_json(run_query(queries.direct_neighbors_count_query, node1.capitalize(), node2.capitalize()))
+            write_json(run_query(queries.direct_neighbors_count_query, node1, node2))
             break
 
 
 def count_all_nodes():
+    """
+    This function calls a function to count the number of all nodes in the database,
+    then calls the function to write the result to a JSON file
+    """
     write_json(run_query(queries.count_all_nodes_query))
 
 
 def count_nodes_label():
+    """
+    This function counts the number of nodes in the database with the provided label
+    """
     while True:
-        node = str(input("Label: "))
+        node = str(input("Label: ")).capitalize()
         if label_check(node):
             write_json(run_query(queries.count_nodes_label_query, node))
             break
 
 
 def count_based_on_property_value():
+    """
+    This function counts the number of nodes based on a specific label and a specific property value
+    """
     while True:
         node = str(input("Label: ")).capitalize()
         node_property = str(input("Property: ")).lower()
         property_value = str(input("Value: "))
-
+        property_value = time_conversion(property_value, node_property)
         if label_check(node) and property_check(node, node_property):
             write_json(run_query(queries.count_property_query, node, node_property, property_value))
             break
 
 
-def max_min_count():
-    while True:
-        node1 = str(input("The first node: ")).capitalize()
-        node2 = str(input("The second node: ")).capitalize()
-        function = str(input("MIN or MAX: ")).upper()
-        if function not in ["MIN", "MAX"]:
-            print("Enter MIN or MAX!\n")
-        if label_check(node1) and label_check(node2):
-            write_json(run_query(queries.min_max_count_dir_neighbors, node1, node2, function.capitalize()))
-            break
-
-
 def nodes_property_value():
+    """
+    This function retrieves all nodes based on a label and a specific property value
+    """
     while True:
         node = str(input("Label: ")).capitalize()
         node_property = str(input("Property: ")).lower()
         property_value = str(input("Value: "))
-        if label_check(node) and property_check(node, node_property) and value_property_check(property_value, node_property):
+        property_value = time_conversion(property_value, node_property)
+        if label_check(node) and property_check(node, node_property):
             write_json(run_query(queries.nodes_property_value_query, node, node_property, property_value))
             break
 
+def count_all_relationships():
+    write_json(run_query(queries.count_all_relationships_query))
 
 
 def choose_count_application():
+    """
+    This function allows the user to choose which count application to use
+    """
     print("1 - count all nodes in the database\n")
     print("2 - count the direct neighbors of a node\n")
     print("3 - count all nodes of a specific label\n")
     print("4 - count nodes based on a property value\n")
+    print("5 - count all relationships in the database\n")
     choice = int(input("Your choice: "))
     match choice:
         case 1:
@@ -135,10 +207,15 @@ def choose_count_application():
             count_nodes_label()
         case 4:
             count_based_on_property_value()
+        case 5:
+            count_all_relationships()
         case _:
             print("Please enter a valid choice!\n")
 
 def two_node_relationships():
+    """
+    This function retrieves the relationship between two nodes
+    """
     while True:
         node1 = str(input("The first node: ")).capitalize()
         node2 = str(input("The second node: ")).capitalize()
@@ -148,6 +225,9 @@ def two_node_relationships():
 
 
 def property_keys():
+    """
+    Given the label, this function retrieves the property keys
+    """
     while True:
         node = str(input("Label: ")).capitalize()
         if label_check(node):
@@ -155,26 +235,45 @@ def property_keys():
             break
 
 def all_labels():
+    """
+    This function retrieves all labels in the database
+    """
     write_json(run_query(queries.all_labels_query))
 
 def all_relationships():
+    """
+    This function retrieves all relationships in the database
+    """
     write_json(run_query(queries.all_relationships_query))
 
 def disconnected_nodes():
+    """
+    This function retrieves all disconnected nodes in the database
+    """
     write_json(run_query(queries.disconnected_nodes_query))
 
+def most_incoming_relationships_to_nodes():
+    while True:
+        label = input("Label: ").capitalize()
+        if label_check(label):
+            write_json(run_query(queries.most_incoming_relationships_to_nodes_query, label))
+            break
+
 def use_case():
+    """
+    This function allows the user how to approach the retrieval
+    """
     print("Choose your preferred use case for the retrieve method:\n")
     print("1 - retrieve all contents from the database\n")
     print("2 - retrieve nodes and their direct neighbors using COLLECT\n")
     print("3 - retrieve contents based on count\n")
-    print("4 - retrieve contents based on minimum/maximum\n")
-    print("5 - retrieve contents based on property value\n")
-    print("6 - retrieve relationships between two nodes\n")
-    print("7 - retrieve all property keys for a label of a node\n")
-    print("8 - retrieve all labels of nodes that exist in the database\n")
-    print("9 - retrieve all relationship types in the database\n")
-    print("10 - retrieve any disconnected nodes\n")
+    print("4 - retrieve contents based on property value\n")
+    print("5 - retrieve relationships between two nodes\n")
+    print("6 - retrieve all property keys for a label of a node\n")
+    print("7 - retrieve all labels of nodes that exist in the database\n")
+    print("8 - retrieve all relationship types in the database\n")
+    print("9 - retrieve any disconnected nodes\n")
+    print("10 - retrieve the node with the most incoming relationships based on a label\n")
     choice = int(input("Your choice: "))
     match choice:
         case 1:
@@ -184,19 +283,19 @@ def use_case():
         case 3:
             choose_count_application()
         case 4:
-            max_min_count()
-        case 5:
             nodes_property_value()
-        case 6:
+        case 5:
             two_node_relationships()
-        case 7:
+        case 6:
             property_keys()
-        case 8:
+        case 7:
             all_labels()
-        case 9:
+        case 8:
             all_relationships()
-        case 10:
+        case 9:
             disconnected_nodes()
+        case 10:
+            most_incoming_relationships_to_nodes()
         case _:
             print("Are you sure you have chosen a number 1-3?\n")
 
