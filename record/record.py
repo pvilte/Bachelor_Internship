@@ -1,6 +1,6 @@
 import json
 import os
-from time import strptime
+from datetime import datetime
 
 from neo4j import GraphDatabase
 import re
@@ -13,7 +13,6 @@ from . import queries
 uri = "bolt://localhost:7687"
 auth = ("neo4j", "internship123")
 
-time_format = "%y/%m/%d %H:%M:%S.%f"
 
 def run_query(query_func, *args):
     driver = GraphDatabase.driver(uri=uri, auth=auth)
@@ -43,7 +42,7 @@ def populate_database(e, file_name):
 
     # Event has properties name, time, resource
     # Get these properties and create an event object
-    event = Event(e.get("concept:name", ""), strptime(e.get("time:timestamp", ""), time_format), e.get("org:resource", ""), instance_id, process_id)
+    event = Event(e.get("concept:name", ""), datetime.fromisoformat(e.get("time:timestamp", "")), e.get("org:resource", ""), instance_id, process_id)
 
     run_query(queries.create_process, process_id)
     run_query(queries.create_instance, instance_id)
@@ -51,7 +50,7 @@ def populate_database(e, file_name):
 
     # I try to find any label that starts with 'adaptation:type' or 'adaptation:change'
     if any(re.match(r"adaptation:(type|change)", key) for key in e.keys()):
-        adaptation = Adaptation(e.get("adaptation:type", ""), e.get("adaptation:timestamp", ""),
+        adaptation = Adaptation(e.get("adaptation:type", ""), datetime.fromisoformat(e.get("adaptation:timestamp", "")),
                                 e.get("adaptation:change", ""))
         run_query(queries.create_adaptation, adaptation.adaptation_type, adaptation.time, adaptation.change)
 

@@ -17,16 +17,24 @@ def run_query(query_func, *args):
 
 #Function for writing the result to a JSON file
 def write_json(to_json):
-    with open("query1.json", "w") as outfile:
+    with open("result.json", "w") as outfile:
         json.dump(to_json, outfile, indent=4)
 
 #Safety check function to see if the given node really has the property
 def property_check(node, node_property):
-    if not hasattr(node, node_property):
+    properties = {
+        "Adaptation": ["time", "type", "change"],
+        "Event": ["time", "name", "resource"],
+        "Initiator": ["name"],
+        "Instance": ["id"],
+        "Process": ["id"]
+    }
+    if node in properties and node_property in properties[node]:
+        return True
+    else:
         print("Are you sure you have spelled the property correctly?")
         return False
 
-    return True
 
 def value_property_check(value, node_property):
     if node_property == "time" and isinstance(value, datetime.datetime):
@@ -94,7 +102,7 @@ def max_min_count():
         node1 = str(input("The first node: ")).capitalize()
         node2 = str(input("The second node: ")).capitalize()
         function = str(input("MIN or MAX: ")).upper()
-        if not function == "MIN" or not function == "MAX":
+        if function not in ["MIN", "MAX"]:
             print("Enter MIN or MAX!\n")
         if label_check(node1) and label_check(node2):
             write_json(run_query(queries.min_max_count_dir_neighbors, node1, node2, function.capitalize()))
