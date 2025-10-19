@@ -78,12 +78,12 @@ def count_property_query(tx, label, node_property, property_value):
 
 def nodes_property_value_query(tx, label, node_property, property_value):
     """
-    This function retrieves the labels of nodes with the given property value
+    This function retrieves the labels and properties of nodes with the given property value
     """
     result = tx.run(f"""
         MATCH (node: {label})
         WHERE node.{node_property} = $property_value
-        RETURN labels(node) as NodeLabels
+        RETURN labels(node) as NodeLabels, properties(node) as NodeProperties
     """, property_value=property_value)
     return [record.data() for record in result]
 
