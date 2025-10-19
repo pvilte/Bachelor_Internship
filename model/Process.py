@@ -5,8 +5,7 @@ class Process(Node):
     This class describes a Process - a definition of a workflow/choreography. The superclass is Node because
     Process is a node in the database.
 
-    Attributes:
-        id_proc(string) - the ID of the process
+    :param id_proc(string): the ID of the process
     """
 
     def __init__(self, id_proc):

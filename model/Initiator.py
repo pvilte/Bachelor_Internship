@@ -5,8 +5,7 @@ class Initiator(Node):
     This class describes Initiator - the participant who invoked an adaptation. The superclass is Node, Initiator
     is a node in the database.
 
-    Attributes:
-        name(string) - the name of the Initiator
+    :param name: the name of the Initiator
     """
 
     def __init__(self, name):
