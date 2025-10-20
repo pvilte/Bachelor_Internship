@@ -7,13 +7,13 @@ All the functions below returns a dictionary
 
 def match_all(tx):
     """
-    For every node, return all nodes it is connected to, the labels, properties and relationship types and properties
+    For every node, return all nodes it is connected to, the labels, properties and relationship types
     """
     result = tx.run("""
         MATCH (node1)-[relationship]-(node2)
         RETURN labels(node1) AS this_node_labels, properties(node1) AS this_node_properties,
                labels(node2) AS connected_node_labels, properties(node2) AS connected_node_properties,
-               type(relationship) AS relationship_type, properties(relationship) AS relationship_properties
+               type(relationship) AS relationship_type
     """)
     return [record.data() for record in result]
 
@@ -105,14 +105,14 @@ def nodes_property_value_query(tx, label, node_property, property_value):
 
 def two_node_relationship_query(tx, label1, label2):
     """
-    This function retrieves distinct relationship type and the properties of the given two nodes
+    This function retrieves distinct relationship type of the given two nodes
 
     :param label1: label of the first node
     :param label2: label of the second node
     """
     result = tx.run(f"""
         MATCH (node1:{label1})-[r]-(node2:{label2})
-        RETURN DISTINCT type(r) AS relationship_type, properties(r) AS relationship_properties
+        RETURN DISTINCT type(r) AS relationship_type
     """)
     return [record.data() for record in result]
 
