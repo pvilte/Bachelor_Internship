@@ -14,7 +14,7 @@ class Event(Instance):
 
     def __init__(self, name, time, resource, instance_id=None, process_id=None):
         super().__init__(instance_id, process_id)
-        self.label = "Event"
+        self.__label = "Event"
         self.name = name
         self.time = time
         self.resource = resource
