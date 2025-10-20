@@ -1,16 +1,16 @@
-from model.Process import Process
+from model.Node import Node
 
-class Instance(Process):
+class Instance(Node):
     """
-    This class describes Instance - one run of a Process. Therefore, the superclass is Process.
+    This class describes Instance - one run of a Process. Therefore, the instance has a process.
+    The superclass is Node.
 
     :param instance_id: the ID of the instance
-    :param id_proc: the ID of the Process associated with the instance, default None
-    :param label: the label for Instance in the database
+    :param process: the process object associated with the instance
     """
 
-    def __init__(self, instance_id, id_proc=None):
-        super().__init__(id_proc)
-        self.__label = "Instance"
+    def __init__(self, instance_id, process):
+        super().__init__("Instance")
         self.instance_id = instance_id
+        self.process = process
 

@@ -6,6 +6,8 @@ import re
 from model.Event import Event
 from model.Initiator import Initiator
 from model.Adaptation import Adaptation
+from model.Instance import Instance
+from model.Process import Process
 from . import queries
 
 # Change the values here based on your environment
@@ -42,13 +44,16 @@ def run_query(query_func, *args):
     driver.close()
 
 
-def populate_database(e, file_name):
+def populate_database(e, file_name, processes, instances):
 
     """
-    This function populates the database with the event information.
+    This function populates the database with the event information. It uses composition to ensure
+    that each process has an instance, each instance has a process.
 
     :param e: event object
     :param file_name: name of the file to give an ID to a process in case no ID is given in the event
+    :param processes: dictionary of already stored processes
+    :param instances: dictionary of already stored instances
     :return: void
     """
 
@@ -68,9 +73,40 @@ def populate_database(e, file_name):
     else:
         instance_id = file_name + "_instance"
 
-    event = Event(e.get("concept:name", ""), find_time(e.get("time:timestamp")), e.get("org:resource", ""), instance_id, process_id)
-    run_query(queries.create_process, process_id)
-    run_query(queries.create_instance, instance_id)
+    stored_process = processes.get(process_id, None)
+    stored_instance = instances.get(instance_id, None)
+
+    if stored_process and stored_instance:
+        # Link the event to the instance
+        event = Event(e.get("concept:name", ""), find_time(e.get("time:timestamp")), e.get("org:resource", ""),
+                  stored_instance)
+    elif stored_process is None and stored_instance is None:
+        # Create a new process and a new instance, link them to the event
+        process = Process(process_id)
+        instance = Instance(instance_id, process)
+        event = Event(e.get("concept:name", ""), find_time(e.get("time:timestamp")), e.get("org:resource", ""),
+                      instance)
+        instances[instance_id] = instance
+        processes[process_id] = process
+        run_query(queries.create_process, process_id)
+        run_query(queries.create_instance, instance_id)
+    elif stored_instance is None:
+        # Create a new instance, link it to the already existing process, link the event to the instance
+        instance = Instance(instance_id, stored_process)
+        event = Event(e.get("concept:name", ""), find_time(e.get("time:timestamp")), e.get("org:resource", ""),
+                      instance)
+        instances[instance_id] = instance
+        run_query(queries.create_instance, instance_id)
+    else:
+        # The process is not stored
+        process = Process(process_id)
+        stored_instance.process = process
+        event = Event(e.get("concept:name", ""), find_time(e.get("time:timestamp")), e.get("org:resource", ""),
+                      stored_instance)
+        processes[process_id] = process
+        run_query(queries.create_process, process_id)
+
+
     run_query(queries.create_event, event.name, event.time, event.resource)
 
     # If any label starts with 'adaptation:type' or 'adaptation:change', or 'adaptation:time', an adaptation has happened
@@ -86,7 +122,7 @@ def populate_database(e, file_name):
         run_query(queries.create_initiator, initiator.name)
 
 
-    # Nodes are created, create relationships
+    # Create relationships
     run_query(queries.create_instance_process_relationship, instance_id, process_id)
     run_query(queries.create_event_instance_relationship, event, instance_id)
 
@@ -104,6 +140,8 @@ def record(json_dir):
     :return: void
     """
 
+    processes = {}
+    instances = {}
     # Go through every subdirectory of the directory of the JSON files
     for path, folders, files in os.walk(json_dir):
         for file in files:
@@ -115,7 +153,7 @@ def record(json_dir):
             for case in data:
                 for e in case["events"]:
                     # An event is found, call the function to populate the database
-                    populate_database(e, file_name)
+                    populate_database(e, file_name, processes, instances)
 
 
 
