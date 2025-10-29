@@ -44,7 +44,7 @@ def run_query(query_func, *args):
     driver.close()
 
 
-def populate_database(e, file_name, processes, instances):
+def populate_database(e, file_name, processes, instances, initiators):
 
     """
     This function populates the database with the event information. It uses composition to ensure
@@ -54,12 +54,12 @@ def populate_database(e, file_name, processes, instances):
     :param file_name: name of the file to give an ID to a process in case no ID is given in the event
     :param processes: dictionary of already stored processes
     :param instances: dictionary of already stored instances
+    :param initiators: dictionary of already stored initiators
     :return: void
     """
 
-    # Assume a regular event with no adaptations and adaptation initiators
+    # Assume a normal event with no adaptations
     adaptation = None
-    initiator = None
 
     # If an ID of a process is given in the event, save the ID of the process; if not, give the ID as the file name
     # If any event is written in the XES file, there must be a process and an instance the event is a part of
@@ -73,11 +73,19 @@ def populate_database(e, file_name, processes, instances):
     else:
         instance_id = file_name + "_instance"
 
+    if "adaption:initiator" in e:
+        initiator_id = e.get("adaption:initiator")
+    elif "adaptation:initiator" in e:
+        initiator_id = e.get("adaptation:initiator")
+    else:
+        initiator_id = file_name + "_unknown"
+
     stored_process = processes.get(process_id, None)
     stored_instance = instances.get(instance_id, None)
+    stored_initiator = initiators.get(initiator_id, None)
 
     if stored_process and stored_instance:
-        # Link the event to the instance
+        # Link the event to the instance (instance has been linked to the process when it was created)
         event = Event(e.get("concept:name", ""), find_time(e.get("time:timestamp")), e.get("org:resource", ""),
                   stored_instance)
     elif stored_process is None and stored_instance is None:
@@ -110,16 +118,19 @@ def populate_database(e, file_name, processes, instances):
     run_query(queries.create_event, event.name, event.time, event.resource)
 
     # If any label starts with 'adaptation:type' or 'adaptation:change', or 'adaptation:time', an adaptation has happened
-    # There must be an initiator
     if any(re.match(r"adaptation:(type|change|time)", key) for key in e.keys()):
-        adaptation = Adaptation(e.get("adaptation:type", ""), find_time(e.get("adaptation:timestamp")), e.get("adaptation:change", ""))
+        if stored_initiator:
+            adaptation = Adaptation(e.get("adaptation:type", ""), find_time(e.get("adaptation:timestamp")), e.get("adaptation:change", ""), stored_initiator)
+            initiator = stored_initiator
+        else:
+            initiator = Initiator(initiator_id)
+            adaptation = Adaptation(e.get("adaptation:type", ""), find_time(e.get("adaptation:timestamp")),
+                                    e.get("adaptation:change", ""), initiator)
+            initiators[initiator_id] = initiator
+            run_query(queries.create_initiator, initiator.name)
+
+
         run_query(queries.create_adaptation, adaptation.adaptation_type, adaptation.time, adaptation.change)
-        # Sometimes it is written as 'adaption:initiator', sometimes "adaptation:initiator"
-        initiator_name = e.get("adaptation:initiator", "") or e.get("adaption:initiator", "")
-        if initiator_name == "":
-            initiator_name = "Unknown"
-        initiator = Initiator(initiator_name)
-        run_query(queries.create_initiator, initiator.name)
 
 
     # Create relationships
@@ -128,7 +139,6 @@ def populate_database(e, file_name, processes, instances):
 
     if adaptation is not None:
         run_query(queries.create_adaptation_event_relationship, adaptation, event)
-    if initiator is not None and adaptation is not None:
         run_query(queries.create_initiator_adaptation_relationship, initiator, adaptation)
 
 def record(json_dir):
@@ -142,6 +152,7 @@ def record(json_dir):
 
     processes = {}
     instances = {}
+    initiators = {}
     # Go through every subdirectory of the directory of the JSON files
     for path, folders, files in os.walk(json_dir):
         for file in files:
@@ -153,7 +164,7 @@ def record(json_dir):
             for case in data:
                 for e in case["events"]:
                     # An event is found, call the function to populate the database
-                    populate_database(e, file_name, processes, instances)
+                    populate_database(e, file_name, processes, instances, initiators)
 
 
 

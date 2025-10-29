@@ -8,10 +8,12 @@ class Adaptation(Node):
     :param adaptation_type: type of adaptation (usually "insert", "delete"; possible to assign other values)
     :param time(datetime): time when the adaptation was applied to an event
     :param change(string): what exactly was changed
+    :param initiator(string): who initiated this change
     """
 
-    def __init__(self, adaptation_type, time, change):
+    def __init__(self, adaptation_type, time, change, initiator):
         super().__init__("Adaptation")
         self.adaptation_type = adaptation_type
         self.time = time
         self.change = change
+        self.initiator = initiator
