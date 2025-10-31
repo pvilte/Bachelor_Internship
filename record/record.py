@@ -10,9 +10,9 @@ from model.Instance import Instance
 from model.Process import Process
 from . import queries
 
-# Change the values here based on your environment
-uri = "bolt://127.0.0.1:7687"
-auth = ("neo4j", "internship123")
+
+uri = os.getenv("NEO4J_URI")
+auth = (os.getenv("NEO4J_USER"), os.getenv("NEO4J_PASSWORD"))
 
 def find_time(time):
     """
@@ -216,3 +216,4 @@ def record(json_dir):
 if __name__ == "__main__":
     # Change the parameter here based on your environment
     record("json_files")
+    print("Record complete!\n")

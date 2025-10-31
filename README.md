@@ -1,25 +1,36 @@
-# How to run the project
+# Short description of the Bachelor Internship project
 
-First, you will need to convert all the data from XES to JSON.
-To do that, go to [xes_to_json.py](xes_to_json.py). Run this file. You should now
-have a folder 'json_files' with the converted files.
 
-Next, to record the store the information of the folder in a graph 
-database, make sure your graph database is running. Go to 
-[record.py](record/record.py), run this file.
+[xes_to_json.py](xes_to_json.py) converts all the data from XES to JSON.
 
-```
-python -m record.record
-```
+[record.py](record/record.py) records the contents of the JSON files in a graph 
+database.
 
-Now the data is stored in the database.
-
-To retrieve data from the database, go to directory [retrieval](retrieve), then
-[retrieve.py](retrieve/retrieve.py). Run this file by this command:
-```
-python -m retrieval.retrieve
-```
-
-It allows to interactively choose what 
+[retrieval](retrieve) retrieves data from the database. It allows to interactively choose what 
 to retrieve from the database. The resulting JSON file with the query should be saved in a file
 in the main directory of the project.
+
+Please see [requirements.txt](requirements.txt) for dependencies.
+
+
+# Running using Docker
+First, please open your Docker Desktop.
+
+Then, type in your terminal the following command:
+
+```
+docker compose build
+```
+
+Depending on which files you would like to run, choose between these 3 commands:
+```
+docker compose run --rm server python -m xes_to_json
+```
+
+```
+docker compose run --rm server python -m record.record
+```
+
+```
+docker compose run --rm server python -m retrieve.retrieve
+```

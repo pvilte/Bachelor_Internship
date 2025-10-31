@@ -4,10 +4,10 @@ import json
 from . import queries
 from datetime import datetime
 from neo4j.time import DateTime
+import os
 
-# Change the values here based on your environment
-uri = "bolt://127.0.0.1:7687"
-auth = ("neo4j", "internship123")
+uri = os.getenv("NEO4J_URI")
+auth = (os.getenv("NEO4J_USER"), os.getenv("NEO4J_PASSWORD"))
 
 def run_query(query_func, *args):
     """
@@ -318,3 +318,4 @@ def use_case():
 
 if __name__ == "__main__":
     use_case()
+    print("Retrieval complete!\n")
