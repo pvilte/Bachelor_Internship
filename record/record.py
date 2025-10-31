@@ -44,7 +44,7 @@ def run_query(query_func, *args):
     driver.close()
 
 
-def populate_database(e, file_name, processes, instances, initiators):
+def populate_database(e, file_name, processes, instances, initiators, counter):
 
     """
     This function populates the database with the event information. It uses composition to ensure
@@ -66,33 +66,34 @@ def populate_database(e, file_name, processes, instances, initiators):
     if "processId" in e:
         process_id = e.get("processId")
     else:
-        process_id = file_name
+        process_id = file_name + "_process_"
 
     if "instanceId" in e:
         instance_id = e.get("instanceId")
     else:
-        instance_id = file_name + "_instance"
+        # In each file, there could be multiple traces, each trace showing a different instance
+        instance_id = file_name + "_instance_" + str(counter["instance"])
 
     if "adaption:initiator" in e:
-        initiator_id = e.get("adaption:initiator")
+        initiator_name = e.get("adaption:initiator")
     elif "adaptation:initiator" in e:
-        initiator_id = e.get("adaptation:initiator")
+        initiator_name = e.get("adaptation:initiator")
     else:
-        initiator_id = file_name + "_unknown"
+        initiator_name = file_name + "_unknown_initiator_"
 
     stored_process = processes.get(process_id, None)
     stored_instance = instances.get(instance_id, None)
-    stored_initiator = initiators.get(initiator_id, None)
+    stored_initiator = initiators.get(initiator_name, None)
 
     if stored_process and stored_instance:
         # Link the event to the instance (instance has been linked to the process when it was created)
-        event = Event(e.get("concept:name", ""), find_time(e.get("time:timestamp")), e.get("org:resource", ""),
+        event = Event(file_name + "_event_" + str(counter["event"]), e.get("concept:name", ""), find_time(e.get("time:timestamp")), e.get("org:resource", ""),
                   stored_instance)
     elif stored_process is None and stored_instance is None:
         # Create a new process and a new instance, link them to the event
         process = Process(process_id)
         instance = Instance(instance_id, process)
-        event = Event(e.get("concept:name", ""), find_time(e.get("time:timestamp")), e.get("org:resource", ""),
+        event = Event(file_name + "_event_" + str(counter["event"]), e.get("concept:name", ""), find_time(e.get("time:timestamp")), e.get("org:resource", ""),
                       instance)
         instances[instance_id] = instance
         processes[process_id] = process
@@ -101,7 +102,7 @@ def populate_database(e, file_name, processes, instances, initiators):
     elif stored_instance is None:
         # Create a new instance, link it to the already existing process, link the event to the instance
         instance = Instance(instance_id, stored_process)
-        event = Event(e.get("concept:name", ""), find_time(e.get("time:timestamp")), e.get("org:resource", ""),
+        event = Event(file_name + "_event_" + str(counter["event"]), e.get("concept:name", ""), find_time(e.get("time:timestamp")), e.get("org:resource", ""),
                       instance)
         instances[instance_id] = instance
         run_query(queries.create_instance, instance_id)
@@ -109,28 +110,28 @@ def populate_database(e, file_name, processes, instances, initiators):
         # The process is not stored
         process = Process(process_id)
         stored_instance.process = process
-        event = Event(e.get("concept:name", ""), find_time(e.get("time:timestamp")), e.get("org:resource", ""),
+        event = Event(file_name + "_event_" + str(counter["event"]), e.get("concept:name", ""), find_time(e.get("time:timestamp")), e.get("org:resource", ""),
                       stored_instance)
         processes[process_id] = process
         run_query(queries.create_process, process_id)
 
 
-    run_query(queries.create_event, event.name, event.time, event.resource)
+    run_query(queries.create_event, event)
 
     # If any label starts with 'adaptation:type' or 'adaptation:change', or 'adaptation:time', an adaptation has happened
     if any(re.match(r"adaptation:(type|change|time)", key) for key in e.keys()):
         if stored_initiator:
-            adaptation = Adaptation(e.get("adaptation:type", ""), find_time(e.get("adaptation:timestamp")), e.get("adaptation:change", ""), stored_initiator)
+            adaptation = Adaptation(file_name + "_adaptation_" + str(counter["adaptation"]), e.get("adaptation:type", ""), find_time(e.get("adaptation:timestamp")), e.get("adaptation:change", ""), stored_initiator)
             initiator = stored_initiator
         else:
-            initiator = Initiator(initiator_id)
-            adaptation = Adaptation(e.get("adaptation:type", ""), find_time(e.get("adaptation:timestamp")),
+            initiator = Initiator(initiator_name)
+            adaptation = Adaptation(file_name + "_adaptation_" +  str(counter["adaptation"]), e.get("adaptation:type", ""), find_time(e.get("adaptation:timestamp")),
                                     e.get("adaptation:change", ""), initiator)
-            initiators[initiator_id] = initiator
+            initiators[initiator_name] = initiator
             run_query(queries.create_initiator, initiator.name)
 
-
-        run_query(queries.create_adaptation, adaptation.adaptation_type, adaptation.time, adaptation.change)
+        counter["adaptation"] += 1
+        run_query(queries.create_adaptation, adaptation)
 
 
     # Create relationships
@@ -150,6 +151,12 @@ def record(json_dir):
     :return: void
     """
 
+    counter = {
+        "event": 0,
+        "adaptation": 0,
+        "instance": 0
+    }
+
     processes = {}
     instances = {}
     initiators = {}
@@ -164,7 +171,12 @@ def record(json_dir):
             for case in data:
                 for e in case["events"]:
                     # An event is found, call the function to populate the database
-                    populate_database(e, file_name, processes, instances, initiators)
+                    populate_database(e, file_name, processes, instances, initiators, counter)
+                    counter["event"] += 1
+                counter["instance"] += 1
+
+            counter["instance"] = 0
+            counter["event"] = 0
 
 
 

@@ -14,25 +14,21 @@ def create_process(tx, id_num):
     tx.run("MERGE (:Process {id: $id_num})", id_num=id_num)
 
 
-def create_event(tx, name, time, resource):
+def create_event(tx, event):
     """
     This function creates an event node in the database
 
-    :param name: name of the event
-    :param time: time of the event
-    :param resource: the name of the resource carrying out the event
+    :param event: the event to be created
     """
-    tx.run("MERGE (:Event {name: $name, time: $time, resource: $resource})", name=name, time=time, resource=resource)
+    tx.run("MERGE (:Event {id: $id, name: $name, time: $time, resource: $resource})", id=event.event_id,  name=event.name, time=event.time, resource=event.resource)
 
-def create_adaptation(tx, ad_type, time, change):
+def create_adaptation(tx, adaptation):
     """
     This function creates an adaptation node in the database
 
-    :param ad_type: type of adaptation
-    :param time: time when the adaptation occurs
-    :param change: what exactly was changed
+    :param adaptation: the adaptation to be created
     """
-    tx.run("MERGE (:Adaptation {type: $adaptation_type, time: $time, change: $change})", adaptation_type=ad_type, time=time, change=change)
+    tx.run("MERGE (:Adaptation {id: $id, type: $adaptation_type, time: $time, change: $change})", id=adaptation.adaptation_id, adaptation_type=adaptation.adaptation_type, time=adaptation.time, change=adaptation.change)
 
 def create_instance(tx, instance_id):
     """
@@ -69,14 +65,14 @@ def create_event_instance_relationship(tx, event, instance_id):
     """
     This function creates a relationship between an event and an instance in the database
 
-    :param instance_id: the ID of the instance
     :param event: the event object
+    :param instance_id: the ID of the instance
     """
 
     tx.run("""
-        MATCH (event:Event{name: $name, time: $time, resource: $resource}), (instance:Instance {id: $instance_id})
+        MATCH (event:Event{id: $id}), (instance:Instance {id: $instance_id})
         MERGE (event)-[:STEP_OF]->(instance)
-    """, name=event.name, time=event.time, resource=event.resource, instance_id=instance_id)
+    """, id=event.event_id, instance_id=instance_id)
 
 def create_adaptation_event_relationship(tx, adaptation, event):
     """
@@ -87,9 +83,9 @@ def create_adaptation_event_relationship(tx, adaptation, event):
     """
 
     tx.run("""
-        MATCH (adaptation:Adaptation{type: $adaptation_type, time: $time, change: $change}), (event:Event{name: $name, time: $time_event, resource: $resource})
+        MATCH (adaptation:Adaptation{id: $id_adapt}), (event:Event{id: $id_event})
         MERGE (adaptation)-[:APPLIED_TO]->(event)
-    """, adaptation_type= adaptation.adaptation_type, time=adaptation.time, change=adaptation.change, name=event.name, time_event=event.time, resource=event.resource)
+    """, id_adapt=adaptation.adaptation_id, id_event=event.event_id)
 
 def create_initiator_adaptation_relationship(tx, initiator, adaptation):
     """
@@ -99,6 +95,6 @@ def create_initiator_adaptation_relationship(tx, initiator, adaptation):
     :param adaptation: the adaptation object
     """
     tx.run("""
-        MATCH (initiator:Initiator{name: $initiator_name}), (adaptation:Adaptation{type: $adaptation_type, time: $time, change: $change})
+        MATCH (initiator:Initiator{name: $initiator_name}), (adaptation:Adaptation{id: $id})
         MERGE (initiator)-[:INVOKES]->(adaptation)
-    """, initiator_name=initiator.name, adaptation_type=adaptation.adaptation_type, time=adaptation.time, change=adaptation.change)
+    """, initiator_name=initiator.name, id=adaptation.adaptation_id)
