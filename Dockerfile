@@ -13,14 +13,14 @@ WORKDIR /app
 # Create a non-privileged user that the app will run under.
 # See https://docs.docker.com/go/dockerfile-user-best-practices/
 ARG UID=10001
+ARG USER=appuser
 RUN adduser \
     --disabled-password \
     --gecos "" \
-    --home "/nonexistent" \
+    --home "/home/${USER}" \
     --shell "/sbin/nologin" \
-    --no-create-home \
     --uid "${UID}" \
-    appuser
+    ${USER}
 
 # Download dependencies as a separate step to take advantage of Docker's caching.
 # Leverage a cache mount to /root/.cache/pip to speed up subsequent builds.
