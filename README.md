@@ -34,3 +34,5 @@ docker compose run --rm server python -m record.record
 ```
 docker compose run --rm server python -m retrieve.retrieve
 ```
+
+Please see http://localhost:7474/browser/ for querying the database.

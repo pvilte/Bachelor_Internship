@@ -7,8 +7,6 @@ services:
     restart: always
     environment:
       - NEO4J_AUTH=neo4j/internship123
-      - NEO4J_dbms_memory_heap_initial__size=512m
-      - NEO4J_dbms_memory_heap_max__size=1g
     ports:
       - "7474:7474"
       - "7687:7687"
