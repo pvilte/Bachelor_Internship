@@ -14,13 +14,7 @@ WORKDIR /app
 # See https://docs.docker.com/go/dockerfile-user-best-practices/
 ARG UID=10001
 ARG USER=appuser
-RUN adduser \
-    --disabled-password \
-    --gecos "" \
-    --home "/home/${USER}" \
-    --shell "/sbin/nologin" \
-    --uid "${UID}" \
-    ${USER}
+RUN useradd --create-home --user-group --uid ${UID} "${USER}"
 
 # Download dependencies as a separate step to take advantage of Docker's caching.
 # Leverage a cache mount to /root/.cache/pip to speed up subsequent builds.
@@ -30,11 +24,23 @@ RUN --mount=type=cache,target=/root/.cache/pip \
     --mount=type=bind,source=requirements.txt,target=requirements.txt \
     python -m pip install -r requirements.txt
 
-# Switch to the non-privileged user to run the application.
-USER appuser
-
 # Copy the source code into the container.
-COPY . .
+COPY ./model/ ./model/
+COPY ./record/ ./record/
+COPY ./retrieve/ ./retrieve/
+COPY ./xes_files/ ./xes_files/
+COPY ./xes_to_json.py .
+# COPY ./requirements.txt .
+
+
+RUN mkdir -p /app/output
+
+RUN chown -R ${USER}: /app
+
+VOLUME /app/output
+
+# Switch to the non-privileged user to run the application.
+USER ${USER}
 
 # Expose the port that the application listens on.
 EXPOSE 8000
