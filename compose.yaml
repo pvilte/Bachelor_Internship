@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   neo4j:
-    image: neo4j:5.25
+    image: docker.io/neo4j:5.25
     container_name: neo4j
     restart: always
     environment:
