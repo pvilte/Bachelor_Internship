@@ -31,5 +31,3 @@ services:
       - NEO4J_PASSWORD=internship123
     volumes:
       - .:/app
-    ports:
-      - "8000:8000"

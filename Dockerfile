@@ -42,7 +42,4 @@ VOLUME /app/output
 # Switch to the non-privileged user to run the application.
 USER ${USER}
 
-# Expose the port that the application listens on.
-EXPOSE 8000
-
 CMD ["bash"]
