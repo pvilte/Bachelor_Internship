@@ -98,3 +98,27 @@ def create_initiator_adaptation_relationship(tx, initiator, adaptation):
         MATCH (initiator:Initiator{name: $initiator_name}), (adaptation:Adaptation{id: $id})
         MERGE (initiator)-[:INVOKES]->(adaptation)
     """, initiator_name=initiator.name, id=adaptation.adaptation_id)
+
+def create_event_time_relationship(tx, curr_event, prev_event):
+    """"
+    This function creates a time relationship between an event and its previous event
+
+    :param curr_event: the current event
+    :param prev_event: the previous event
+    """
+    tx.run("""
+        MATCH (curr_event:Event{id: $id_curr_event}), (prev_event:Event{id: $id_prev_event})
+        MERGE (curr_event)<-[:BEFORE]-(prev_event)
+    """, id_curr_event=curr_event.event_id, id_prev_event=prev_event.event_id)
+
+def create_instance_time_relationship(tx, curr_instance, prev_instance):
+    """
+    This function creates a time relationship between an instance and its previous instance
+
+    :param curr_instance: the current instance
+    :param prev_instance: the previous instance
+    """
+    tx.run("""
+           MATCH (curr_instance:Instance{id: $curr_instance_id}), (prev_instance:Instance{id: $prev_instance_id})
+           MERGE (curr_instance)<-[:BEFORE]-(prev_instance)
+    """, curr_instance_id=curr_instance.instance_id, prev_instance_id=prev_instance.instance_id)

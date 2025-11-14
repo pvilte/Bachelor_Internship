@@ -43,7 +43,7 @@ def run_query(query_func, *args):
         session.execute_write(query_func, *args)
     driver.close()
 
-def create_events_processes_initiators(e, file_name, counter, processes, instances):
+def create_events_processes_initiators(e, file_name, counter, processes, instances, events):
     """
     This function creates events, processes, initiators, for a given event.
 
@@ -52,6 +52,7 @@ def create_events_processes_initiators(e, file_name, counter, processes, instanc
     :param counter: counter dictionary, used for assigning IDs
     :param processes: already stored processes
     :param instances: already stored instances
+    :param events: already stored events of the trace
     :return process, instance, event: the process, instance, and event from the event
     """
 
@@ -94,9 +95,11 @@ def create_events_processes_initiators(e, file_name, counter, processes, instanc
         processes[process_id] = process
 
     # Link the event to the instance (instance has been linked to the process when it was created)
-    event = Event(file_name + "_event_" + str(counter["event"]), e.get("concept:name", ""),
+    event_id = file_name + "_instance_" + str(counter["instance"]) + "_event_" + str(counter["event"])
+    event = Event(event_id, e.get("concept:name", ""),
                   find_time(e.get("time:timestamp")), e.get("org:resource", ""),
                   instance)
+    events[event_id] = event
     return process, instance, event
 
 
@@ -137,7 +140,7 @@ def create_adaptations_initiators(file_name, counter, e, initiators):
     return initiator, adaptation
 
 
-def populate_database(e, file_name, processes, instances, initiators, counter):
+def populate_database(e, file_name, processes, instances, initiators, events, counter):
 
     """
     This function populates the database with the event information.
@@ -147,11 +150,12 @@ def populate_database(e, file_name, processes, instances, initiators, counter):
     :param processes: dictionary of already stored processes
     :param instances: dictionary of already stored instances
     :param initiators: dictionary of already stored initiators
+    :param events: dictionary of already stored events in this trace
     :param counter: counter dictionary for assigning IDs
     :return: void
     """
 
-    process, instance, event = create_events_processes_initiators(e, file_name, counter, processes, instances)
+    process, instance, event = create_events_processes_initiators(e, file_name, counter, processes, instances, events)
 
     # Create nodes
     run_query(queries.create_process, process)
@@ -171,6 +175,13 @@ def populate_database(e, file_name, processes, instances, initiators, counter):
         run_query(queries.create_adaptation_event_relationship, adaptation, event)
         run_query(queries.create_initiator_adaptation_relationship, initiator, adaptation)
 
+    # If this is not the first event in the trace, create the time relationship between events
+    if len(events) > 1:
+        run_query(queries.create_event_time_relationship, event, list(events.values())[-2])
+    # If this is not the first trace in the file, create the time relationship between instances
+    if len(instances) > 1:
+        run_query(queries.create_instance_time_relationship, instance, list(instances.values())[-2])
+
 
 def record(json_dir):
 
@@ -188,10 +199,11 @@ def record(json_dir):
         "instance": 0
     }
 
-    # Used for keeping track which processes, instances, initiators have already been stored
+    # Used for keeping track which processes, instances, initiators, events have already been stored
     processes = {}
     instances = {}
     initiators = {}
+    events = {}
     # Go through every subdirectory of the directory of the JSON files
     for path, folders, files in os.walk(json_dir):
         for file in files:
@@ -203,13 +215,17 @@ def record(json_dir):
             for case in data:
                 for e in case["events"]:
                     # An event is found, call the function to populate the database
-                    populate_database(e, file_name, processes, instances, initiators, counter)
+                    populate_database(e, file_name, processes, instances, initiators, events, counter)
                     counter["event"] += 1
                 counter["instance"] += 1
+
 
             counter["instance"] = 0
             counter["event"] = 0
             counter["adaptation"] = 0
+            instances = {}
+            initiators = {}
+            events = {}
 
 
 
