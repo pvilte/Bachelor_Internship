@@ -43,13 +43,14 @@ def run_query(query_func, *args):
         session.execute_write(query_func, *args)
     driver.close()
 
-def create_events_processes_initiators(e, file_name, stored):
+def create_events_processes_initiators(e, file_name, stored, inst_counter):
     """
     This function creates events, processes, initiators, for a given event.
 
     :param e: event object
     :param file_name: name of the file
     :param stored: the dictionary of stored processes, instances, events, initiators, adaptations
+    :param inst_counter: the number of instances this far
     :return process, instance, event: the process, instance, and event from the event
     """
 
@@ -67,7 +68,7 @@ def create_events_processes_initiators(e, file_name, stored):
         instance_id = e.get("instanceId")
     else:
         # In each file, there could be multiple traces, each trace showing a different instance
-        instance_id = file_name + "_instance_" + str(len(stored["instances"]))
+        instance_id = file_name + "_instance_" + str(inst_counter)
 
     stored_process = stored["processes"].get(process_id, None)
     stored_instance = stored["instances"].get(instance_id, None)
@@ -136,7 +137,7 @@ def create_adaptations_initiators(file_name, e, stored):
     return initiator, adaptation
 
 
-def populate_database(e, file_name, stored):
+def populate_database(e, file_name, stored, inst_counter):
 
     """
     This function populates the database with the event information.
@@ -144,10 +145,11 @@ def populate_database(e, file_name, stored):
     :param e: event object
     :param file_name: name of the file to give an ID to a process in case no ID is given in the event
     :param stored: the dictionary of stored processes, instances, events, initiators, adaptations
+    :param inst_counter: number of traces this far
     :return: void
     """
 
-    process, instance, event = create_events_processes_initiators(e, file_name, stored)
+    process, instance, event = create_events_processes_initiators(e, file_name, stored, inst_counter)
 
     # Create nodes
     run_query(queries.create_event, event)
@@ -186,6 +188,9 @@ def record(json_dir):
     :return: void
     """
 
+    # Counter used to keep track how many traces - instances there are
+    inst_counter = 0
+
     # Used for keeping track which processes, instances, initiators, events, adaptations have already been stored
     stored = {
         "processes": {},
@@ -205,7 +210,8 @@ def record(json_dir):
             for case in data:
                 for e in case["events"]:
                     # An event is found, call the function to populate the database
-                    populate_database(e, file_name, stored)
+                    populate_database(e, file_name, stored, inst_counter)
+                inst_counter += 1
 
 
             # Clear the dictionary for the next file
