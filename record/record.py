@@ -43,16 +43,13 @@ def run_query(query_func, *args):
         session.execute_write(query_func, *args)
     driver.close()
 
-def create_events_processes_initiators(e, file_name, counter, processes, instances, events):
+def create_events_processes_initiators(e, file_name, stored):
     """
     This function creates events, processes, initiators, for a given event.
 
     :param e: event object
     :param file_name: name of the file
-    :param counter: counter dictionary, used for assigning IDs
-    :param processes: already stored processes
-    :param instances: already stored instances
-    :param events: already stored events of the trace
+    :param stored: the dictionary of stored processes, instances, events, initiators, adaptations
     :return process, instance, event: the process, instance, and event from the event
     """
 
@@ -70,10 +67,10 @@ def create_events_processes_initiators(e, file_name, counter, processes, instanc
         instance_id = e.get("instanceId")
     else:
         # In each file, there could be multiple traces, each trace showing a different instance
-        instance_id = file_name + "_instance_" + str(counter["instance"])
+        instance_id = file_name + "_instance_" + str(len(stored["instances"]))
 
-    stored_process = processes.get(process_id, None)
-    stored_instance = instances.get(instance_id, None)
+    stored_process = stored["processes"].get(process_id, None)
+    stored_instance = stored["instances"].get(instance_id, None)
 
     instance = stored_instance
     process = stored_process
@@ -81,37 +78,36 @@ def create_events_processes_initiators(e, file_name, counter, processes, instanc
         # Create a new process and a new instance, link them to the event
         process = Process(process_id)
         instance = Instance(instance_id, process)
-        instances[instance_id] = instance
-        processes[process_id] = process
+        stored["instances"][instance_id] = instance
+        stored["processes"][process_id] = process
 
     elif stored_instance is None:
         # Create a new instance, link it to the already existing process, link the event to the instance
         instance = Instance(instance_id, stored_process)
-        instances[instance_id] = instance
+        stored["instances"][instance_id] = instance
     else:
         # The process is not stored
         process = Process(process_id)
         stored_instance.process = process
-        processes[process_id] = process
+        stored["processes"][process_id] = process
 
     # Link the event to the instance (instance has been linked to the process when it was created)
-    event_id = file_name + "_instance_" + str(counter["instance"]) + "_event_" + str(counter["event"])
+    event_id = file_name + "_event_" + str(len(stored["events"]))
     event = Event(event_id, e.get("concept:name", ""),
                   find_time(e.get("time:timestamp")), e.get("org:resource", ""),
                   instance)
-    events[event_id] = event
+    stored["events"][event_id] = event
     return process, instance, event
 
 
-def create_adaptations_initiators(file_name, counter, e, initiators):
+def create_adaptations_initiators(file_name, e, stored):
     """
     This function finds initiators and adaptations in the event. It ensures that each adaptation
     has an initiator using composition.
 
     :param file_name: the name of the file
-    :param counter: the counter dictionary, used for assigning IDs
     :param e: the event object
-    :param initiators: the stored initiators
+    :param stored: the dictionary of stored processes, instances, events, initiators, adaptations
     :return initiator, adaptation: the initiator and adaptation objects from the event
     """
 
@@ -122,52 +118,48 @@ def create_adaptations_initiators(file_name, counter, e, initiators):
     else:
         initiator_name = file_name + "_unknown_initiator_"
 
-    stored_initiator = initiators.get(initiator_name, None)
+    stored_initiator = stored["initiators"].get(initiator_name, None)
 
-    initiator = stored_initiator
+
     if stored_initiator:
-        adaptation = Adaptation(file_name + "_adaptation_" + str(counter["adaptation"]), e.get("adaptation:type", ""),
-                                find_time(e.get("adaptation:timestamp")), e.get("adaptation:change", ""),
-                                stored_initiator)
+        initiator = stored_initiator
     else:
         initiator = Initiator(initiator_name)
-        adaptation = Adaptation(file_name + "_adaptation_" + str(counter["adaptation"]), e.get("adaptation:type", ""),
-                                find_time(e.get("adaptation:timestamp")),
-                                e.get("adaptation:change", ""), initiator)
-        initiators[initiator_name] = initiator
+        stored["initiators"][initiator_name] = initiator
 
-    counter["adaptation"] += 1
+    adaptation_id = file_name + "_adaptation_" + str(len(stored["adaptations"]))
+    adaptation = Adaptation(adaptation_id, e.get("adaptation:type", ""),
+                            find_time(e.get("adaptation:timestamp")), e.get("adaptation:change", ""),
+                            initiator)
+    stored["adaptations"][adaptation_id] = adaptation
+
     return initiator, adaptation
 
 
-def populate_database(e, file_name, processes, instances, initiators, events, counter):
+def populate_database(e, file_name, stored):
 
     """
     This function populates the database with the event information.
 
     :param e: event object
     :param file_name: name of the file to give an ID to a process in case no ID is given in the event
-    :param processes: dictionary of already stored processes
-    :param instances: dictionary of already stored instances
-    :param initiators: dictionary of already stored initiators
-    :param events: dictionary of already stored events in this trace
-    :param counter: counter dictionary for assigning IDs
+    :param stored: the dictionary of stored processes, instances, events, initiators, adaptations
     :return: void
     """
 
-    process, instance, event = create_events_processes_initiators(e, file_name, counter, processes, instances, events)
+    process, instance, event = create_events_processes_initiators(e, file_name, stored)
 
     # Create nodes
+    run_query(queries.create_event, event)
     run_query(queries.create_process, process)
     run_query(queries.create_instance, instance)
     # Create relationships
-    run_query(queries.create_event, event)
     run_query(queries.create_instance_process_relationship, instance, process)
     run_query(queries.create_event_instance_relationship, event, instance)
 
     # If any label starts with 'adaptation:type' or 'adaptation:change', or 'adaptation:time', an adaptation has happened
     if any(re.match(r"adaptation:(type|change|time)", key) for key in e.keys()):
-        initiator, adaptation = create_adaptations_initiators(file_name, counter, e, initiators)
+        initiator, adaptation = create_adaptations_initiators(file_name, e, stored)
         # Create nodes
         run_query(queries.create_adaptation, adaptation)
         run_query(queries.create_initiator, initiator)
@@ -175,12 +167,14 @@ def populate_database(e, file_name, processes, instances, initiators, events, co
         run_query(queries.create_adaptation_event_relationship, adaptation, event)
         run_query(queries.create_initiator_adaptation_relationship, initiator, adaptation)
 
-    # If this is not the first event in the trace, create the time relationship between events
-    if len(events) > 1:
-        run_query(queries.create_event_time_relationship, event, list(events.values())[-2])
-    # If this is not the first trace in the file, create the time relationship between instances
-    if len(instances) > 1:
-        run_query(queries.create_instance_time_relationship, instance, list(instances.values())[-2])
+    # If this is not the 0th or the 1st event in the file, create the time relationship between this event and
+    # the previous one
+    if len(stored["events"]) > 1:
+        run_query(queries.create_event_time_relationship, event, list(stored["events"].values())[-2])
+    # If this is not the 0th or the 1st event in the file, create the time relationship between this instance and
+    # the previous one
+    if len(stored["instances"]) > 1:
+        run_query(queries.create_instance_time_relationship, instance, list(stored["instances"].values())[-2])
 
 
 def record(json_dir):
@@ -192,18 +186,14 @@ def record(json_dir):
     :return: void
     """
 
-    # Used for counting the IDs
-    counter = {
-        "event": 0,
-        "adaptation": 0,
-        "instance": 0
+    # Used for keeping track which processes, instances, initiators, events, adaptations have already been stored
+    stored = {
+        "processes": {},
+        "instances": {},
+        "initiators": {},
+        "events": {},
+        "adaptations": {}
     }
-
-    # Used for keeping track which processes, instances, initiators, events have already been stored
-    processes = {}
-    instances = {}
-    initiators = {}
-    events = {}
     # Go through every subdirectory of the directory of the JSON files
     for path, folders, files in os.walk(json_dir):
         for file in files:
@@ -215,17 +205,12 @@ def record(json_dir):
             for case in data:
                 for e in case["events"]:
                     # An event is found, call the function to populate the database
-                    populate_database(e, file_name, processes, instances, initiators, events, counter)
-                    counter["event"] += 1
-                counter["instance"] += 1
+                    populate_database(e, file_name, stored)
 
 
-            counter["instance"] = 0
-            counter["event"] = 0
-            counter["adaptation"] = 0
-            instances = {}
-            initiators = {}
-            events = {}
+            # Clear the dictionary for the next file
+            for key in stored:
+                stored[key] = {}
 
 
 
