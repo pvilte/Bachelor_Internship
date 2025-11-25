@@ -108,6 +108,6 @@ def create_event_time_relationship(tx, curr_event, prev_event):
     """
     tx.run("""
         MATCH (curr_event:Event{id: $id_curr_event}), (prev_event:Event{id: $id_prev_event})
-        MERGE (curr_event)<-[:BEFORE]-(prev_event)
+        MERGE (curr_event)<-[:NEXT]-(prev_event)
     """, id_curr_event=curr_event.event_id, id_prev_event=prev_event.event_id)
 
