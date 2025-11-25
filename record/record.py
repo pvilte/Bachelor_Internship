@@ -173,10 +173,6 @@ def populate_database(e, file_name, stored, inst_counter):
     # the previous one
     if len(stored["events"]) > 1:
         run_query(queries.create_event_time_relationship, event, list(stored["events"].values())[-2])
-    # If this is not the 0th or the 1st event in the file, create the time relationship between this instance and
-    # the previous one
-    if len(stored["instances"]) > 1:
-        run_query(queries.create_instance_time_relationship, instance, list(stored["instances"].values())[-2])
 
 
 def record(json_dir):

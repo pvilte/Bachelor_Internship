@@ -111,14 +111,3 @@ def create_event_time_relationship(tx, curr_event, prev_event):
         MERGE (curr_event)<-[:BEFORE]-(prev_event)
     """, id_curr_event=curr_event.event_id, id_prev_event=prev_event.event_id)
 
-def create_instance_time_relationship(tx, curr_instance, prev_instance):
-    """
-    This function creates a time relationship between an instance and its previous instance
-
-    :param curr_instance: the current instance
-    :param prev_instance: the previous instance
-    """
-    tx.run("""
-           MATCH (curr_instance:Instance{id: $curr_instance_id}), (prev_instance:Instance{id: $prev_instance_id})
-           MERGE (curr_instance)<-[:BEFORE]-(prev_instance)
-    """, curr_instance_id=curr_instance.instance_id, prev_instance_id=prev_instance.instance_id)
