@@ -27,6 +27,7 @@ def xes_to_json_converter(xes_location, json_dir_name):
             if not file.endswith(".xes"):
                 continue
 
+            print ("Convert: " + file)
             # find the full XES path by joining the path and the file name
             xes_path = os.path.join(path, file)
             # Give the JSON file the same as the XES file
