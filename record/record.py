@@ -204,6 +204,7 @@ def record(json_dir):
         for file in files:
             file_path = os.path.join(path, file)
             file_name = file.replace(".json", "")
+            print ("Record: " + file_name)
             with open(file_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
 
