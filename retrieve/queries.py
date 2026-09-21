@@ -17,6 +17,36 @@ def match_all(tx):
     """)
     return [record.data() for record in result]
 
+
+def events_with_adaptations(tx):
+    """
+    This returns the events that have adaptations linked to them.
+    """
+
+    result = tx.run("""
+        MATCH (:Adaptation)-[:APPLIED_TO]->(event:Event)
+        RETURN DISTINCT event
+    """)
+
+    return [record.data() for record in result]
+
+
+def adaptation_of_event(tx, event_id):
+    """
+    This returns the adaptation of a provided event.
+
+    :param event_id: the id of the event the user selected
+    """
+
+    result = tx.run(f"""
+        MATCH (a:Adaptation)-[:APPLIED_TO]->(e:Event)
+        WHERE e.id = $event_id
+        RETURN a
+    """, event_id=event_id)
+
+    return [result.data()]
+
+
 def direct_neighbors_collect_query(tx, name1, name2):
     """
     Retrieves collected direct neighbors of node1, giving properties, labels and relationships of the nodes
@@ -129,6 +159,34 @@ def property_keys_query(tx, label):
         RETURN DISTINCT property_keys
     """)
     return [record.data() for record in result]
+
+
+def adaptation_reason_key_query(tx, label):
+    """
+    This function retrieves the reason key of Adaptation label
+
+    :param label: the Adaptation node label
+    """
+
+    result = tx.run(f"""
+        MATCH (node:{label})
+        RETURN node.reason
+    """)
+    return [result.data()]
+
+
+def adaptation_impact_key_query(tx, label):
+    """
+    This function retrieves the impact key of Adaptation label
+
+    :param label: the Adaptation node label
+    """
+
+    result = tx.run(f"""
+        MATCH (node:{label})
+        RETURN node.impact
+    """)
+    return [result.data()]
 
 
 def all_labels_query(tx):

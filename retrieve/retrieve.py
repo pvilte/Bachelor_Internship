@@ -48,7 +48,7 @@ def write_json(to_json):
     :return: void
     """
 
-    with open("result.json", "w") as outfile:
+    with open("/app/output/result.json", "w") as outfile:
         json.dump(convert_neo4j_to_json(to_json), outfile, indent=4)
 
 def time_conversion(property_value, property_key):
@@ -76,7 +76,7 @@ def property_check(node, node_property):
     """
 
     properties = {
-        "Adaptation": ["time", "type", "change"],
+        "Adaptation": ["time", "type", "change", "reason", "impact"],
         "Event": ["time", "name", "resource"],
         "Initiator": ["name"],
         "Instance": ["id"],
@@ -275,6 +275,57 @@ def most_incoming_relationships_to_nodes():
             write_json(run_query(queries.most_incoming_relationships_to_nodes_query, label))
             break
 
+
+def all_events_with_adaptations():
+    """
+    This function returns collects all events that have adaptations and writes result to a JSON file.
+    """
+    write_json(run_query(queries.events_with_adaptations))
+
+
+def adaptation_of_selected_event():
+    """
+    This function asks user to select an available event with an adaptation and based on that input
+    retrieves the adaptation.
+    """
+
+    events_with_adapt = run_query(queries.events_with_adaptations)
+    print("Select event:")
+    i = 1
+    for event in events_with_adapt:
+        print(f"{i} - {event['event']['name']}")
+        i += 1
+    choice = int(input("Your choice: "))
+    chosen_event_id = events_with_adapt[choice-1]["event"]["id"]
+
+    adaptation = run_query(queries.adaptation_of_event, chosen_event_id)
+
+    return adaptation
+
+
+def reason_and_impact_keys_of_adaptation():
+    """
+    This function calls the query functions, that given the label, returns reason, impact
+    key values of an adaptation. Then it calls the function to write the result to a JSON file
+    """
+    adaptation = adaptation_of_selected_event()
+
+    while True:
+        key = str(input(f"Which key to return for change {adaptation[0][0]['a']['change']} (Reason, Impact, Both): ")).capitalize()
+        if key == "Reason":
+            write_json(adaptation[0][0]["a"]["reason"])
+            break
+        elif key == "Impact":
+            write_json(adaptation[0][0]["a"]["impact"])
+            break
+        elif key == "Both":
+            answer = [{"reason": adaptation[0][0]["a"]["reason"]}, {"impact": adaptation[0][0]["a"]["impact"]}]
+            write_json(answer)
+            break
+        else:
+            print("Please select one of the available options: Reason, Impact, Both.")
+
+            
 def use_case():
     """
     This function allows the user how to approach the retrieval
@@ -290,6 +341,8 @@ def use_case():
     print("8 - retrieve all relationship types in the database\n")
     print("9 - retrieve any disconnected nodes\n")
     print("10 - retrieve the node with the most incoming relationships based on a label\n")
+    print("11 - retrieve all events that have adaptations\n")
+    print("12 - retrieve reason or impact of a selected adaptation\n")
     choice = int(input("Your choice: "))
     match choice:
         case 1:
@@ -312,6 +365,10 @@ def use_case():
             disconnected_nodes()
         case 10:
             most_incoming_relationships_to_nodes()
+        case 11:
+            all_events_with_adaptations()
+        case 12:
+            reason_and_impact_keys_of_adaptation()
         case _:
             print("Are you sure you have chosen a number 1-3?\n")
 
