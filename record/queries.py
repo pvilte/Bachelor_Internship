@@ -28,7 +28,8 @@ def create_adaptation(tx, adaptation):
 
     :param adaptation: the adaptation to be created
     """
-    tx.run("MERGE (:Adaptation {id: $id, type: $adaptation_type, time: $time, change: $change})", id=adaptation.adaptation_id, adaptation_type=adaptation.adaptation_type, time=adaptation.time, change=adaptation.change)
+    tx.run("MERGE (:Adaptation {id: $id, type: $adaptation_type, time: $time, change: $change, reason: $reason, impact: $impact})", 
+           id=adaptation.adaptation_id, adaptation_type=adaptation.adaptation_type, time=adaptation.time, change=adaptation.change, reason=adaptation.reason, impact=adaptation.impact)
 
 def create_instance(tx, instance):
     """

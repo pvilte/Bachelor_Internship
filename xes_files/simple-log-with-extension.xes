@@ -14,6 +14,8 @@
          <string key="adaptation:change" value="Insert Go to cart"/>
          <string key="adaptation:initiator" value="Person A"/>
          <date key="adaptation:timestamp" value="2025-04-13T19:37:00.000+00:00"/>
+         <string key="adaptation:reason" value="Change reason one and two"/>
+         <string key="adaptation:impact" value="Time increased by 2 seconds"/>
       </event>
       <event>
          <string key="concept:name" value="Checkout" />

@@ -10,12 +10,16 @@ class Adaptation(Node):
     :param time(datetime): time when the adaptation was applied to an event
     :param change(string): what exactly was changed
     :param initiator(string): who initiated this change
+    :param reason(string): the reason for the invoked change
+    :param impact(string): impact of the invoked change
     """
 
-    def __init__(self, adaptation_id, adaptation_type, time, change, initiator):
+    def __init__(self, adaptation_id, adaptation_type, time, change, initiator, reason, impact):
         super().__init__("Adaptation")
         self.adaptation_id = adaptation_id
         self.adaptation_type = adaptation_type
         self.time = time
         self.change = change
         self.initiator = initiator
+        self.reason = reason 
+        self.impact = impact

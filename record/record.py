@@ -54,8 +54,6 @@ def create_events_processes_initiators(e, file_name, stored, inst_counter):
     :return process, instance, event: the process, instance, and event from the event
     """
 
-
-
     # If an ID of a process is given in the event, save the ID of the process; if not, give the ID as the file name
     # If any event is written in the XES file, there must be a process and an instance the event is a part of
     if "processId" in e:
@@ -131,7 +129,7 @@ def create_adaptations_initiators(file_name, e, stored):
     adaptation_id = file_name + "_adaptation_" + str(len(stored["adaptations"]))
     adaptation = Adaptation(adaptation_id, e.get("adaptation:type", ""),
                             find_time(e.get("adaptation:timestamp")), e.get("adaptation:change", ""),
-                            initiator)
+                            initiator, e.get("adaptation:reason", ""), e.get("adaptation:impact", "") )
     stored["adaptations"][adaptation_id] = adaptation
 
     return initiator, adaptation
