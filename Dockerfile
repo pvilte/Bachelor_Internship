@@ -30,14 +30,12 @@ COPY ./record/ ./record/
 COPY ./retrieve/ ./retrieve/
 COPY ./xes_files/ ./xes_files/
 COPY ./xes_to_json.py .
-# COPY ./requirements.txt .
+COPY ./requirements.txt .
 
 
 RUN mkdir -p /app/output
 
 RUN chown -R ${USER}: /app
-
-VOLUME /app/output
 
 # Switch to the non-privileged user to run the application.
 USER ${USER}

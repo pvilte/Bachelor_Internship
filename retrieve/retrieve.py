@@ -325,7 +325,7 @@ def reason_and_impact_keys_of_adaptation():
         else:
             print("Please select one of the available options: Reason, Impact, Both.")
 
-            
+
 def use_case():
     """
     This function allows the user how to approach the retrieval

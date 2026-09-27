@@ -9,12 +9,20 @@ def match_all(tx):
     """
     For every node, return all nodes it is connected to, the labels, properties and relationship types
     """
-    result = tx.run("""
+
+    query = """
         MATCH (node1)-[relationship]-(node2)
         RETURN labels(node1) AS this_node_labels, properties(node1) AS this_node_properties,
                labels(node2) AS connected_node_labels, properties(node2) AS connected_node_properties,
                type(relationship) AS relationship_type
-    """)
+    """
+
+    result = tx.run(query)
+
+    # Display the query used to the user:
+    print("Query used to retrieve all contents from the database:")
+    print(query)
+
     return [record.data() for record in result]
 
 
@@ -23,10 +31,16 @@ def events_with_adaptations(tx):
     This returns the events that have adaptations linked to them.
     """
 
-    result = tx.run("""
+    query = """
         MATCH (:Adaptation)-[:APPLIED_TO]->(event:Event)
         RETURN DISTINCT event
-    """)
+    """
+
+    result = tx.run(query)
+
+    # Display the query used to the user:
+    print("Query used to retrieve all events with adaptations:")
+    print(query)
 
     return [record.data() for record in result]
 
@@ -38,11 +52,17 @@ def adaptation_of_event(tx, event_id):
     :param event_id: the id of the event the user selected
     """
 
-    result = tx.run(f"""
+    query = f"""
         MATCH (a:Adaptation)-[:APPLIED_TO]->(e:Event)
-        WHERE e.id = $event_id
+        WHERE e.id = "{event_id}"
         RETURN a
-    """, event_id=event_id)
+    """
+
+    result = tx.run(query)
+
+    # Display the query used to the user:
+    print("Query used to retrieve selected event's adaptation:")
+    print(query)
 
     return [result.data()]
 
@@ -54,13 +74,22 @@ def direct_neighbors_collect_query(tx, name1, name2):
     :param name1: label of the first node
     :param name2: label of the second node
     """
-    result = tx.run(f"""
+
+    query = f"""
         MATCH (n1:{name1})-[r]-(n2:{name2})
         RETURN labels(n1) AS node1_labels, properties(n1) AS node1_properties,
                COLLECT(properties(n2)) AS collect_properties, COLLECT(DISTINCT labels(n2)) AS collect_labels, 
                type(r) as relationship
-    """)
+    """
+
+    result = tx.run(query)
+
+    # Display the query used to the user:
+    print(f"Query used to retrieve direct neighbours of {name1}:")
+    print(query)
+
     return [record.data() for record in result]
+
 
 def direct_neighbors_count_query(tx, name1, name2):
     """
@@ -70,24 +99,41 @@ def direct_neighbors_count_query(tx, name1, name2):
      :param name1: label of the first node
      :param name2: label of the second node
     """
-    result = tx.run(f"""
+
+    query = f"""
         MATCH (n1:{name1})-[r]-(n2:{name2})
         RETURN properties(n1) AS node1_properties,
                labels(n1) AS node1_labels,
                COUNT(DISTINCT n2) AS neighbor_count,
                COLLECT(DISTINCT properties(n2)) AS neighbor_properties,
                COLLECT(DISTINCT labels(n2)) AS neighbor_labels
-    """)
+    """
+
+    result = tx.run(query)
+
+    # Display the query used to the user:
+    print(f"Query used to retrieve the count of direct neighbours of {name2}:")
+    print(query)
+
     return [record.data() for record in result]
+
 
 def count_all_nodes_query(tx):
     """
     This function counts how many nodes there are in the entire database
     """
-    result = tx.run(f"""
+
+    query = f"""
         MATCH (n)
         RETURN COUNT(n) AS NumberOfAllNodes
-    """)
+    """
+
+    result = tx.run(query)
+
+    # Display the query used to the user:
+    print(f"Query used to retrieve count of all nodes:")
+    print(query)
+
     return [record.data() for record in result]
 
 def count_nodes_label_query(tx, label):
@@ -96,10 +142,18 @@ def count_nodes_label_query(tx, label):
 
     :param label: label of the node
     """
-    result = tx.run(f"""
+
+    query = f"""
         MATCH (node:{label})
         RETURN COUNT(node) AS NrNodes
-    """)
+    """
+
+    result = tx.run(query)
+
+    # Display the query used to the user:
+    print(f"Query used to retrieve the count nodes of {label} label:")
+    print(query)
+
     return [record.data() for record in result]
 
 def count_property_query(tx, label, node_property, property_value):
@@ -111,11 +165,22 @@ def count_property_query(tx, label, node_property, property_value):
     :param node_property: property key of the node
     :param property_value: value of the property
     """
+
+    query = f"""MATCH (node: {label})
+        WHERE node.{node_property} = "{property_value}"
+        RETURN COUNT(node) AS NrNodes, labels(node) as NodeLabels
+    """
+
     result = tx.run(f"""
         MATCH (node: {label})
         WHERE node.{node_property} = $property_value
         RETURN COUNT(node) AS NrNodes, labels(node) as NodeLabels
     """, property_value=property_value)
+
+    # Display the query used to the user:
+    print(f"Query used to retrieve the count nodes with given label: {label} and property value: {property_value}:")
+    print(query)
+
     return [record.data() for record in result]
 
 def nodes_property_value_query(tx, label, node_property, property_value):

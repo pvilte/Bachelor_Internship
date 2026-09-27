@@ -4,3 +4,4 @@ __pycache__/
 json_files/
 neo4j_data/
 output/
+/xes_files/generate-xes.py
