@@ -166,8 +166,15 @@ def count_property_query(tx, label, node_property, property_value):
     :param property_value: value of the property
     """
 
+    # If node_property is time, print the unmodified time value:
+    if node_property == "time":
+        time_property_val = str(property_value).replace(" ", "T", 1)
+        print_property_val = f'datetime("{time_property_val}")'
+    else:
+        print_property_val = f'"{property_value}"'
+
     query = f"""MATCH (node: {label})
-        WHERE node.{node_property} = "{property_value}"
+        WHERE node.{node_property} = {print_property_val}
         RETURN COUNT(node) AS NrNodes, labels(node) as NodeLabels
     """
 
@@ -178,7 +185,7 @@ def count_property_query(tx, label, node_property, property_value):
     """, property_value=property_value)
 
     # Display the query used to the user:
-    print(f"Query used to retrieve the count nodes with given label: {label} and property value: {property_value}:")
+    print(f"Query used to retrieve the count nodes with given label: {label}, and property value: {property_value}:")
     print(query)
 
     return [record.data() for record in result]
@@ -191,11 +198,30 @@ def nodes_property_value_query(tx, label, node_property, property_value):
     :param node_property: property key of the node
     :param property_value: value of the property
     """
+
+    # If node_property is time, print the unmodified time value in date:
+    if node_property == "time":
+        time_property_val = str(property_value).replace(" ", "T", 1)
+        print_property_val = f'datetime("{time_property_val}")'
+    else:
+        print_property_val = f'"{property_value}"'
+    
+    query = f"""
+        MATCH (node: {label})
+        WHERE node.{node_property} = {print_property_val}
+        RETURN labels(node) as NodeLabels, properties(node) as NodeProperties
+    """
+
     result = tx.run(f"""
         MATCH (node: {label})
         WHERE node.{node_property} = $property_value
         RETURN labels(node) as NodeLabels, properties(node) as NodeProperties
     """, property_value=property_value)
+    
+    # Display the query used to the user:
+    print(f"Query used to retrieve nodes with given label: {label}, and property value: {property_value}:")
+    print(query)
+    
     return [record.data() for record in result]
 
 def two_node_relationship_query(tx, label1, label2):
@@ -205,10 +231,18 @@ def two_node_relationship_query(tx, label1, label2):
     :param label1: label of the first node
     :param label2: label of the second node
     """
-    result = tx.run(f"""
+
+    query = f"""
         MATCH (node1:{label1})-[r]-(node2:{label2})
         RETURN DISTINCT type(r) AS relationship_type
-    """)
+    """
+
+    result = tx.run(query)
+
+    # Display the query used to the user:
+    print(f"Query used to retrieve relationship type of {label1} and {label2}:")
+    print(query)
+
     return [record.data() for record in result]
 
 
@@ -218,50 +252,38 @@ def property_keys_query(tx, label):
 
     :param label: label of the node
     """
-    result = tx.run(f"""
+
+    query = f"""
         MATCH (node:{label})
         UNWIND keys(node) AS property_keys
         RETURN DISTINCT property_keys
-    """)
+    """
+
+    result = tx.run(query)
+
+    # Display the query used to the user:
+    print(f"Query used to retrieve property keys of {label}:")
+    print(query)
+
     return [record.data() for record in result]
-
-
-def adaptation_reason_key_query(tx, label):
-    """
-    This function retrieves the reason key of Adaptation label
-
-    :param label: the Adaptation node label
-    """
-
-    result = tx.run(f"""
-        MATCH (node:{label})
-        RETURN node.reason
-    """)
-    return [result.data()]
-
-
-def adaptation_impact_key_query(tx, label):
-    """
-    This function retrieves the impact key of Adaptation label
-
-    :param label: the Adaptation node label
-    """
-
-    result = tx.run(f"""
-        MATCH (node:{label})
-        RETURN node.impact
-    """)
-    return [result.data()]
 
 
 def all_labels_query(tx):
     """
     This function retrieves the labels of all nodes
     """
-    result = tx.run(f"""
+
+    query = f"""
         MATCH (n)
         RETURN DISTINCT labels(n) AS labels
-    """)
+    """
+
+    result = tx.run(query)
+
+    # Display the query used to the user:
+    print(f"Query used to retrieve labels of all nodes:")
+    print(query)
+    
     return [record.data() for record in result]
 
 
@@ -269,21 +291,37 @@ def all_relationships_query(tx):
     """
     This function retrieves all relationship types in the database
     """
-    result = tx.run(f"""
+
+    query = f"""
         MATCH (n)-[r]-(n2)
         RETURN DISTINCT type(r) AS relationship_type
-    """)
+    """
+
+    result = tx.run(query)
+
+    # Display the query used to the user:
+    print(f"Query used to retrieve all relationship types:")
+    print(query)
+    
     return [record.data() for record in result]
 
 def disconnected_nodes_query(tx):
     """
     This function retrieves labels and properties of the disconnected nodes
     """
-    result = tx.run(f"""
+
+    query = f"""
         MATCH (n)
         WHERE NOT EXISTS((n)--())
         RETURN labels(n), properties(n)
-    """)
+    """
+
+    result = tx.run(query)
+
+    # Display the query used to the user:
+    print(f"Query used to retrieve labels annd properties of disconnected nodes:")
+    print(query)
+
     return [record.data() for record in result]
 
 def most_incoming_relationships_to_nodes_query(tx, label):
@@ -294,22 +332,37 @@ def most_incoming_relationships_to_nodes_query(tx, label):
     :param label: label of the node
     """
 
-    result = tx.run(f"""
+    query = f"""
         MATCH (n1:{label})<-[r]-(n2)
         RETURN labels(n1) as labels,
                properties(n1) as properties,
                COUNT (DISTINCT n2) as nodes_connected_by_relationship
         ORDER BY nodes_connected_by_relationship DESC
         LIMIT 1
-        """)
+        """
+
+    result = tx.run(query)
+
+    # Display the query used to the user:
+    print(f"Query used to retrieve labels and properties of nodes given {label} that has the most incomming relationships:")
+    print(query)
+
     return [record.data() for record in result]
 
 def count_all_relationships_query(tx):
     """
     This function retrieves the count of all relationships in the database
     """
-    result = tx.run(f"""
+
+    query = f"""
         MATCH (n1)-[r]-(n2)
         RETURN COUNT (DISTINCT r) AS NrRelationships
-    """)
+    """
+
+    result = tx.run(query)
+
+    # Display the query used to the user:
+    print(f"Query used to retrieve the count of all relationships:")
+    print(query)
+
     return [record.data() for record in result]
