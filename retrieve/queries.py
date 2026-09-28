@@ -366,3 +366,49 @@ def count_all_relationships_query(tx):
     print(query)
 
     return [record.data() for record in result]
+
+
+def trace_based_on_instance_id(tx, instance_id):
+    """
+    This function retrieves the entire trace of a process based on instance_id
+    """
+
+    query = f"""
+        MATCH (p:Process)-[:INSTANCE_OF]-(i:Instance)-[:STEP_OF]-(e:Event)
+        WHERE i.id = "{instance_id}"
+        OPTIONAL MATCH (e)-[:APPLIED_TO]-(a:Adaptation)
+        RETURN p.id AS process_id, i.id AS instance_id, 
+            COLLECT(DISTINCT {{event: e, adaptation: a}}) AS events
+    """
+
+    result = tx.run(query)
+
+    # Display the query used to the user:
+    print(f"Query used to retrieve the trace of instance_id: {instance_id}:")
+    print(query)
+
+    return [record.data() for record in result]
+
+
+def all_traces(tx):
+    """
+    This function retrieves all traces available in the database grouped by process_id.
+    """
+
+    query = """
+        MATCH (i:Instance)-[:STEP_OF]-(e:Event)
+        OPTIONAL MATCH (e)-[:APPLIED_TO]-(a:Adaptation)
+        MATCH (i)-[:INSTANCE_OF]-(p:Process)
+        RETURN p.id AS process_id, i.id AS instance_id,
+            COLLECT(DISTINCT {event: e, adaptation: a}) AS event
+    """
+
+    result = tx.run(query)
+
+    # Display the query used to the user:
+    print(f"Query used to retrieve all traces of processes:")
+    print(query)
+    
+    return [record.data() for record in result]
+
+

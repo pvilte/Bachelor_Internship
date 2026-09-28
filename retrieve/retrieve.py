@@ -326,6 +326,23 @@ def reason_and_impact_keys_of_adaptation():
             print("Please select one of the available options: Reason, Impact, Both.")
 
 
+def collect_trace_based_on_trace_id():
+    """
+    This function uses query to display an entire trace using an instance_id and writes result to JSON file.
+    """
+
+    instance_id = str(input(f"Pleave input instance_id of the trace you want to collect: ")).strip()
+    write_json(run_query(queries.trace_based_on_instance_id, instance_id))
+
+
+def collect_all_traces():
+    """
+    This function uses query to collect all available traces with the process_id, instance_id,
+    as well as lists the events and their adaptations (if there are any), before writing result to a JSON file.
+    """
+    write_json(run_query(queries.all_traces))
+
+
 def use_case():
     """
     This function allows the user how to approach the retrieval
@@ -343,6 +360,8 @@ def use_case():
     print("10 - retrieve the node with the most incoming relationships based on a label\n")
     print("11 - retrieve all events that have adaptations\n")
     print("12 - retrieve reason or impact of a selected adaptation\n")
+    print("13 - retrieve the a trace using instance_id\n")
+    print("14 - retrieve all traces\n")
     choice = int(input("Your choice: "))
     match choice:
         case 1:
@@ -369,6 +388,10 @@ def use_case():
             all_events_with_adaptations()
         case 12:
             reason_and_impact_keys_of_adaptation()
+        case 13:
+            collect_trace_based_on_trace_id()
+        case 14: 
+            collect_all_traces()
         case _:
             print("Are you sure you have chosen a number 1-3?\n")
 
