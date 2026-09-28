@@ -376,9 +376,9 @@ def trace_based_on_instance_id(tx, instance_id):
     query = f"""
         MATCH (p:Process)-[:INSTANCE_OF]-(i:Instance)-[:STEP_OF]-(e:Event)
         WHERE i.id = "{instance_id}"
-        OPTIONAL MATCH (e)-[:APPLIED_TO]-(a:Adaptation)
+        OPTIONAL MATCH (e)-[:APPLIED_TO]-(a:Adaptation)-[:INVOKES]-(in:Initiator)
         RETURN p.id AS process_id, i.id AS instance_id, 
-            COLLECT(DISTINCT {{event: e, adaptation: a}}) AS events
+            COLLECT(DISTINCT {{event: e, adaptation: a, adaptation_initiator: in.name}}) AS events
     """
 
     result = tx.run(query)
@@ -397,9 +397,9 @@ def all_traces(tx):
 
     query = """
         MATCH (p:Process)-[:INSTANCE_OF]-(i:Instance)-[:STEP_OF]-(e:Event)
-        OPTIONAL MATCH (e)-[:APPLIED_TO]-(a:Adaptation)
+        OPTIONAL MATCH (e)-[:APPLIED_TO]-(a:Adaptation)-[:INVOKES]-(in:Initiator)
         RETURN p.id AS process_id, i.id AS instance_id,
-            COLLECT(DISTINCT {event: e, adaptation: a}) AS event
+            COLLECT(DISTINCT {event: e, adaptation: a, adaptation_initiator: in.name}) AS event
     """
 
     result = tx.run(query)
