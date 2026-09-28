@@ -396,9 +396,8 @@ def all_traces(tx):
     """
 
     query = """
-        MATCH (i:Instance)-[:STEP_OF]-(e:Event)
+        MATCH (p:Process)-[:INSTANCE_OF]-(i:Instance)-[:STEP_OF]-(e:Event)
         OPTIONAL MATCH (e)-[:APPLIED_TO]-(a:Adaptation)
-        MATCH (i)-[:INSTANCE_OF]-(p:Process)
         RETURN p.id AS process_id, i.id AS instance_id,
             COLLECT(DISTINCT {event: e, adaptation: a}) AS event
     """
