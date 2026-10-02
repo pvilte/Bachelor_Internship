@@ -92,9 +92,37 @@ def create_events_processes_initiators(e, file_name, stored, inst_counter):
 
     # Link the event to the instance (instance has been linked to the process when it was created)
     event_id = file_name + "_event_" + str(len(stored["events"]))
-    event = Event(event_id, e.get("concept:name", ""),
-                  find_time(e.get("time:timestamp")), e.get("org:resource", ""),
-                  instance)
+
+    # Check if event name exist and is not empty in file, otherwise, raise an exception:
+    if "concept:name" in e:
+        event_name = e.get("concept:name")
+        if event_name == "":
+            raise Exception(f"Check {file_name} has an event has a missing concept:name field")
+    else:
+        raise Exception(f"Check {file_name} has an event has a missing concept:name field")
+
+    # Check if event timestamp exists in file, otherwise, raise an exception:
+    if "time:timestamp" in e:
+        timestamp = find_time(e.get("time:timestamp"))
+    elif "adaptation:timestamp" in e:
+        # if event was deleted, event never happened, thus, the field is empty:
+        timestamp = ""
+    else:
+        raise Exception(f"Check {file_name} has an event has a missing time:timestamp field")
+
+    # Check if event resource exists and is not empty in file, otherwise, raise an exception:
+    if "org:resource" in e:
+        resource = e.get("org:resource")
+        if resource == "":
+            raise Exception(f"Check {file_name} has an event has a missing org:resource field")
+    elif "adaptation:type" in e:
+        # if event was deleted, it was not executed by a resource, thus, the field is empty:
+        resource = ""
+    else:
+        raise Exception(f"Check {file_name} has an event has a missing org:resource field")
+    
+    
+    event = Event(event_id, event_name, timestamp, resource, instance)
     stored["events"][event_id] = event
     return process, instance, event
 
@@ -127,8 +155,31 @@ def create_adaptations_initiators(file_name, e, stored):
         stored["initiators"][initiator_name] = initiator
 
     adaptation_id = file_name + "_adaptation_" + str(len(stored["adaptations"]))
-    adaptation = Adaptation(adaptation_id, e.get("adaptation:type", ""),
-                            find_time(e.get("adaptation:timestamp")), e.get("adaptation:change", ""),
+
+    # Check if adaptation type exists and is not empty, otherwise, raise an exception:
+    if "adaptation:type" in e:
+        adaptation_type = e.get("adaptation:type")
+        if adaptation_type == "":
+            raise Exception(f"Check {file_name} has an event has a missing adaptation:type field")
+    else :
+        raise Exception(f"Check {file_name} has an event has a missing adaptation:type field")
+
+    # Check if adaptation timestamp exists, otherwise, raise an exception:
+    if "adaptation:timestamp" in e:
+        adaptation_timestamp = find_time(e.get("adaptation:timestamp"))
+    else :
+        raise Exception(f"Check {file_name} as an event has a missing adaptation:timestamp field")
+    
+    # Check if adaptation type exists and is not empty, otherwise, raise an exception:
+    if "adaptation:change" in e:
+        adaptation_change = e.get("adaptation:change")
+        if adaptation_change == "":
+            raise Exception(f"Check {file_name} as an event has a missing adaptation:change field")
+    else :
+        raise Exception(f"Check {file_name} as an event has a missing adaptation:change field")
+
+    
+    adaptation = Adaptation(adaptation_id, adaptation_type, adaptation_timestamp, adaptation_change,
                             initiator, e.get("adaptation:reason", ""), e.get("adaptation:impact", "") )
     stored["adaptations"][adaptation_id] = adaptation
 

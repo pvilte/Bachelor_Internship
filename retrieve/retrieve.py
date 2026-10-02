@@ -331,7 +331,7 @@ def collect_trace_based_on_trace_id():
     This function uses query to display an entire trace using an instance_id and writes result to JSON file.
     """
 
-    instance_id = str(input(f"Pleave input instance_id of the trace you want to collect: ")).strip()
+    instance_id = str(input(f"Please input instance_id of the trace you want to collect: ")).strip()
     write_json(run_query(queries.trace_based_on_instance_id, instance_id))
 
 
