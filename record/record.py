@@ -51,6 +51,7 @@ def create_events_processes_initiators(e, file_name, stored, inst_counter, store
     :param file_name: name of the file
     :param stored: the dictionary of stored processes, instances, events, initiators, adaptations
     :param inst_counter: the number of instances this far
+    :param stored_instances: dictionary to keep track which instance_id's have already been used by previous files
     :return process, instance, event: the process, instance, and event from the event
     """
 
@@ -202,6 +203,7 @@ def populate_database(e, file_name, stored, inst_counter, stored_instances):
     :param file_name: name of the file to give an ID to a process in case no ID is given in the event
     :param stored: the dictionary of stored processes, instances, events, initiators, adaptations
     :param inst_counter: number of traces this far
+    :param stored_instances: dictionary to keep track which instance_id's have already been used by previous files
     :return: void
     """
 
@@ -235,7 +237,7 @@ def populate_database(e, file_name, stored, inst_counter, stored_instances):
             run_query(queries.create_event_time_relationship, event, list(stored["events"].values())[-2])
 
 
-def record(json_dir, stored_instances):
+def record(json_dir):
 
     """
     This function goes through the JSON files and tries to find an event. If it is found, it can be stored in d database
@@ -243,6 +245,9 @@ def record(json_dir, stored_instances):
     :param json_dir: the name of the directory containing the JSON files
     :return: void
     """
+
+    # Dictionary for storing instance_id's for each encountered file:
+    stored_instances = {}
 
     # Counter used to keep track how many traces - instances there are
     inst_counter = 0
@@ -279,8 +284,5 @@ def record(json_dir, stored_instances):
 
 if __name__ == "__main__":
     # Change the parameter here based on your environment
-   
-    # Dictionary for storing instance_id's for each encountered file:
-    stored_instances = {}
-    record("json_files", stored_instances)
+    record("json_files")
     print("Record complete!\n")
