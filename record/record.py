@@ -43,7 +43,7 @@ def run_query(query_func, *args):
         session.execute_write(query_func, *args)
     driver.close()
 
-def create_events_processes_initiators(e, file_name, stored, inst_counter):
+def create_events_processes_initiators(e, file_name, stored, inst_counter, stored_instances):
     """
     This function creates events, processes, initiators, for a given event.
 
@@ -67,6 +67,13 @@ def create_events_processes_initiators(e, file_name, stored, inst_counter):
     else:
         # In each file, there could be multiple traces, each trace showing a different instance
         instance_id = file_name + "_instance_" + str(inst_counter)
+
+    # Check whether this instance_id already exists for this file:
+    if instance_id in stored_instances:
+        if stored_instances[instance_id] != file_name:
+            raise Exception(f"File {file_name} has instanc_id: {instance_id}, which is already recorded in database")
+    else: 
+        stored_instances[instance_id] = file_name
 
     stored_process = stored["processes"].get(process_id, None)
     stored_instance = stored["instances"].get(instance_id, None)
@@ -186,7 +193,7 @@ def create_adaptations_initiators(file_name, e, stored):
     return initiator, adaptation
 
 
-def populate_database(e, file_name, stored, inst_counter):
+def populate_database(e, file_name, stored, inst_counter, stored_instances):
 
     """
     This function populates the database with the event information.
@@ -198,7 +205,7 @@ def populate_database(e, file_name, stored, inst_counter):
     :return: void
     """
 
-    process, instance, event = create_events_processes_initiators(e, file_name, stored, inst_counter)
+    process, instance, event = create_events_processes_initiators(e, file_name, stored, inst_counter, stored_instances)
 
     # Create nodes
     run_query(queries.create_event, event)
@@ -228,7 +235,7 @@ def populate_database(e, file_name, stored, inst_counter):
             run_query(queries.create_event_time_relationship, event, list(stored["events"].values())[-2])
 
 
-def record(json_dir):
+def record(json_dir, stored_instances):
 
     """
     This function goes through the JSON files and tries to find an event. If it is found, it can be stored in d database
@@ -260,7 +267,7 @@ def record(json_dir):
             for case in data:
                 for e in case["events"]:
                     # An event is found, call the function to populate the database
-                    populate_database(e, file_name, stored, inst_counter)
+                    populate_database(e, file_name, stored, inst_counter, stored_instances)
                 inst_counter += 1
 
 
@@ -272,5 +279,8 @@ def record(json_dir):
 
 if __name__ == "__main__":
     # Change the parameter here based on your environment
-    record("json_files")
+   
+    # Dictionary for storing instance_id's for each encountered file:
+    stored_instances = {}
+    record("json_files", stored_instances)
     print("Record complete!\n")
