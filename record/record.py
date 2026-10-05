@@ -72,7 +72,7 @@ def create_events_processes_initiators(e, file_name, stored, inst_counter, store
     # Check whether this instance_id already exists for this file:
     if instance_id in stored_instances:
         if stored_instances[instance_id] != file_name:
-            raise Exception(f"File {file_name} has instanc_id: {instance_id}, which is already recorded in database")
+            raise Exception(f"File {file_name} has instance ID: {instance_id}, which is already recorded in database")
     else: 
         stored_instances[instance_id] = file_name
 
@@ -105,9 +105,9 @@ def create_events_processes_initiators(e, file_name, stored, inst_counter, store
     if "concept:name" in e:
         event_name = e.get("concept:name")
         if event_name == "":
-            raise Exception(f"Check {file_name} has an event has a missing concept:name field")
+            raise Exception(f"File {file_name} has an event with a missing concept:name field")
     else:
-        raise Exception(f"Check {file_name} has an event has a missing concept:name field")
+        raise Exception(f"File {file_name} has an event with a missing concept:name field")
 
     # Check if event timestamp exists in file, otherwise, raise an exception:
     if "time:timestamp" in e:
@@ -116,18 +116,18 @@ def create_events_processes_initiators(e, file_name, stored, inst_counter, store
         # if event was deleted, event never happened, thus, the field is empty:
         timestamp = ""
     else:
-        raise Exception(f"Check {file_name} has an event has a missing time:timestamp field")
+        raise Exception(f"File {file_name} has an event with a missing time:timestamp field")
 
     # Check if event resource exists and is not empty in file, otherwise, raise an exception:
     if "org:resource" in e:
         resource = e.get("org:resource")
         if resource == "":
-            raise Exception(f"Check {file_name} has an event has a missing org:resource field")
+            raise Exception(f"File {file_name} has an event with a missing org:resource field")
     elif "adaptation:type" in e:
         # if event was deleted, it was not executed by a resource, thus, the field is empty:
         resource = ""
     else:
-        raise Exception(f"Check {file_name} has an event has a missing org:resource field")
+        raise Exception(f"File {file_name} has an event with a missing org:resource field")
     
     
     event = Event(event_id, event_name, timestamp, resource, instance)
@@ -168,23 +168,23 @@ def create_adaptations_initiators(file_name, e, stored):
     if "adaptation:type" in e:
         adaptation_type = e.get("adaptation:type")
         if adaptation_type == "":
-            raise Exception(f"Check {file_name} has an event has a missing adaptation:type field")
+            raise Exception(f"File {file_name} has an event with a missing adaptation:type field")
     else :
-        raise Exception(f"Check {file_name} has an event has a missing adaptation:type field")
+        raise Exception(f"File {file_name} has an event with a missing adaptation:type field")
 
     # Check if adaptation timestamp exists, otherwise, raise an exception:
     if "adaptation:timestamp" in e:
         adaptation_timestamp = find_time(e.get("adaptation:timestamp"))
     else :
-        raise Exception(f"Check {file_name} as an event has a missing adaptation:timestamp field")
+        raise Exception(f"File {file_name} as an event with a missing adaptation:timestamp field")
     
     # Check if adaptation type exists and is not empty, otherwise, raise an exception:
     if "adaptation:change" in e:
         adaptation_change = e.get("adaptation:change")
         if adaptation_change == "":
-            raise Exception(f"Check {file_name} as an event has a missing adaptation:change field")
+            raise Exception(f"File {file_name} as an event with a missing adaptation:change field")
     else :
-        raise Exception(f"Check {file_name} as an event has a missing adaptation:change field")
+        raise Exception(f"File {file_name} as an event with a missing adaptation:change field")
 
     
     adaptation = Adaptation(adaptation_id, adaptation_type, adaptation_timestamp, adaptation_change,

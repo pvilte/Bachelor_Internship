@@ -1,0 +1,56 @@
+@prefix : <http://example.org/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+{
+    :2026-09-28_11-56-29_example_adaptation_2 a prov:Entity ;
+        :adaptation_change "delete E-Mail to request further information from client" ;
+        :adaptation_type "delete" ;
+        prov:wasAttributedTo :Dan ;
+        prov:wasGeneratedBy :AdaptationDeleteE-MailToRequestFurtherInformationFromClient .
+
+    :2026-09-28_11-56-29_example_adaptation_3 a prov:Entity ;
+        :adaptation_change "insert Call to request further information from client" ;
+        :adaptation_type "insert" ;
+        prov:wasAttributedTo :Bob,
+            :Resource-3494 ;
+        prov:wasGeneratedBy :AdaptationInsertCallToRequestFurtherInformationFromClient .
+
+    :2026-09-28_11-56-29_example_event_28 a prov:Activity ;
+        rdfs:label "Submit loan application" ;
+        :timestamp "2025-11-14T12:16:06.400845000+00:00" .
+
+    :2026-09-28_11-56-29_example_event_31 a prov:Activity ;
+        rdfs:label "Application decision" ;
+        :timestamp "2025-11-14T12:18:12.526845000+00:00" .
+
+    :2026-09-28_11-56-29_example_event_32 a prov:Activity ;
+        rdfs:label "Inform Client about decision" ;
+        :timestamp "2025-11-14T12:18:54.568845000+00:00" .
+
+    :AdaptationDeleteE-MailToRequestFurtherInformationFromClient a prov:Activity ;
+        :adaptation_timestamp "2025-11-13T11:57:55.312235000+00:00" ;
+        prov:qualifiedAssociation _:Nce4399e1655b42a0a55306fadf47ae98 .
+
+    :AdaptationInsertCallToRequestFurtherInformationFromClient a prov:Activity ;
+        :adaptation_timestamp "2025-11-13T11:58:38.355235000+00:00" ;
+        prov:qualifiedAssociation _:Nab3968e6dfcd4e1db9847711343bb23b .
+
+    :Resource-3494 a prov:Agent ;
+        prov:wasAssociatedWith :2026-09-28_11-56-29_example_event_28,
+            :2026-09-28_11-56-29_example_event_31,
+            :2026-09-28_11-56-29_example_event_32 .
+
+    :Bob a prov:Agent .
+
+    :Dan a prov:Agent .
+
+    _:Nab3968e6dfcd4e1db9847711343bb23b a prov:Association ;
+        prov:agent :Bob ;
+        prov:hadRole "ex:Initiator" .
+
+    _:Nce4399e1655b42a0a55306fadf47ae98 a prov:Association ;
+        prov:agent :Dan ;
+        prov:hadRole "ex:Initiator" .
+}
+
