@@ -33,11 +33,11 @@
 
     :AdaptationDeleteE-MailToRequestFurtherInformationFromClient a prov:Activity ;
         :adaptation_timestamp "2025-11-13T11:57:55.312235000+00:00" ;
-        prov:qualifiedAssociation _:N9c3cb78aca5d4680b58605d7f37a532e .
+        prov:qualifiedAssociation _:N46b79689ae20495a8413b5dbaa403f58 .
 
     :AdaptationInsertCallToRequestFurtherInformationFromClient a prov:Activity ;
         :adaptation_timestamp "2025-11-13T11:58:38.355235000+00:00" ;
-        prov:qualifiedAssociation _:Nc6089203a8a840b496ebcc7ad162000a .
+        prov:qualifiedAssociation _:N1d0192be6c324c989b1f4fa231739b4b .
 
     :Bob a prov:Agent .
 
@@ -45,12 +45,12 @@
 
     :Resource-3494 a prov:Agent .
 
-    _:N9c3cb78aca5d4680b58605d7f37a532e a prov:Association ;
-        prov:agent :Dan ;
+    _:N1d0192be6c324c989b1f4fa231739b4b a prov:Association ;
+        prov:agent :Bob ;
         prov:hadRole "ex:Initiator" .
 
-    _:Nc6089203a8a840b496ebcc7ad162000a a prov:Association ;
-        prov:agent :Bob ;
+    _:N46b79689ae20495a8413b5dbaa403f58 a prov:Association ;
+        prov:agent :Dan ;
         prov:hadRole "ex:Initiator" .
 }
 

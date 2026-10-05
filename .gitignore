@@ -7,3 +7,5 @@ json_files/
 neo4j_data/
 output/
 /xes_files/generate-xes.py
+/prov_format/prov_result_vis.png
+/prov_format/prov_result.rdf
