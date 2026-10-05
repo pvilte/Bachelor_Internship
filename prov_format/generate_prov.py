@@ -115,7 +115,7 @@ def create_event_terms(document, event):
                     "ex:timestamp": f"{ev['time']}",
                 },)
                 # Create association between the action and agent:
-                document.wasAssociatedWith(a, e)
+                document.wasAssociatedWith(e, a)
 
 
 
