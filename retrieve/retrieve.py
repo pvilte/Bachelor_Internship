@@ -289,7 +289,7 @@ def adaptation_of_selected_event():
     retrieves the adaptation.
     """
 
-    events_with_adapt = run_query(queries.events_with_adaptations)
+    events_with_adapt = run_query(queries.events_with_adaptations_list)
     print("Select event:")
     i = 1
     for event in events_with_adapt:

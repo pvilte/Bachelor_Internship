@@ -89,7 +89,7 @@ def create_event_terms(document, event):
 
     for e in event:
         ev = e["event"]
-        adapt_initiator = e["adaptation_initiator"]
+        adapt_initiator = e["adaptation_initiator"] 
         adaptation = e["adaptation"]
 
         resource = ev["resource"]

@@ -28,6 +28,27 @@ def match_all(tx):
 
 def events_with_adaptations(tx):
     """
+    This returns the events that have adaptations linked to them along with the 
+    adaptation and its initiator.
+    """
+
+    query = """
+        MATCH (:Adaptation)-[:APPLIED_TO]->(event:Event)
+        OPTIONAL MATCH (event)-[:APPLIED_TO]-(a:Adaptation)-[:INVOKES]-(i:Initiator)
+        RETURN COLLECT(DISTINCT {event: event, adaptation: a, adaptation_initiator: i.name}) AS events
+    """
+
+    result = tx.run(query)
+
+    # Display the query used to the user:
+    print("Query used to retrieve all events with adaptations:")
+    print(query)
+
+    return [record.data() for record in result]
+
+
+def events_with_adaptations_list(tx):
+    """
     This returns the events that have adaptations linked to them.
     """
 
