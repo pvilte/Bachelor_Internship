@@ -300,7 +300,6 @@ def record(json_dir):
         "initiators": {},
         "events": {},
         "adaptations": {},
-        "impacts": {}
     }
 
     # Dictionary for storing filename and data of file that contains total impact:
