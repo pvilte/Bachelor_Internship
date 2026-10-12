@@ -49,6 +49,29 @@ def create_initiator(tx, initiator):
     tx.run("MERGE (:Initiator {name: $initiator_name})", initiator_name=initiator.name)
 
 
+def create_impact(tx, impact):
+    """
+    This function creates an impact node in the database.
+
+    :param impact: the impact object
+    """
+
+    tx.run("MERGE (:Impact {impact_id: $impact_id, type: $type, impact: $impact, instance: $instance_id})", impact_id=impact.impact_id, type=impact.impact_type, impact=impact.name, instance_id=impact.instance_id)
+
+
+def create_impact_instance_relationship(tx, impact):
+    """
+    This function creates a relationship between an instance and its impact in the database
+
+    :param impact: the impact object
+    """
+
+    tx.run("""
+        MATCH (instance:Instance {id: $instance_id}), (impact:Impact {impact_id: $impact_id})
+        MERGE (instance)-[:HAS_IMPACT]->(impact)
+    """, instance_id=impact.instance_id, impact_id=impact.impact_id)
+
+
 def create_instance_process_relationship(tx, instance, process):
     """
     This function creates a relationships between a process and an instance in the database

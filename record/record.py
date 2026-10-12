@@ -8,6 +8,7 @@ from model.Initiator import Initiator
 from model.Adaptation import Adaptation
 from model.Instance import Instance
 from model.Process import Process
+from model.Impact import Impact
 from . import queries
 
 
@@ -237,6 +238,40 @@ def populate_database(e, file_name, stored, inst_counter, stored_instances):
             run_query(queries.create_event_time_relationship, event, list(stored["events"].values())[-2])
 
 
+def add_impact_to_database(c, file_name, stored):
+    """"
+    This function records an instance's impact to the database.
+
+    :param c: the data block that includes instance_id, impact and its type
+    :param file_name: the name of the file we are accessing
+    :param stored: list of objects already stored
+    """
+
+    instance_id = c.get("instance:id")
+
+    if "impact:type" in c:
+        impact_type = c.get("impact:type")
+    else:
+        raise Exception(f"File {file_name} has an impact with no impact_type")
+
+    if "impact" in c:
+        impact= c.get("impact")
+    else:
+        raise Exception(f"File {file_name} has an impact with no impact_type")
+
+    # create an impact id unique for each instance:
+    n = 1
+    while (instance_id + "_impact_" + str(n)) in stored["impacts"]:
+        n += 1
+    impact_id = instance_id + "_impact_" + str(n)
+
+    stored["impacts"][impact_id] = impact
+
+    impact = Impact(impact_id, instance_id, impact_type, impact)
+    run_query(queries.create_impact, impact)
+    run_query(queries.create_impact_instance_relationship, impact)
+
+
 def record(json_dir):
 
     """
@@ -258,7 +293,8 @@ def record(json_dir):
         "instances": {},
         "initiators": {},
         "events": {},
-        "adaptations": {}
+        "adaptations": {},
+        "impacts": {}
     }
     # Go through every subdirectory of the directory of the JSON files
     for path, folders, files in os.walk(json_dir):
@@ -270,10 +306,14 @@ def record(json_dir):
                 data = json.load(f)
 
             for case in data:
-                for e in case["events"]:
-                    # An event is found, call the function to populate the database
-                    populate_database(e, file_name, stored, inst_counter, stored_instances)
-                inst_counter += 1
+                # check if file just adds input for instances:
+                if "instance:id" in case:
+                    add_impact_to_database(case, file_name, stored)
+                else: 
+                    for e in case["events"]:
+                        # An event is found, call the function to populate the database
+                        populate_database(e, file_name, stored, inst_counter, stored_instances)
+                    inst_counter += 1
 
 
             # Clear the dictionary for the next file
