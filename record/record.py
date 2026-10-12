@@ -238,7 +238,7 @@ def populate_database(e, file_name, stored, inst_counter, stored_instances):
             run_query(queries.create_event_time_relationship, event, list(stored["events"].values())[-2])
 
 
-def add_impact_to_database(c, file_name, stored):
+def add_impact_to_database(c, file_name, stored_instances, stored_impacts):
     """"
     This function records an instance's impact to the database.
 
@@ -248,6 +248,9 @@ def add_impact_to_database(c, file_name, stored):
     """
 
     instance_id = c.get("instance:id")
+    # Check if instance that has this impact is recorded in database:
+    if instance_id not in stored_instances:
+        raise Exception(f"The instance_id: {instance_id} provided does not exist in the database.")
 
     if "impact:type" in c:
         impact_type = c.get("impact:type")
@@ -261,11 +264,12 @@ def add_impact_to_database(c, file_name, stored):
 
     # create an impact id unique for each instance:
     n = 1
-    while (instance_id + "_impact_" + str(n)) in stored["impacts"]:
+    while (instance_id + "_impact_" + str(n)) in stored_impacts:
         n += 1
     impact_id = instance_id + "_impact_" + str(n)
 
-    stored["impacts"][impact_id] = impact
+    # keep track of impact_ids already taken:
+    stored_impacts[impact_id] = True
 
     impact = Impact(impact_id, instance_id, impact_type, impact)
     run_query(queries.create_impact, impact)
@@ -284,6 +288,8 @@ def record(json_dir):
     # Dictionary for storing instance_id's for each encountered file:
     stored_instances = {}
 
+    stored_impacts = {}
+
     # Counter used to keep track how many traces - instances there are
     inst_counter = 0
 
@@ -296,6 +302,10 @@ def record(json_dir):
         "adaptations": {},
         "impacts": {}
     }
+
+    # Dictionary for storing filename and data of file that contains total impact:
+    impact_data_files = {}
+
     # Go through every subdirectory of the directory of the JSON files
     for path, folders, files in os.walk(json_dir):
         for file in files:
@@ -308,7 +318,8 @@ def record(json_dir):
             for case in data:
                 # check if file just adds input for instances:
                 if "instance:id" in case:
-                    add_impact_to_database(case, file_name, stored)
+                    # store the file's contents:
+                    impact_data_files[file_name] = data 
                 else: 
                     for e in case["events"]:
                         # An event is found, call the function to populate the database
@@ -319,6 +330,14 @@ def record(json_dir):
             # Clear the dictionary for the next file
             for key in stored:
                 stored[key] = {}
+
+
+    # Record impacts of instances in the database if such exist:
+    if impact_data_files:
+        print("Adding impacts of instances to the database.\n")
+        for file_name in impact_data_files:
+            for impact in impact_data_files[file_name]:
+                add_impact_to_database(impact, file_name, stored_instances, stored_impacts)
 
 
 
