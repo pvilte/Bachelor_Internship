@@ -343,6 +343,15 @@ def collect_all_traces():
     write_json(run_query(queries.all_traces))
 
 
+def collect_impact_of_instance():
+    """
+    This function uses query to collect the impact of a selected instance with the use of instance_id,
+    before writing result to a JSON file.
+    """
+    instance_id = str(input(f"Please input instance_id of instance whose impact you want to collect: ")).strip()
+    write_json(run_query(queries.impact_of_instance, instance_id))
+
+
 def use_case():
     """
     This function allows the user how to approach the retrieval
@@ -362,6 +371,7 @@ def use_case():
     print("12 - retrieve reason or impact of a selected adaptation\n")
     print("13 - retrieve the a trace using instance_id\n")
     print("14 - retrieve all traces\n")
+    print("15 - retrieve impact of instance given instance_id\n")
     choice = int(input("Your choice: "))
     match choice:
         case 1:
@@ -392,8 +402,10 @@ def use_case():
             collect_trace_based_on_trace_id()
         case 14: 
             collect_all_traces()
+        case 15:
+            collect_impact_of_instance()
         case _:
-            print("Are you sure you have chosen a number 1-3?\n")
+            print("Are you sure you have chosen a number 1-15?\n")
 
 
 if __name__ == "__main__":

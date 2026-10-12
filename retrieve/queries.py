@@ -152,7 +152,7 @@ def count_all_nodes_query(tx):
     result = tx.run(query)
 
     # Display the query used to the user:
-    print(f"Query used to retrieve count of all nodes:")
+    print("Query used to retrieve count of all nodes:")
     print(query)
 
     return [record.data() for record in result]
@@ -302,7 +302,7 @@ def all_labels_query(tx):
     result = tx.run(query)
 
     # Display the query used to the user:
-    print(f"Query used to retrieve labels of all nodes:")
+    print("Query used to retrieve labels of all nodes:")
     print(query)
     
     return [record.data() for record in result]
@@ -321,7 +321,7 @@ def all_relationships_query(tx):
     result = tx.run(query)
 
     # Display the query used to the user:
-    print(f"Query used to retrieve all relationship types:")
+    print("Query used to retrieve all relationship types:")
     print(query)
     
     return [record.data() for record in result]
@@ -340,7 +340,7 @@ def disconnected_nodes_query(tx):
     result = tx.run(query)
 
     # Display the query used to the user:
-    print(f"Query used to retrieve labels annd properties of disconnected nodes:")
+    print("Query used to retrieve labels annd properties of disconnected nodes:")
     print(query)
 
     return [record.data() for record in result]
@@ -383,7 +383,7 @@ def count_all_relationships_query(tx):
     result = tx.run(query)
 
     # Display the query used to the user:
-    print(f"Query used to retrieve the count of all relationships:")
+    print("Query used to retrieve the count of all relationships:")
     print(query)
 
     return [record.data() for record in result]
@@ -426,9 +426,28 @@ def all_traces(tx):
     result = tx.run(query)
 
     # Display the query used to the user:
-    print(f"Query used to retrieve all traces of processes:")
+    print("Query used to retrieve all traces of processes:")
     print(query)
     
     return [record.data() for record in result]
 
+
+def impact_of_instance(tx, instance_id):
+    """
+    This function retrieved the impact of an instance given its instance_id.
+    """ 
+
+    query = f"""
+        MATCH (i:Instance)-[:HAS_IMPACT]->(impact:Impact)
+        WHERE i.id = "{instance_id}"
+        RETURN impact
+    """
+
+    result = tx.run(query)
+
+    # Display the query used to the user:
+    print(f"Query used to retrieve impact of instance with instance_id {instance_id}:")
+    print(query)
+    
+    return [record.data() for record in result]
 
