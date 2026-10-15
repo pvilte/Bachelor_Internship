@@ -85,8 +85,11 @@ def create_insert_adaptation(document, adaptation, initiator, a):
     },)
     
 
-def create_event_terms(document, event):
+def create_event_terms(document, event, instance_id):
 
+    # create an instance bundle which groups all terms relevant to that instance:
+    instance = document.bundle(f"ex:{instance_id}")
+    
     for e in event:
         ev = e["event"]
         adapt_initiator = e["adaptation_initiator"] 
@@ -100,22 +103,22 @@ def create_event_terms(document, event):
 
         if resource == "":
             # Create adaptation delete
-            create_delete_adaptation(document, adaptation, initiator)
+            create_delete_adaptation(instance, adaptation, initiator)
         else:
-            # Set event resource as agent:
+            # Set unique event resource as agent:
             a = document.agent(f"ex:{resource}")
 
             # Check if event has insert adaptation:
             if adapt_initiator is not None:
-                create_insert_adaptation(document, adaptation, initiator, a)
+                create_insert_adaptation(instance, adaptation, initiator, a)
             else:
                 # Set event as activity:
-                e = document.activity(f"ex:{ev['id']}", other_attributes={
+                e = instance.activity(f"ex:{ev['id']}", other_attributes={
                     "prov:label": f"{ev['name']}",
                     "ex:timestamp": f"{ev['time']}",
                 },)
                 # Create association between the action and agent:
-                document.wasAssociatedWith(e, a)
+                instance.wasAssociatedWith(e, a)
 
 
 
@@ -140,7 +143,9 @@ def generate_prov(json_dir):
 
             # take each trace in the data and process it:
             for block in data:
-                create_event_terms(document, block["events"])
+                # save instance_id of the trace:
+                instance_id = block.get("instance_id")
+                create_event_terms(document, block["events"], instance_id)
 
             # Save the result to an RDF file in the prov_format directory
             document.serialize(format="rdf", destination="prov_format/prov_result.rdf")
