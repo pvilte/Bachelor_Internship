@@ -1,0 +1,285 @@
+[
+    {
+        "trace_attributes": {},
+        "events": [
+            {
+                "concept:name": "Register",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-37594",
+                "org:resource": "Resource-3264",
+                "time:timestamp": "2025-11-14 11:56:29.224845+00:00"
+            },
+            {
+                "concept:name": "Negotiate",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-37594",
+                "org:resource": "Resource-3264",
+                "time:timestamp": "2025-11-14 11:57:11.266845+00:00"
+            },
+            {
+                "concept:name": "Negotiate",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-37594",
+                "org:resource": "Resource-3264",
+                "time:timestamp": "2025-11-14 11:57:53.308845+00:00"
+            },
+            {
+                "concept:name": "Sign",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-37594",
+                "org:resource": "Resource-3264",
+                "time:timestamp": "2025-11-14 11:58:35.350845+00:00"
+            },
+            {
+                "concept:name": "Sendoff",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-37594",
+                "org:resource": "Resource-3264",
+                "time:timestamp": "2025-11-14 11:59:17.392845+00:00"
+            }
+        ]
+    },
+    {
+        "trace_attributes": {},
+        "events": [
+            {
+                "concept:name": "Register",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-35748",
+                "org:resource": "Resource-3837",
+                "time:timestamp": "2025-11-14 11:59:59.434845+00:00"
+            },
+            {
+                "concept:name": "Negotiate",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-35748",
+                "org:resource": "Resource-3837",
+                "time:timestamp": "2025-11-14 12:00:41.476845+00:00"
+            },
+            {
+                "concept:name": "Sign",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-35748",
+                "org:resource": "Resource-3837",
+                "time:timestamp": "2025-11-14 12:01:23.518845+00:00"
+            },
+            {
+                "concept:name": "Sendoff",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-35748",
+                "org:resource": "Resource-3837",
+                "time:timestamp": "2025-11-14 12:02:05.560845+00:00"
+            }
+        ]
+    },
+    {
+        "trace_attributes": {},
+        "events": [
+            {
+                "concept:name": "Register",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-85886",
+                "org:resource": "Resource-1053",
+                "time:timestamp": "2025-11-14 12:02:47.602845+00:00"
+            },
+            {
+                "concept:name": "Negotiate",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-85886",
+                "org:resource": "Resource-1053",
+                "time:timestamp": "2025-11-14 12:03:29.644845+00:00"
+            },
+            {
+                "concept:name": "Sign",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-85886",
+                "org:resource": "Resource-1053",
+                "time:timestamp": "2025-11-14 12:04:11.686845+00:00"
+            },
+            {
+                "concept:name": "Negotiate",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-85886",
+                "org:resource": "Resource-1053",
+                "time:timestamp": "2025-11-14 12:04:53.728845+00:00"
+            },
+            {
+                "concept:name": "Sendoff",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-85886",
+                "org:resource": "Resource-1053",
+                "time:timestamp": "2025-11-14 12:05:35.770845+00:00"
+            }
+        ]
+    },
+    {
+        "trace_attributes": {},
+        "events": [
+            {
+                "concept:name": "Register",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-88454",
+                "org:resource": "Resource-8868",
+                "time:timestamp": "2025-11-14 12:06:17.812845+00:00"
+            },
+            {
+                "concept:name": "Sign",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-88454",
+                "org:resource": "Resource-8868",
+                "time:timestamp": "2025-11-14 12:06:59.854845+00:00"
+            },
+            {
+                "concept:name": "Sendoff",
+                "processId": "contract-drafting",
+                "adaptation:type": "insert",
+                "instanceId": "Instance-88454",
+                "org:resource": "Resource-8868",
+                "time:timestamp": "2025-11-14 12:07:41.896845+00:00",
+                "adaptation:timestamp": "2025-11-13 11:56:29.226235+00:00",
+                "adaptation:change": "insert Sendoff",
+                "adaptation:initiator": "Bob"
+            }
+        ]
+    },
+    {
+        "trace_attributes": {},
+        "events": [
+            {
+                "concept:name": "Register",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-70742",
+                "org:resource": "Resource-3222",
+                "time:timestamp": "2025-11-14 12:08:23.938845+00:00"
+            },
+            {
+                "concept:name": "Sign",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-70742",
+                "org:resource": "Resource-3222",
+                "time:timestamp": "2025-11-14 12:09:05.980845+00:00"
+            },
+            {
+                "concept:name": "Sendoff",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-70742",
+                "org:resource": "Resource-3222",
+                "time:timestamp": "2025-11-14 12:09:48.022845+00:00"
+            },
+            {
+                "concept:name": "Cancel",
+                "processId": "contract-drafting",
+                "adaptation:type": "delete",
+                "instanceId": "Instance-70742",
+                "adaptation:timestamp": "2025-11-13 11:57:12.269235+00:00",
+                "adaptation:change": "delete Cancel",
+                "adaptation:initiator": "Bob"
+            }
+        ]
+    },
+    {
+        "trace_attributes": {},
+        "events": [
+            {
+                "concept:name": "Submit loan application",
+                "processId": "loan-origination",
+                "instanceId": "Instance-58439",
+                "org:resource": "Resource-8647",
+                "time:timestamp": "2025-11-14 12:11:12.106845+00:00"
+            },
+            {
+                "concept:name": "Application decision",
+                "processId": "loan-origination",
+                "instanceId": "Instance-58439",
+                "org:resource": "Resource-8647",
+                "time:timestamp": "2025-11-14 12:11:54.148845+00:00"
+            },
+            {
+                "concept:name": "Inform Client about decision",
+                "processId": "loan-origination",
+                "instanceId": "Instance-58439",
+                "org:resource": "Resource-8647",
+                "time:timestamp": "2025-11-14 12:12:36.190845+00:00"
+            }
+        ]
+    },
+    {
+        "trace_attributes": {},
+        "events": [
+            {
+                "concept:name": "Submit loan application",
+                "processId": "loan-origination",
+                "instanceId": "Instance-42897",
+                "org:resource": "Resource-8320",
+                "time:timestamp": "2025-11-14 12:13:18.232845+00:00"
+            },
+            {
+                "concept:name": "E-Mail to request further information from client",
+                "processId": "loan-origination",
+                "instanceId": "Instance-42897",
+                "org:resource": "Resource-8320",
+                "time:timestamp": "2025-11-14 12:14:00.274845+00:00"
+            },
+            {
+                "concept:name": "Application decision",
+                "processId": "loan-origination",
+                "instanceId": "Instance-42897",
+                "org:resource": "Resource-8320",
+                "time:timestamp": "2025-11-14 12:14:42.316845+00:00"
+            },
+            {
+                "concept:name": "Inform Client about decision",
+                "processId": "loan-origination",
+                "instanceId": "Instance-42897",
+                "org:resource": "Resource-8320",
+                "time:timestamp": "2025-11-14 12:15:24.358845+00:00"
+            }
+        ]
+    },
+    {
+        "trace_attributes": {},
+        "events": [
+            {
+                "concept:name": "Submit loan application",
+                "processId": "loan-origination",
+                "instanceId": "Instance-49499",
+                "org:resource": "Resource-3494",
+                "time:timestamp": "2025-11-14 12:16:06.400845+00:00"
+            },
+            {
+                "concept:name": "E-Mail to request further information from client",
+                "processId": "loan-origination",
+                "adaptation:type": "delete",
+                "instanceId": "Instance-49499",
+                "adaptation:timestamp": "2025-11-13 11:57:55.312235+00:00",
+                "adaptation:change": "delete E-Mail to request further information from client",
+                "adaptation:initiator": "Dan"
+            },
+            {
+                "concept:name": "Call to request further information from client",
+                "processId": "loan-origination",
+                "adaptation:type": "insert",
+                "instanceId": "Instance-49499",
+                "org:resource": "Resource-3494",
+                "time:timestamp": "2025-11-14 12:17:30.484845+00:00",
+                "adaptation:timestamp": "2025-11-13 11:58:38.355235+00:00",
+                "adaptation:change": "insert Call to request further information from client",
+                "adaptation:initiator": "Bob"
+            },
+            {
+                "concept:name": "Application decision",
+                "processId": "loan-origination",
+                "instanceId": "Instance-49499",
+                "org:resource": "Resource-3494",
+                "time:timestamp": "2025-11-14 12:18:12.526845+00:00"
+            },
+            {
+                "concept:name": "Inform Client about decision",
+                "processId": "loan-origination",
+                "instanceId": "Instance-49499",
+                "org:resource": "Resource-3494",
+                "time:timestamp": "2025-11-14 12:18:54.568845+00:00"
+            }
+        ]
+    }
+]
