@@ -1,0 +1,56 @@
+@prefix : <http://example.org/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+:Instance-85632 {
+    :2026-10-15_17-13-10_example_adaptation_2 a prov:Entity ;
+        :adaptation_change "delete E-Mail to request further information from client" ;
+        :adaptation_type "delete" ;
+        prov:wasAttributedTo :Sally ;
+        prov:wasGeneratedBy :AdaptationDeleteE-MailToRequestFurtherInformationFromClient .
+
+    :2026-10-15_17-13-10_example_adaptation_3 a prov:Entity ;
+        :adaptation_change "insert Call to request further information from client" ;
+        :adaptation_type "insert" ;
+        prov:wasAttributedTo :Resource-7950,
+            :Sally ;
+        prov:wasGeneratedBy :AdaptationInsertCallToRequestFurtherInformationFromClient .
+
+    :2026-10-15_17-13-10_example_event_28 a prov:Activity ;
+        rdfs:label "Submit loan application" ;
+        :timestamp "2025-11-21T17:32:47.696660000+00:00" ;
+        prov:wasAssociatedWith :Resource-7950 .
+
+    :2026-10-15_17-13-10_example_event_31 a prov:Activity ;
+        rdfs:label "Application decision" ;
+        :timestamp "2025-11-21T17:34:53.822660000+00:00" ;
+        prov:wasAssociatedWith :Resource-7950 .
+
+    :2026-10-15_17-13-10_example_event_32 a prov:Activity ;
+        rdfs:label "Inform Client about decision" ;
+        :timestamp "2025-11-21T17:35:35.864660000+00:00" ;
+        prov:wasAssociatedWith :Resource-7950 .
+
+    :AdaptationDeleteE-MailToRequestFurtherInformationFromClient a prov:Activity ;
+        :adaptation_timestamp "2025-11-20T17:14:36.607185000+00:00" ;
+        prov:qualifiedAssociation _:Nb70b90078b314c2a9bbe0edd8fb402b7 .
+
+    :AdaptationInsertCallToRequestFurtherInformationFromClient a prov:Activity ;
+        :adaptation_timestamp "2025-11-20T17:15:19.650185000+00:00" ;
+        prov:qualifiedAssociation _:N74d8fa7fb0614ae89c1f3903a72a25b6 .
+
+    _:N74d8fa7fb0614ae89c1f3903a72a25b6 a prov:Association ;
+        prov:agent :Sally ;
+        prov:hadRole "ex:Initiator" .
+
+    _:Nb70b90078b314c2a9bbe0edd8fb402b7 a prov:Association ;
+        prov:agent :Sally ;
+        prov:hadRole "ex:Initiator" .
+}
+
+{
+    :Resource-7950 a prov:Agent .
+
+    :Sally a prov:Agent .
+}
+

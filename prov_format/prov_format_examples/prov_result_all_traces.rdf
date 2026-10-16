@@ -1,0 +1,363 @@
+@prefix : <http://example.org/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+:Instance-21896 {
+    :2026-10-15_17-13-10_example_event_0 a prov:Activity ;
+        rdfs:label "Register" ;
+        :timestamp "2025-11-21T17:13:10.520660000+00:00" ;
+        prov:wasAssociatedWith :Resource-8909 .
+
+    :2026-10-15_17-13-10_example_event_1 a prov:Activity ;
+        rdfs:label "Negotiate" ;
+        :timestamp "2025-11-21T17:13:52.562660000+00:00" ;
+        prov:wasAssociatedWith :Resource-8909 .
+
+    :2026-10-15_17-13-10_example_event_2 a prov:Activity ;
+        rdfs:label "Negotiate" ;
+        :timestamp "2025-11-21T17:14:34.604660000+00:00" ;
+        prov:wasAssociatedWith :Resource-8909 .
+
+    :2026-10-15_17-13-10_example_event_3 a prov:Activity ;
+        rdfs:label "Sign" ;
+        :timestamp "2025-11-21T17:15:16.646660000+00:00" ;
+        prov:wasAssociatedWith :Resource-8909 .
+
+    :2026-10-15_17-13-10_example_event_4 a prov:Activity ;
+        rdfs:label "Sendoff" ;
+        :timestamp "2025-11-21T17:15:58.688660000+00:00" ;
+        prov:wasAssociatedWith :Resource-8909 .
+}
+
+:Instance-85632 {
+    :2026-10-15_17-13-10_example_adaptation_2 a prov:Entity ;
+        :adaptation_change "delete E-Mail to request further information from client" ;
+        :adaptation_type "delete" ;
+        prov:wasAttributedTo :Sally ;
+        prov:wasGeneratedBy :AdaptationDeleteE-MailToRequestFurtherInformationFromClient .
+
+    :2026-10-15_17-13-10_example_adaptation_3 a prov:Entity ;
+        :adaptation_change "insert Call to request further information from client" ;
+        :adaptation_type "insert" ;
+        prov:wasAttributedTo :Resource-7950,
+            :Sally ;
+        prov:wasGeneratedBy :AdaptationInsertCallToRequestFurtherInformationFromClient .
+
+    :2026-10-15_17-13-10_example_event_28 a prov:Activity ;
+        rdfs:label "Submit loan application" ;
+        :timestamp "2025-11-21T17:32:47.696660000+00:00" ;
+        prov:wasAssociatedWith :Resource-7950 .
+
+    :2026-10-15_17-13-10_example_event_31 a prov:Activity ;
+        rdfs:label "Application decision" ;
+        :timestamp "2025-11-21T17:34:53.822660000+00:00" ;
+        prov:wasAssociatedWith :Resource-7950 .
+
+    :2026-10-15_17-13-10_example_event_32 a prov:Activity ;
+        rdfs:label "Inform Client about decision" ;
+        :timestamp "2025-11-21T17:35:35.864660000+00:00" ;
+        prov:wasAssociatedWith :Resource-7950 .
+
+    :AdaptationDeleteE-MailToRequestFurtherInformationFromClient a prov:Activity ;
+        :adaptation_timestamp "2025-11-20T17:14:36.607185000+00:00" ;
+        prov:qualifiedAssociation _:N67354fd7f6694f45bc5255cc0d4aeb9a .
+
+    :AdaptationInsertCallToRequestFurtherInformationFromClient a prov:Activity ;
+        :adaptation_timestamp "2025-11-20T17:15:19.650185000+00:00" ;
+        prov:qualifiedAssociation _:Nf78212683124445cad51ec04d5897537 .
+
+    _:N67354fd7f6694f45bc5255cc0d4aeb9a a prov:Association ;
+        prov:agent :Sally ;
+        prov:hadRole "ex:Initiator" .
+
+    _:Nf78212683124445cad51ec04d5897537 a prov:Association ;
+        prov:agent :Sally ;
+        prov:hadRole "ex:Initiator" .
+}
+
+:Instance-30007 {
+    :2026-10-15_17-13-10_example_adaptation_1 a prov:Entity ;
+        :adaptation_change "delete Cancel" ;
+        :adaptation_type "delete" ;
+        prov:wasAttributedTo :Dan ;
+        prov:wasGeneratedBy :AdaptationDeleteCancel .
+
+    :2026-10-15_17-13-10_example_event_17 a prov:Activity ;
+        rdfs:label "Register" ;
+        :timestamp "2025-11-21T17:25:05.234660000+00:00" ;
+        prov:wasAssociatedWith :Resource-2198 .
+
+    :2026-10-15_17-13-10_example_event_18 a prov:Activity ;
+        rdfs:label "Sign" ;
+        :timestamp "2025-11-21T17:25:47.276660000+00:00" ;
+        prov:wasAssociatedWith :Resource-2198 .
+
+    :2026-10-15_17-13-10_example_event_19 a prov:Activity ;
+        rdfs:label "Sendoff" ;
+        :timestamp "2025-11-21T17:26:29.318660000+00:00" ;
+        prov:wasAssociatedWith :Resource-2198 .
+
+    :AdaptationDeleteCancel a prov:Activity ;
+        :adaptation_timestamp "2025-11-20T17:13:53.564185000+00:00" ;
+        prov:qualifiedAssociation _:Ne43392759013497aa45d4fceff3a0f0e .
+
+    _:Ne43392759013497aa45d4fceff3a0f0e a prov:Association ;
+        prov:agent :Dan ;
+        prov:hadRole "ex:Initiator" .
+}
+
+:Instance-95382 {
+    :2026-10-15_17-13-10_example_adaptation_6 a prov:Entity ;
+        :adaptation_change "delete E-Mail to request further information from client" ;
+        :adaptation_impact "Process speedup" ;
+        :adaptation_type "delete" ;
+        prov:qualifiedGeneration _:N9ab3123bdbc64510814b93aa103bed90 ;
+        prov:wasAttributedTo :Sally .
+
+    :2026-10-15_17-13-10_example_adaptation_7 a prov:Entity ;
+        :adaptation_change "insert Call to request further information from client" ;
+        :adaptation_impact "Process speedup" ;
+        :adaptation_type "insert" ;
+        prov:qualifiedGeneration _:N780ff6ee98734a39962952ecbf23cbc0 ;
+        prov:wasAttributedTo :Bob,
+            :Resource-8247 .
+
+    :2026-10-15_17-13-10_example_event_38 a prov:Activity ;
+        rdfs:label "Submit loan application" ;
+        :timestamp "2025-11-21T17:39:48.116660000+00:00" ;
+        prov:wasAssociatedWith :Resource-8247 .
+
+    :2026-10-15_17-13-10_example_event_41 a prov:Activity ;
+        rdfs:label "Application decision" ;
+        :timestamp "2025-11-21T17:41:54.242660000+00:00" ;
+        prov:wasAssociatedWith :Resource-8247 .
+
+    :2026-10-15_17-13-10_example_event_42 a prov:Activity ;
+        rdfs:label "Inform Client about decision" ;
+        :timestamp "2025-11-21T17:42:36.284660000+00:00" ;
+        prov:wasAssociatedWith :Resource-8247 .
+
+    :AdaptationDeleteE-MailToRequestFurtherInformationFromClient a prov:Activity ;
+        :adaptation_timestamp "2025-11-20T17:17:28.779185000+00:00" ;
+        prov:qualifiedAssociation _:N105a378929cb4871a6adaf8c544802c0 .
+
+    :AdaptationInsertCallToRequestFurtherInformationFromClient a prov:Activity ;
+        :adaptation_timestamp "2025-11-20T17:18:11.822185000+00:00" ;
+        prov:qualifiedAssociation _:N3e31ad7426e34c2b88a682461a7c017e .
+
+    _:N105a378929cb4871a6adaf8c544802c0 a prov:Association ;
+        prov:agent :Sally ;
+        prov:hadRole "ex:Initiator" .
+
+    _:N3e31ad7426e34c2b88a682461a7c017e a prov:Association ;
+        prov:agent :Bob ;
+        prov:hadRole "ex:Initiator" .
+
+    _:N780ff6ee98734a39962952ecbf23cbc0 a prov:Generation ;
+        :reason "Getting a faster response." ;
+        prov:activity :AdaptationInsertCallToRequestFurtherInformationFromClient .
+
+    _:N9ab3123bdbc64510814b93aa103bed90 a prov:Generation ;
+        :reason "Getting a faster response." ;
+        prov:activity :AdaptationDeleteE-MailToRequestFurtherInformationFromClient .
+}
+
+{
+    :Bob a prov:Agent .
+
+    :Mary a prov:Agent .
+
+    :Resource-2198 a prov:Agent .
+
+    :Resource-3929 a prov:Agent .
+
+    :Resource-5814 a prov:Agent .
+
+    :Resource-1163 a prov:Agent .
+
+    :Resource-2363 a prov:Agent .
+
+    :Resource-5221 a prov:Agent .
+
+    :Resource-7950 a prov:Agent .
+
+    :Resource-8247 a prov:Agent .
+
+    :Resource-1108 a prov:Agent .
+
+    :Resource-8909 a prov:Agent .
+
+    :Dan a prov:Agent .
+
+    :Sally a prov:Agent .
+}
+
+:Instance-56511 {
+    :2026-10-15_17-13-10_example_event_24 a prov:Activity ;
+        rdfs:label "Submit loan application" ;
+        :timestamp "2025-11-21T17:29:59.528660000+00:00" ;
+        prov:wasAssociatedWith :Resource-1163 .
+
+    :2026-10-15_17-13-10_example_event_25 a prov:Activity ;
+        rdfs:label "E-Mail to request further information from client" ;
+        :timestamp "2025-11-21T17:30:41.570660000+00:00" ;
+        prov:wasAssociatedWith :Resource-1163 .
+
+    :2026-10-15_17-13-10_example_event_26 a prov:Activity ;
+        rdfs:label "Application decision" ;
+        :timestamp "2025-11-21T17:31:23.612660000+00:00" ;
+        prov:wasAssociatedWith :Resource-1163 .
+
+    :2026-10-15_17-13-10_example_event_27 a prov:Activity ;
+        rdfs:label "Inform Client about decision" ;
+        :timestamp "2025-11-21T17:32:05.654660000+00:00" ;
+        prov:wasAssociatedWith :Resource-1163 .
+}
+
+:Instance-37999 {
+    :2026-10-15_17-13-10_example_adaptation_4 a prov:Entity ;
+        :adaptation_change "delete E-Mail to request further information from client" ;
+        :adaptation_type "delete" ;
+        prov:qualifiedGeneration _:Nfdfb8fe359a3485c94abd164150678ae ;
+        prov:wasAttributedTo :Dan .
+
+    :2026-10-15_17-13-10_example_adaptation_5 a prov:Entity ;
+        :adaptation_change "insert Call to request further information from client" ;
+        :adaptation_type "insert" ;
+        prov:qualifiedGeneration _:Nbd6f7529ae374630a25fc7599a1fccb2 ;
+        prov:wasAttributedTo :Mary,
+            :Resource-2363 .
+
+    :2026-10-15_17-13-10_example_event_33 a prov:Activity ;
+        rdfs:label "Submit loan application" ;
+        :timestamp "2025-11-21T17:36:17.906660000+00:00" ;
+        prov:wasAssociatedWith :Resource-2363 .
+
+    :2026-10-15_17-13-10_example_event_36 a prov:Activity ;
+        rdfs:label "Application decision" ;
+        :timestamp "2025-11-21T17:38:24.032660000+00:00" ;
+        prov:wasAssociatedWith :Resource-2363 .
+
+    :2026-10-15_17-13-10_example_event_37 a prov:Activity ;
+        rdfs:label "Inform Client about decision" ;
+        :timestamp "2025-11-21T17:39:06.074660000+00:00" ;
+        prov:wasAssociatedWith :Resource-2363 .
+
+    :AdaptationDeleteE-MailToRequestFurtherInformationFromClient a prov:Activity ;
+        :adaptation_timestamp "2025-11-20T17:16:02.693185000+00:00" ;
+        prov:qualifiedAssociation _:N5fc6cd2af51245c8b9aae8c41197a80d .
+
+    :AdaptationInsertCallToRequestFurtherInformationFromClient a prov:Activity ;
+        :adaptation_timestamp "2025-11-20T17:16:45.736185000+00:00" ;
+        prov:qualifiedAssociation _:Ned3b6c589c804c2aa186ebd6a8fd0141 .
+
+    _:N5fc6cd2af51245c8b9aae8c41197a80d a prov:Association ;
+        prov:agent :Dan ;
+        prov:hadRole "ex:Initiator" .
+
+    _:Nbd6f7529ae374630a25fc7599a1fccb2 a prov:Generation ;
+        :reason "Getting a faster response." ;
+        prov:activity :AdaptationInsertCallToRequestFurtherInformationFromClient .
+
+    _:Ned3b6c589c804c2aa186ebd6a8fd0141 a prov:Association ;
+        prov:agent :Mary ;
+        prov:hadRole "ex:Initiator" .
+
+    _:Nfdfb8fe359a3485c94abd164150678ae a prov:Generation ;
+        :reason "Getting a faster response." ;
+        prov:activity :AdaptationDeleteE-MailToRequestFurtherInformationFromClient .
+}
+
+:Instance-76745 {
+    :2026-10-15_17-13-10_example_event_21 a prov:Activity ;
+        rdfs:label "Submit loan application" ;
+        :timestamp "2025-11-21T17:27:53.402660000+00:00" ;
+        prov:wasAssociatedWith :Resource-3929 .
+
+    :2026-10-15_17-13-10_example_event_22 a prov:Activity ;
+        rdfs:label "Application decision" ;
+        :timestamp "2025-11-21T17:28:35.444660000+00:00" ;
+        prov:wasAssociatedWith :Resource-3929 .
+
+    :2026-10-15_17-13-10_example_event_23 a prov:Activity ;
+        rdfs:label "Inform Client about decision" ;
+        :timestamp "2025-11-21T17:29:17.486660000+00:00" ;
+        prov:wasAssociatedWith :Resource-3929 .
+}
+
+:Instance-91321 {
+    :2026-10-15_17-13-10_example_adaptation_0 a prov:Entity ;
+        :adaptation_change "insert Sendoff" ;
+        :adaptation_type "insert" ;
+        prov:wasAttributedTo :Dan,
+            :Resource-5814 ;
+        prov:wasGeneratedBy :AdaptationInsertSendoff .
+
+    :2026-10-15_17-13-10_example_event_14 a prov:Activity ;
+        rdfs:label "Register" ;
+        :timestamp "2025-11-21T17:22:59.108660000+00:00" ;
+        prov:wasAssociatedWith :Resource-5814 .
+
+    :2026-10-15_17-13-10_example_event_15 a prov:Activity ;
+        rdfs:label "Sign" ;
+        :timestamp "2025-11-21T17:23:41.150660000+00:00" ;
+        prov:wasAssociatedWith :Resource-5814 .
+
+    :AdaptationInsertSendoff a prov:Activity ;
+        :adaptation_timestamp "2025-11-20T17:13:10.521185000+00:00" ;
+        prov:qualifiedAssociation _:Nd9498325059842b0909ae04b983046d6 .
+
+    _:Nd9498325059842b0909ae04b983046d6 a prov:Association ;
+        prov:agent :Dan ;
+        prov:hadRole "ex:Initiator" .
+}
+
+:Instance-82719 {
+    :2026-10-15_17-13-10_example_event_5 a prov:Activity ;
+        rdfs:label "Register" ;
+        :timestamp "2025-11-21T17:16:40.730660000+00:00" ;
+        prov:wasAssociatedWith :Resource-5221 .
+
+    :2026-10-15_17-13-10_example_event_6 a prov:Activity ;
+        rdfs:label "Negotiate" ;
+        :timestamp "2025-11-21T17:17:22.772660000+00:00" ;
+        prov:wasAssociatedWith :Resource-5221 .
+
+    :2026-10-15_17-13-10_example_event_7 a prov:Activity ;
+        rdfs:label "Sign" ;
+        :timestamp "2025-11-21T17:18:04.814660000+00:00" ;
+        prov:wasAssociatedWith :Resource-5221 .
+
+    :2026-10-15_17-13-10_example_event_8 a prov:Activity ;
+        rdfs:label "Sendoff" ;
+        :timestamp "2025-11-21T17:18:46.856660000+00:00" ;
+        prov:wasAssociatedWith :Resource-5221 .
+}
+
+:Instance-68256 {
+    :2026-10-15_17-13-10_example_event_10 a prov:Activity ;
+        rdfs:label "Negotiate" ;
+        :timestamp "2025-11-21T17:20:10.940660000+00:00" ;
+        prov:wasAssociatedWith :Resource-1108 .
+
+    :2026-10-15_17-13-10_example_event_11 a prov:Activity ;
+        rdfs:label "Sign" ;
+        :timestamp "2025-11-21T17:20:52.982660000+00:00" ;
+        prov:wasAssociatedWith :Resource-1108 .
+
+    :2026-10-15_17-13-10_example_event_12 a prov:Activity ;
+        rdfs:label "Negotiate" ;
+        :timestamp "2025-11-21T17:21:35.024660000+00:00" ;
+        prov:wasAssociatedWith :Resource-1108 .
+
+    :2026-10-15_17-13-10_example_event_13 a prov:Activity ;
+        rdfs:label "Sendoff" ;
+        :timestamp "2025-11-21T17:22:17.066660000+00:00" ;
+        prov:wasAssociatedWith :Resource-1108 .
+
+    :2026-10-15_17-13-10_example_event_9 a prov:Activity ;
+        rdfs:label "Register" ;
+        :timestamp "2025-11-21T17:19:28.898660000+00:00" ;
+        prov:wasAssociatedWith :Resource-1108 .
+}
+

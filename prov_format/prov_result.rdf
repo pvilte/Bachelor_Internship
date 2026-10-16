@@ -2,244 +2,55 @@
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 
-:Instance-88454 {
-    :2026-09-28_11-56-29_example_adaptation_0 a prov:Entity ;
-        :adaptation_change "insert Sendoff" ;
+:Instance-85632 {
+    :2026-10-15_17-13-10_example_adaptation_2 a prov:Entity ;
+        :adaptation_change "delete E-Mail to request further information from client" ;
+        :adaptation_type "delete" ;
+        prov:wasAttributedTo :Sally ;
+        prov:wasGeneratedBy :AdaptationDeleteE-MailToRequestFurtherInformationFromClient .
+
+    :2026-10-15_17-13-10_example_adaptation_3 a prov:Entity ;
+        :adaptation_change "insert Call to request further information from client" ;
         :adaptation_type "insert" ;
-        prov:wasAttributedTo :Bob,
-            :Resource-8868 ;
-        prov:wasGeneratedBy :AdaptationInsertSendoff .
+        prov:wasAttributedTo :Resource-7950,
+            :Sally ;
+        prov:wasGeneratedBy :AdaptationInsertCallToRequestFurtherInformationFromClient .
 
-    :2026-09-28_11-56-29_example_event_14 a prov:Activity ;
-        rdfs:label "Register" ;
-        :timestamp "2025-11-14T12:06:17.812845000+00:00" ;
-        prov:wasAssociatedWith :Resource-8868 .
+    :2026-10-15_17-13-10_example_event_28 a prov:Activity ;
+        rdfs:label "Submit loan application" ;
+        :timestamp "2025-11-21T17:32:47.696660000+00:00" ;
+        prov:wasAssociatedWith :Resource-7950 .
 
-    :2026-09-28_11-56-29_example_event_15 a prov:Activity ;
-        rdfs:label "Sign" ;
-        :timestamp "2025-11-14T12:06:59.854845000+00:00" ;
-        prov:wasAssociatedWith :Resource-8868 .
+    :2026-10-15_17-13-10_example_event_31 a prov:Activity ;
+        rdfs:label "Application decision" ;
+        :timestamp "2025-11-21T17:34:53.822660000+00:00" ;
+        prov:wasAssociatedWith :Resource-7950 .
 
-    :AdaptationInsertSendoff a prov:Activity ;
-        :adaptation_timestamp "2025-11-13T11:56:29.226235000+00:00" ;
-        prov:qualifiedAssociation _:N3f7bafa6229e49d79d9fcf716709f9a8 .
+    :2026-10-15_17-13-10_example_event_32 a prov:Activity ;
+        rdfs:label "Inform Client about decision" ;
+        :timestamp "2025-11-21T17:35:35.864660000+00:00" ;
+        prov:wasAssociatedWith :Resource-7950 .
 
-    _:N3f7bafa6229e49d79d9fcf716709f9a8 a prov:Association ;
-        prov:agent :Bob ;
+    :AdaptationDeleteE-MailToRequestFurtherInformationFromClient a prov:Activity ;
+        :adaptation_timestamp "2025-11-20T17:14:36.607185000+00:00" ;
+        prov:qualifiedAssociation _:Nb70b90078b314c2a9bbe0edd8fb402b7 .
+
+    :AdaptationInsertCallToRequestFurtherInformationFromClient a prov:Activity ;
+        :adaptation_timestamp "2025-11-20T17:15:19.650185000+00:00" ;
+        prov:qualifiedAssociation _:N74d8fa7fb0614ae89c1f3903a72a25b6 .
+
+    _:N74d8fa7fb0614ae89c1f3903a72a25b6 a prov:Association ;
+        prov:agent :Sally ;
+        prov:hadRole "ex:Initiator" .
+
+    _:Nb70b90078b314c2a9bbe0edd8fb402b7 a prov:Association ;
+        prov:agent :Sally ;
         prov:hadRole "ex:Initiator" .
 }
 
 {
-    :Dan a prov:Agent .
+    :Resource-7950 a prov:Agent .
 
-    :Resource-3222 a prov:Agent .
-
-    :Resource-8647 a prov:Agent .
-
-    :Resource-8868 a prov:Agent .
-
-    :Resource-3494 a prov:Agent .
-
-    :Resource-3837 a prov:Agent .
-
-    :Resource-8320 a prov:Agent .
-
-    :Resource-1053 a prov:Agent .
-
-    :Resource-3264 a prov:Agent .
-
-    :Bob a prov:Agent .
-}
-
-:Instance-85886 {
-    :2026-09-28_11-56-29_example_event_10 a prov:Activity ;
-        rdfs:label "Negotiate" ;
-        :timestamp "2025-11-14T12:03:29.644845000+00:00" ;
-        prov:wasAssociatedWith :Resource-1053 .
-
-    :2026-09-28_11-56-29_example_event_11 a prov:Activity ;
-        rdfs:label "Sign" ;
-        :timestamp "2025-11-14T12:04:11.686845000+00:00" ;
-        prov:wasAssociatedWith :Resource-1053 .
-
-    :2026-09-28_11-56-29_example_event_12 a prov:Activity ;
-        rdfs:label "Negotiate" ;
-        :timestamp "2025-11-14T12:04:53.728845000+00:00" ;
-        prov:wasAssociatedWith :Resource-1053 .
-
-    :2026-09-28_11-56-29_example_event_13 a prov:Activity ;
-        rdfs:label "Sendoff" ;
-        :timestamp "2025-11-14T12:05:35.770845000+00:00" ;
-        prov:wasAssociatedWith :Resource-1053 .
-
-    :2026-09-28_11-56-29_example_event_9 a prov:Activity ;
-        rdfs:label "Register" ;
-        :timestamp "2025-11-14T12:02:47.602845000+00:00" ;
-        prov:wasAssociatedWith :Resource-1053 .
-}
-
-:Instance-35748 {
-    :2026-09-28_11-56-29_example_event_5 a prov:Activity ;
-        rdfs:label "Register" ;
-        :timestamp "2025-11-14T11:59:59.434845000+00:00" ;
-        prov:wasAssociatedWith :Resource-3837 .
-
-    :2026-09-28_11-56-29_example_event_6 a prov:Activity ;
-        rdfs:label "Negotiate" ;
-        :timestamp "2025-11-14T12:00:41.476845000+00:00" ;
-        prov:wasAssociatedWith :Resource-3837 .
-
-    :2026-09-28_11-56-29_example_event_7 a prov:Activity ;
-        rdfs:label "Sign" ;
-        :timestamp "2025-11-14T12:01:23.518845000+00:00" ;
-        prov:wasAssociatedWith :Resource-3837 .
-
-    :2026-09-28_11-56-29_example_event_8 a prov:Activity ;
-        rdfs:label "Sendoff" ;
-        :timestamp "2025-11-14T12:02:05.560845000+00:00" ;
-        prov:wasAssociatedWith :Resource-3837 .
-}
-
-:Instance-49499 {
-    :2026-09-28_11-56-29_example_adaptation_2 a prov:Entity ;
-        :adaptation_change "delete E-Mail to request further information from client" ;
-        :adaptation_type "delete" ;
-        prov:wasAttributedTo :Dan ;
-        prov:wasGeneratedBy :AdaptationDeleteE-MailToRequestFurtherInformationFromClient .
-
-    :2026-09-28_11-56-29_example_adaptation_3 a prov:Entity ;
-        :adaptation_change "insert Call to request further information from client" ;
-        :adaptation_type "insert" ;
-        prov:wasAttributedTo :Bob,
-            :Resource-3494 ;
-        prov:wasGeneratedBy :AdaptationInsertCallToRequestFurtherInformationFromClient .
-
-    :2026-09-28_11-56-29_example_event_28 a prov:Activity ;
-        rdfs:label "Submit loan application" ;
-        :timestamp "2025-11-14T12:16:06.400845000+00:00" ;
-        prov:wasAssociatedWith :Resource-3494 .
-
-    :2026-09-28_11-56-29_example_event_31 a prov:Activity ;
-        rdfs:label "Application decision" ;
-        :timestamp "2025-11-14T12:18:12.526845000+00:00" ;
-        prov:wasAssociatedWith :Resource-3494 .
-
-    :2026-09-28_11-56-29_example_event_32 a prov:Activity ;
-        rdfs:label "Inform Client about decision" ;
-        :timestamp "2025-11-14T12:18:54.568845000+00:00" ;
-        prov:wasAssociatedWith :Resource-3494 .
-
-    :AdaptationDeleteE-MailToRequestFurtherInformationFromClient a prov:Activity ;
-        :adaptation_timestamp "2025-11-13T11:57:55.312235000+00:00" ;
-        prov:qualifiedAssociation _:N3c995b07edea47a894071fadc4b05f2f .
-
-    :AdaptationInsertCallToRequestFurtherInformationFromClient a prov:Activity ;
-        :adaptation_timestamp "2025-11-13T11:58:38.355235000+00:00" ;
-        prov:qualifiedAssociation _:N64d27da72e8147888444425504ce4ca6 .
-
-    _:N3c995b07edea47a894071fadc4b05f2f a prov:Association ;
-        prov:agent :Dan ;
-        prov:hadRole "ex:Initiator" .
-
-    _:N64d27da72e8147888444425504ce4ca6 a prov:Association ;
-        prov:agent :Bob ;
-        prov:hadRole "ex:Initiator" .
-}
-
-:Instance-42897 {
-    :2026-09-28_11-56-29_example_event_24 a prov:Activity ;
-        rdfs:label "Submit loan application" ;
-        :timestamp "2025-11-14T12:13:18.232845000+00:00" ;
-        prov:wasAssociatedWith :Resource-8320 .
-
-    :2026-09-28_11-56-29_example_event_25 a prov:Activity ;
-        rdfs:label "E-Mail to request further information from client" ;
-        :timestamp "2025-11-14T12:14:00.274845000+00:00" ;
-        prov:wasAssociatedWith :Resource-8320 .
-
-    :2026-09-28_11-56-29_example_event_26 a prov:Activity ;
-        rdfs:label "Application decision" ;
-        :timestamp "2025-11-14T12:14:42.316845000+00:00" ;
-        prov:wasAssociatedWith :Resource-8320 .
-
-    :2026-09-28_11-56-29_example_event_27 a prov:Activity ;
-        rdfs:label "Inform Client about decision" ;
-        :timestamp "2025-11-14T12:15:24.358845000+00:00" ;
-        prov:wasAssociatedWith :Resource-8320 .
-}
-
-:Instance-58439 {
-    :2026-09-28_11-56-29_example_event_21 a prov:Activity ;
-        rdfs:label "Submit loan application" ;
-        :timestamp "2025-11-14T12:11:12.106845000+00:00" ;
-        prov:wasAssociatedWith :Resource-8647 .
-
-    :2026-09-28_11-56-29_example_event_22 a prov:Activity ;
-        rdfs:label "Application decision" ;
-        :timestamp "2025-11-14T12:11:54.148845000+00:00" ;
-        prov:wasAssociatedWith :Resource-8647 .
-
-    :2026-09-28_11-56-29_example_event_23 a prov:Activity ;
-        rdfs:label "Inform Client about decision" ;
-        :timestamp "2025-11-14T12:12:36.190845000+00:00" ;
-        prov:wasAssociatedWith :Resource-8647 .
-}
-
-:Instance-50156 {
-    :2026-09-28_11-56-29_example_event_0 a prov:Activity ;
-        rdfs:label "Register" ;
-        :timestamp "2025-11-14T11:56:29.224845000+00:00" ;
-        prov:wasAssociatedWith :Resource-3264 .
-
-    :2026-09-28_11-56-29_example_event_1 a prov:Activity ;
-        rdfs:label "Negotiate" ;
-        :timestamp "2025-11-14T11:57:11.266845000+00:00" ;
-        prov:wasAssociatedWith :Resource-3264 .
-
-    :2026-09-28_11-56-29_example_event_2 a prov:Activity ;
-        rdfs:label "Negotiate" ;
-        :timestamp "2025-11-14T11:57:53.308845000+00:00" ;
-        prov:wasAssociatedWith :Resource-3264 .
-
-    :2026-09-28_11-56-29_example_event_3 a prov:Activity ;
-        rdfs:label "Sign" ;
-        :timestamp "2025-11-14T11:58:35.350845000+00:00" ;
-        prov:wasAssociatedWith :Resource-3264 .
-
-    :2026-09-28_11-56-29_example_event_4 a prov:Activity ;
-        rdfs:label "Sendoff" ;
-        :timestamp "2025-11-14T11:59:17.392845000+00:00" ;
-        prov:wasAssociatedWith :Resource-3264 .
-}
-
-:Instance-70742 {
-    :2026-09-28_11-56-29_example_adaptation_1 a prov:Entity ;
-        :adaptation_change "delete Cancel" ;
-        :adaptation_type "delete" ;
-        prov:wasAttributedTo :Bob ;
-        prov:wasGeneratedBy :AdaptationDeleteCancel .
-
-    :2026-09-28_11-56-29_example_event_17 a prov:Activity ;
-        rdfs:label "Register" ;
-        :timestamp "2025-11-14T12:08:23.938845000+00:00" ;
-        prov:wasAssociatedWith :Resource-3222 .
-
-    :2026-09-28_11-56-29_example_event_18 a prov:Activity ;
-        rdfs:label "Sign" ;
-        :timestamp "2025-11-14T12:09:05.980845000+00:00" ;
-        prov:wasAssociatedWith :Resource-3222 .
-
-    :2026-09-28_11-56-29_example_event_19 a prov:Activity ;
-        rdfs:label "Sendoff" ;
-        :timestamp "2025-11-14T12:09:48.022845000+00:00" ;
-        prov:wasAssociatedWith :Resource-3222 .
-
-    :AdaptationDeleteCancel a prov:Activity ;
-        :adaptation_timestamp "2025-11-13T11:57:12.269235000+00:00" ;
-        prov:qualifiedAssociation _:Ne4f4c1b58a0f4c4598b77c8da6a401ef .
-
-    _:Ne4f4c1b58a0f4c4598b77c8da6a401ef a prov:Association ;
-        prov:agent :Bob ;
-        prov:hadRole "ex:Initiator" .
+    :Sally a prov:Agent .
 }
 
