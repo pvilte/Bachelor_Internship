@@ -1,5 +1,6 @@
 import prov.model as pm
 from prov.dot import prov_to_dot
+from pathlib import Path
 import json
 import os
 
@@ -128,6 +129,11 @@ def generate_prov(json_dir):
     for path, folders, files in os.walk(json_dir):
 
         for file in files:
+
+            # If the file is not a JSON file, ignore it as it does not contain retrieved result:
+            if file != "result.json":
+                continue
+
             file_path = os.path.join(path, file)
             print("Generating PROV-O for result.json")
 
@@ -147,15 +153,14 @@ def generate_prov(json_dir):
                 instance_id = block.get("instance_id")
                 create_event_terms(document, block["events"], instance_id)
 
+            output_dir = Path(json_dir)
+            output_dir.mkdir(parents=True, exist_ok=True)
+
             # Save the result to an RDF file in the prov_format directory
-            document.serialize(format="rdf", destination="prov_format/prov_result.rdf")
+            document.serialize(format="rdf", destination=str(output_dir /"prov_result.rdf"))
 
             # for debugging and checking the mapping, we can create a visualization:
             dot = prov_to_dot(document)
-            dot.write_png("prov_format/prov_result_vis.png")
+            dot.write_png(str(output_dir /"prov_result_vis.png"))
 
-
-if __name__ == "__main__":
-    generate_prov("output")
-    print("Generated a PROV-O document\n")
 

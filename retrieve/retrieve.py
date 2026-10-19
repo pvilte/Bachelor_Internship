@@ -112,27 +112,27 @@ def retrieve_all():
     write_json(run_query(queries.match_all))
 
 
-def direct_neighbors_collect():
+def direct_neighbors_collect(node1: str, node2: str):
     """
     This function calls the query function to retrieve all direct neighbors collected on a label
     and calls the function to write the result to a JSON file
     """
     while True:
-        node1 = str(input("The first node: ")).capitalize()
-        node2 = str(input("The second node (the collect will be performed on this one): ")).capitalize()
+        node1 = node1.capitalize()
+        node2 = node2.capitalize()
         if label_check(node1) and label_check(node2):
             write_json(run_query(queries.direct_neighbors_collect_query, node1, node2))
             break
 
 
-def count_direct_neighbors():
+def count_direct_neighbors(node1: str, node2: str):
     """
     This function calls function to retrieve the number of all direct neighbors collected on a certain label,
     then calls function to write the result to a JSON file
     """
     while True:
-        node1 = str(input("The first node: ")).capitalize()
-        node2 = str(input("The second node (nodes of this label will be counted): ")).capitalize()
+        node1 = node1.capitalize()
+        node2 = node2.capitalize()
         if label_check(node1) and label_check(node2):
             write_json(run_query(queries.direct_neighbors_count_query, node1, node2))
             break
@@ -146,42 +146,40 @@ def count_all_nodes():
     write_json(run_query(queries.count_all_nodes_query))
 
 
-def count_nodes_label():
+def count_nodes_label(node: str):
     """
     This function calls the function to count the number of nodes in the database with the provided label,
     then calls the function to write the result to a JSON file
     """
     while True:
-        node = str(input("Label: ")).capitalize()
+        node = node.capitalize()
         if label_check(node):
             write_json(run_query(queries.count_nodes_label_query, node))
             break
 
 
-def count_based_on_property_value():
+def count_based_on_property_value(node: str, node_property: str, property_value: str):
     """
     This function calls the function to count the number of nodes based on a specific label and a specific property value,
     then calls the function to write the result to a JSON file
     """
     while True:
-        node = str(input("Label: ")).capitalize()
-        node_property = str(input("Property: ")).lower()
-        property_value = str(input("Value: "))
+        node = node.capitalize()
+        node_property = node_property.lower()
         property_value = time_conversion(property_value, node_property)
         if label_check(node) and property_check(node, node_property):
             write_json(run_query(queries.count_property_query, node, node_property, property_value))
             break
 
 
-def nodes_property_value():
+def nodes_property_value(node: str, node_property: str, property_value: str):
     """
     This function calls a function to retrieve all nodes based on a label and a specific property value,
     and then calls the function to write the result to a JSON file
     """
     while True:
-        node = str(input("Label: ")).capitalize()
-        node_property = str(input("Property: ")).lower()
-        property_value = str(input("Value: "))
+        node = node.capitalize()
+        node_property = node_property.lower()
         property_value = time_conversion(property_value, node_property)
         if label_check(node) and property_check(node, node_property):
             write_json(run_query(queries.nodes_property_value_query, node, node_property, property_value))
@@ -195,50 +193,26 @@ def count_all_relationships():
     write_json(run_query(queries.count_all_relationships_query))
 
 
-def choose_count_application():
-    """
-    This function allows the user to choose which count application to use
-    """
-    print("1 - count all nodes in the database\n")
-    print("2 - count the direct neighbors of a node\n")
-    print("3 - count all nodes of a specific label\n")
-    print("4 - count nodes based on a property value\n")
-    print("5 - count all relationships in the database\n")
-    choice = int(input("Your choice: "))
-    match choice:
-        case 1:
-            count_all_nodes()
-        case 2:
-            count_direct_neighbors()
-        case 3:
-            count_nodes_label()
-        case 4:
-            count_based_on_property_value()
-        case 5:
-            count_all_relationships()
-        case _:
-            print("Please enter a valid choice!\n")
-
-def two_node_relationships():
+def two_node_relationships(node1: str, node2: str):
     """
     This function calls the function to retrieve the relationship between two nodes,
     then calls the function to write the result to a JSON file
     """
     while True:
-        node1 = str(input("The first node: ")).capitalize()
-        node2 = str(input("The second node: ")).capitalize()
+        node1 = node1.capitalize()
+        node2 = node2.capitalize()
         if label_check(node1) and label_check(node2):
             write_json(run_query(queries.two_node_relationship_query, node1, node2))
             break
 
 
-def property_keys():
+def property_keys(node: str):
     """
     This function calls the query function that, given the label, retrieves the property keys,
     then calls the function to write the result to a JSON file
     """
     while True:
-        node = str(input("Label: ")).capitalize()
+        node = node.capitalize()
         if label_check(node):
             write_json(run_query(queries.property_keys_query, node))
             break
@@ -264,13 +238,13 @@ def disconnected_nodes():
     """
     write_json(run_query(queries.disconnected_nodes_query))
 
-def most_incoming_relationships_to_nodes():
+def most_incoming_relationships_to_nodes(label: str):
     """
     This function calls the function to retrieve the node based on a label of most incoming relationships in the database,
     then calls the function to write the result to a JSON file
     """
     while True:
-        label = input("Label: ").capitalize()
+        label = label.capitalize()
         if label_check(label):
             write_json(run_query(queries.most_incoming_relationships_to_nodes_query, label))
             break
@@ -283,55 +257,54 @@ def all_events_with_adaptations():
     write_json(run_query(queries.events_with_adaptations))
 
 
-def adaptation_of_selected_event():
+def adaptations_of_events():
     """
     This function asks user to select an available event with an adaptation and based on that input
     retrieves the adaptation.
     """
 
     events_with_adapt = run_query(queries.events_with_adaptations_list)
-    print("Select event:")
-    i = 1
+
+
+    adaptations = {}
     for event in events_with_adapt:
-        print(f"{i} - {event['event']['name']}")
-        i += 1
-    choice = int(input("Your choice: "))
-    chosen_event_id = events_with_adapt[choice-1]["event"]["id"]
+        chosen_event_id = event["event"]["id"]
+        adaptation = run_query(queries.adaptation_of_event, chosen_event_id)
+        adaptations[chosen_event_id] = adaptation
 
-    adaptation = run_query(queries.adaptation_of_event, chosen_event_id)
-
-    return adaptation
+    return adaptations
 
 
-def reason_and_impact_keys_of_adaptation():
+def reason_and_impact_keys_of_adaptation(key: str):
     """
     This function calls the query functions, that given the label, returns reason, impact
     key values of an adaptation. Then it calls the function to write the result to a JSON file
     """
-    adaptation = adaptation_of_selected_event()
+    adaptations = adaptations_of_events()
 
-    while True:
-        key = str(input(f"Which key to return for change {adaptation[0][0]['a']['change']} (Reason, Impact, Both): ")).capitalize()
+    result= {}
+
+    key = key.strip().capitalize()
+
+    for event_id, adapt in adaptations.items():
         if key == "Reason":
-            write_json(adaptation[0][0]["a"]["reason"])
-            break
+            result[event_id] = [{"reason": adapt[0][0]["a"]["reason"]}]
         elif key == "Impact":
-            write_json(adaptation[0][0]["a"]["impact"])
-            break
+            result[event_id] = [{"impact": adapt[0][0]["a"]["impact"]}]
         elif key == "Both":
-            answer = [{"reason": adaptation[0][0]["a"]["reason"]}, {"impact": adaptation[0][0]["a"]["impact"]}]
-            write_json(answer)
-            break
+            result[event_id] = [{"reason": adapt[0][0]["a"]["reason"]}, {"impact": adapt[0][0]["a"]["impact"]}]
         else:
-            print("Please select one of the available options: Reason, Impact, Both.")
+            raise ValueError(f"the key '{key}' does not match one of the following: impact, reason, both.")
+    
+    write_json(result)
 
 
-def collect_trace_based_on_trace_id():
+def collect_trace_based_on_trace_id(instance_id: str):
     """
     This function uses query to display an entire trace using an instance_id and writes result to JSON file.
     """
 
-    instance_id = str(input(f"Please input instance_id of the trace you want to collect: ")).strip()
+    instance_id = instance_id.strip()
     write_json(run_query(queries.trace_based_on_instance_id, instance_id))
 
 
@@ -343,71 +316,11 @@ def collect_all_traces():
     write_json(run_query(queries.all_traces))
 
 
-def collect_impact_of_instance():
+def collect_impact_of_instance(instance_id: str):
     """
     This function uses query to collect the impact of a selected instance with the use of instance_id,
     before writing result to a JSON file.
     """
-    instance_id = str(input(f"Please input instance_id of instance whose impact you want to collect: ")).strip()
+    instance_id = instance_id.strip()
     write_json(run_query(queries.impact_of_instance, instance_id))
 
-
-def use_case():
-    """
-    This function allows the user how to approach the retrieval
-    """
-    print("Choose your preferred use case for the retrieve method:\n")
-    print("1 - retrieve all contents from the database\n")
-    print("2 - retrieve nodes and their direct neighbors using COLLECT\n")
-    print("3 - retrieve contents based on count\n")
-    print("4 - retrieve contents based on property value\n")
-    print("5 - retrieve relationships between two nodes\n")
-    print("6 - retrieve all property keys for a label of a node\n")
-    print("7 - retrieve all labels of nodes that exist in the database\n")
-    print("8 - retrieve all relationship types in the database\n")
-    print("9 - retrieve any disconnected nodes\n")
-    print("10 - retrieve the node with the most incoming relationships based on a label\n")
-    print("11 - retrieve all events that have adaptations\n")
-    print("12 - retrieve reason or impact of a selected adaptation\n")
-    print("13 - retrieve the a trace using instance_id\n")
-    print("14 - retrieve all traces\n")
-    print("15 - retrieve impact of instance given instance_id\n")
-    choice = int(input("Your choice: "))
-    match choice:
-        case 1:
-            retrieve_all()
-        case 2:
-            direct_neighbors_collect()
-        case 3:
-            choose_count_application()
-        case 4:
-            nodes_property_value()
-        case 5:
-            two_node_relationships()
-        case 6:
-            property_keys()
-        case 7:
-            all_labels()
-        case 8:
-            all_relationships()
-        case 9:
-            disconnected_nodes()
-        case 10:
-            most_incoming_relationships_to_nodes()
-        case 11:
-            all_events_with_adaptations()
-        case 12:
-            reason_and_impact_keys_of_adaptation()
-        case 13:
-            collect_trace_based_on_trace_id()
-        case 14: 
-            collect_all_traces()
-        case 15:
-            collect_impact_of_instance()
-        case _:
-            print("Are you sure you have chosen a number 1-15?\n")
-
-
-if __name__ == "__main__":
-    use_case()
-    print("Retrieval complete!\n")

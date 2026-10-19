@@ -337,10 +337,3 @@ def record(json_dir):
         for file_name in impact_data_files:
             for impact in impact_data_files[file_name]:
                 add_impact_to_database(impact, file_name, stored_instances, stored_impacts)
-
-
-
-if __name__ == "__main__":
-    # Change the parameter here based on your environment
-    record("json_files")
-    print("Record complete!\n")
