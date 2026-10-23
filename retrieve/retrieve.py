@@ -284,15 +284,36 @@ def reason_and_impact_keys_of_adaptation(key: str):
 
     result= {}
 
-    key = key.strip().capitalize()
+    key = key.strip().lower()
 
     for event_id, adapt in adaptations.items():
-        if key == "Reason":
-            result[event_id] = [{"reason": adapt[0][0]["a"]["reason"]}]
-        elif key == "Impact":
-            result[event_id] = [{"impact": adapt[0][0]["a"]["impact"]}]
-        elif key == "Both":
-            result[event_id] = [{"reason": adapt[0][0]["a"]["reason"]}, {"impact": adapt[0][0]["a"]["impact"]}]
+        if key == "reason":
+            reason = adapt[0][0]["a"]["reason"]
+            # check if the field is empty and skip it if it is:
+            if reason == "":
+                continue
+            result[event_id] = [{"reason": reason}]
+
+        elif key == "impact":
+            impact = adapt[0][0]["a"]["impact"]
+            # check if the field is empty and skip it if it is:
+            if impact == "":
+                continue
+            result[event_id] = [{"impact": impact}]
+
+        elif key == "both":
+            reason = adapt[0][0]["a"]["reason"]
+            impact = adapt[0][0]["a"]["impact"]
+            # check if both fields are empty and skip them if they are:
+            if reason == "" and impact == "":
+                continue
+            elif reason == "":
+                result[event_id] = [{"impact": impact}]
+            elif impact == "":
+                result[event_id] = [{"reason": reason}]
+            else:
+                result[event_id] = [{"reason": reason}, {"impact": impact}]
+        
         else:
             raise ValueError(f"the key '{key}' does not match one of the following: impact, reason, both.")
     

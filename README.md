@@ -72,9 +72,18 @@ followed by what we want to retrive:
 Additionally, the query used in the retrieval will be displayed in the command-line interface (CLI)
 which then can be copied and pasted directly to the Neo4j browser which can be accessed through: `http://localhost:7474/browser/`.
 
-To convert retrieved results ([output/result.json](output/result.json)) to PROV-O format, run the
-command below. The output given in RDF and PNG formats can then be viewed in the [output](output/) directory.
+To convert retrieved results ([output/result.json](output/result.json)) to PROV-O format, use `--prov` after using `retrieve` command. The output given in RDF and PNG formats can then be viewed in the [output](output/) directory. 
+
+The command bellow retrieves all traces from database and generates a PROV-O document for that result.
 
 ```
-docker compose run --rm server python -m program prov
+docker compose run --rm server python -m program retrieve --prov all_traces
 ```
+
+### Note: 
+
+`--prov` will only work and generate an answer for the following retrieval cases:
+
+- events_with_adapt
+- trace_single_instance instance_id 
+- all_traces
