@@ -24,7 +24,9 @@ def main():
     subparsers = parser.add_subparsers(help='choose either retrieve, record or prov_format', dest='chosen', required=True)
     subparsers.add_parser('record', help='Record event data to graph database')
     retrieve_parser = subparsers.add_parser('retrieve', help='Retrieve selected event data from database')
-    subparsers.add_parser('prov', help='Return retrieval result in PROV-O format')
+    # create a prov argument for retrieve to run generate_prov() function on results:
+    retrieve_parser.add_argument('--prov', action='store_true', help='Return retrieval result in PROV-O format')
+
 
     # create different commands for different retrieve cases:
     retrieve_commmands = retrieve_parser.add_subparsers(dest='selected_case', required=True)
@@ -185,10 +187,15 @@ def main():
             case 19:
                 collect_impact_of_instance(args.instance_id)
         print("Retrieval complete!\n")
-    elif args.chosen == 'prov':
-        generate_prov("output")
-        print("Generated a PROV-O document\n")
 
+        # If generating prov was selected, check if it can be created for the case:
+        allowed_cases = {15, 17, 18}
+        
+        if args.prov and (args.case_nr in allowed_cases):
+            generate_prov("output")
+            print("Generated a PROV-O document\n")
+        elif args.prov and (args.case_nr not in allowed_cases):
+            raise Exception("PROV-O cannot be generated for this retrieved case")
 
 if __name__ == "__main__":
     main()
