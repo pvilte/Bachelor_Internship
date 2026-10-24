@@ -91,16 +91,15 @@ docker compose run --rm server python -m program retrieve --prov all_traces
 
 # Running API
 
-To run the API of the project, in the terminal, after docker has been built, run the following:
+To run the API of the project, in the terminal, run the following:
 
 ```
 docker compose run --rm -p 8000:8000 server python manage.py runserver 0.0.0.0:80000
 ```
 
 ### Retrieve
-Results can be called and viewed in the following browser: http://localhost:8000/api/
 
-To retrieve the following results, add corresponding endpoints to the above link:
+To view retrieved results in browser, add one of the endpoints specified in table below to http://localhost:8000/api/
 
 | Endpoint                                      | Description               |
 |-----------------------------------------------|---------------------------|
