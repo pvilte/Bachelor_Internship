@@ -43,4 +43,7 @@ RUN chown -R ${USER}: /app
 # Switch to the non-privileged user to run the application.
 USER ${USER}
 
+# Expose the Django port:
+EXPOSE 8000
+
 CMD ["bash"]

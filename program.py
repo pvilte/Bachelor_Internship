@@ -177,15 +177,15 @@ def main():
             case 14:
                 most_incoming_relationships_to_nodes(args.label)
             case 15:
-                all_events_with_adaptations()
+                result = all_events_with_adaptations()
             case 16:
-                reason_and_impact_keys_of_adaptation(args.key)
+                result = reason_and_impact_keys_of_adaptation(args.key)
             case 17:
-                collect_trace_based_on_trace_id(args.instance_id)
+                result = collect_trace_based_on_trace_id(args.instance_id)
             case 18:
-                collect_all_traces()
+                result = collect_all_traces()
             case 19:
-                collect_impact_of_instance(args.instance_id)
+                result = collect_impact_of_instance(args.instance_id)
         print("Retrieval complete!\n")
 
         # If generating prov was selected, check if it can be created for the case:

@@ -87,3 +87,31 @@ docker compose run --rm server python -m program retrieve --prov all_traces
 - events_with_adapt
 - trace_single_instance instance_id 
 - all_traces
+
+
+# Running API
+
+To run the API of the project, in the terminal, after docker has been built, run the following:
+
+```
+docker compose run --rm -p 8000:8000 server python manage.py runserver 0.0.0.0:80000
+```
+
+### Retrieve
+Results can be called and viewed in the following browser: http://localhost:8000/api/
+
+To retrieve the following results, add corresponding endpoints to the above link:
+
+| Endpoint                                      | Description               |
+|-----------------------------------------------|---------------------------|
+| all-traces/                                   | Retrieve all traces   |
+| events-with-adapt/                            | Retrieve all events with adaptations |
+| reason-impact/key/                            | Retreive reason or impact of adaptations (instead of 'key' input either reason, impact or both depending what you would like to retrieve)  |
+| trace-single-instance/instance/               | Retrieve trace of an instance whose ID is specified instead of 'instance' |
+| impact-of-instance/instance/                  | Retrieve impact of instance where 'instance' specified the instance ID|
+
+
+### Record
+
+### Generating PROV-O
+

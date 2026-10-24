@@ -254,7 +254,12 @@ def all_events_with_adaptations():
     """
     This function returns collects all events that have adaptations and writes result to a JSON file.
     """
-    write_json(run_query(queries.events_with_adaptations))
+
+    # Save result so API can get the JSON response
+    result = convert_neo4j_to_json(run_query(queries.events_with_adaptations))
+    # Write to result.json
+    write_json(result)
+    return result
 
 
 def adaptations_of_events():
@@ -318,6 +323,7 @@ def reason_and_impact_keys_of_adaptation(key: str):
             raise ValueError(f"the key '{key}' does not match one of the following: impact, reason, both.")
     
     write_json(result)
+    return result
 
 
 def collect_trace_based_on_trace_id(instance_id: str):
@@ -326,7 +332,11 @@ def collect_trace_based_on_trace_id(instance_id: str):
     """
 
     instance_id = instance_id.strip()
-    write_json(run_query(queries.trace_based_on_instance_id, instance_id))
+    # Save result so API can get the JSON response
+    result = convert_neo4j_to_json(run_query(queries.trace_based_on_instance_id, instance_id))
+    # Write result to result.json
+    write_json(result)
+    return result
 
 
 def collect_all_traces():
@@ -334,7 +344,12 @@ def collect_all_traces():
     This function uses query to collect all available traces with the process_id, instance_id,
     as well as lists the events and their adaptations (if there are any), before writing result to a JSON file.
     """
-    write_json(run_query(queries.all_traces))
+
+    # Save result so API can get the JSON response
+    result = convert_neo4j_to_json(run_query(queries.all_traces))
+    # Write to result.json
+    write_json(result)
+    return result
 
 
 def collect_impact_of_instance(instance_id: str):
@@ -342,6 +357,11 @@ def collect_impact_of_instance(instance_id: str):
     This function uses query to collect the impact of a selected instance with the use of instance_id,
     before writing result to a JSON file.
     """
+
     instance_id = instance_id.strip()
-    write_json(run_query(queries.impact_of_instance, instance_id))
+    # Save result so API can get the JSON response
+    result = convert_neo4j_to_json(run_query(queries.impact_of_instance, instance_id))
+    # Write to result.json
+    write_json(result)
+    return result
 
