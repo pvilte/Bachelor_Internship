@@ -1,6 +1,10 @@
 from django.urls import path
 from api.views import *
 
+"""
+URLs that specify the available API endpoints and link them to their views.
+"""
+
 urlpatterns = [
     # endpoint for collecting all traces:
     path('all-traces/', AllTraces.as_view(), name='all-traces'),
