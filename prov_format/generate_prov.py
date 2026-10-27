@@ -1,6 +1,7 @@
 import prov.model as pm
 from prov.dot import prov_to_dot
 from pathlib import Path
+from rdflib import Dataset
 import json
 import os
 
@@ -162,5 +163,11 @@ def generate_prov(json_dir):
             # for debugging and checking the mapping, we can create a visualization:
             dot = prov_to_dot(document)
             dot.write_png(str(output_dir /"prov_result_vis.png"))
+            
+            # Save the result so it can be returned to the API:
+            result = Dataset()
+            result.parse(str(output_dir /"prov_result.rdf"), format="trig")
+    
+    return result
 
 

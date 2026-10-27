@@ -94,8 +94,14 @@ docker compose run --rm server python -m program retrieve --prov all_traces
 To run the API of the project, in the terminal, run the following:
 
 ```
-docker compose run --rm -p 8000:8000 server python manage.py runserver 0.0.0.0:80000
+docker compose run --rm -p 8000:8000 server python manage.py runserver 0.0.0.0:8000
 ```
+
+### Record
+
+To record JSON format event data, simply use the following request: `http://localhost:8000/api/record/`. In the title input field type the title of the file whose contents you will be providing, and in the content field add the data in JSON format. Finally, click on POST and if the recording is successful, yous should be able to see `"Recording complete!"` and then visualise the data in the Neo4j browser.
+
+To record overall impact of instances, use the following request: `http://localhost:8000/api/record/impact/`. In the title, just like before, input the file name, and in the content field add the impact data in JSON format. Finally, click on PUT and if the recording is successful, you should be able to see `"Recording complete!"` and visualise the data in the Neo4j browser.
 
 ### Retrieve
 
@@ -109,8 +115,8 @@ To view retrieved results in browser, add one of the endpoints specified in tabl
 | trace-single-instance/instance/               | Retrieve trace of an instance whose ID is specified instead of 'instance' |
 | impact-of-instance/instance/                  | Retrieve impact of instance where 'instance' specified the instance ID|
 
-
-### Record
-
 ### Generating PROV-O
 
+To generate PROV-O for all-traces/, events-with-adapt/, and impact-of-instance/instance/, simply add `?type=prov` to the endpoint. The RDF file content will appear in the browser. 
+
+For example, to generate PROV-O for a single trace with instance ID "Instance-95382", we use the following HTTP request: `http://localhost:8000/api/trace-single-instance/Instance-95382/?type=prov`.

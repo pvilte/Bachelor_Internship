@@ -192,7 +192,7 @@ def main():
         allowed_cases = {15, 17, 18}
         
         if args.prov and (args.case_nr in allowed_cases):
-            generate_prov("output")
+            result = generate_prov("output")
             print("Generated a PROV-O document\n")
         elif args.prov and (args.case_nr not in allowed_cases):
             raise Exception("PROV-O cannot be generated for this retrieved case")

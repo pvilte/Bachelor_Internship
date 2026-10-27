@@ -37,7 +37,7 @@ def create_instance(tx, instance):
 
     :param instance: the instance object
     """
-    tx.run("MERGE (:Instance {id: $instance_id})", instance_id=instance.instance_id)
+    tx.run("CREATE (:Instance {id: $instance_id})", instance_id=instance.instance_id)
 
 def create_initiator(tx, initiator):
     """
@@ -135,3 +135,31 @@ def create_event_time_relationship(tx, curr_event, prev_event):
         MERGE (curr_event)<-[:NEXT]-(prev_event)
     """, id_curr_event=curr_event.event_id, id_prev_event=prev_event.event_id)
 
+
+def check_existing_instance(tx, instance_id):
+    """
+    Function checks if given Instance with the specified instance ID exists in database.
+
+    :param instance_id: ID of the instance we want to find
+    """
+
+    check = tx.run("""
+        MATCH (i:Instance)
+        WHERE i.id = $instance_id
+        RETURN count(i) > 0 AS check
+    """, instance_id=instance_id).single()
+
+    return check["check"]
+
+
+def create_instance_constraint(tx):
+    """
+    Function creates a unique instance constraint that ensures that no two instances
+    will share an ID.
+    """
+
+    tx.run("""
+        CREATE CONSTRAINT unique_instance_id IF NOT EXISTS
+        FOR (i:Instance)
+        REQUIRE i.id IS UNIQUE
+    """)

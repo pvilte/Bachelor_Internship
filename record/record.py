@@ -41,10 +41,11 @@ def run_query(query_func, *args):
 
     driver = GraphDatabase.driver(uri=uri, auth=auth)
     with driver.session() as session:
-        session.execute_write(query_func, *args)
+        result = session.execute_write(query_func, *args)
     driver.close()
+    return result
 
-def create_events_processes_initiators(e, file_name, stored, inst_counter, stored_instances):
+def create_events_processes_initiators(e, stored):
     """
     This function creates events, processes, initiators, for a given event.
 
@@ -62,26 +63,28 @@ def create_events_processes_initiators(e, file_name, stored, inst_counter, store
         process_id = e.get("processId")
     else:
         # Assume file names are unique
-        process_id = file_name + "_process_"
+        # process_id = file_name + "_process_"
+        raise Exception("Missing process ID in data")
 
     if "instanceId" in e:
         instance_id = e.get("instanceId")
     else:
         # In each file, there could be multiple traces, each trace showing a different instance
-        instance_id = file_name + "_instance_" + str(inst_counter)
+        # instance_id = file_name + "_instance_" + str(inst_counter)
+        raise Exception("Missing instance ID in data")
 
-    # Check whether this instance_id already exists for this file:
-    if instance_id in stored_instances:
-        if stored_instances[instance_id] != file_name:
-            raise Exception(f"File {file_name} has instance ID: {instance_id}, which is already recorded in database")
-    else: 
-        stored_instances[instance_id] = file_name
-
+    # There should be one process and instance per run:
     stored_process = stored["processes"].get(process_id, None)
     stored_instance = stored["instances"].get(instance_id, None)
 
     instance = stored_instance
     process = stored_process
+
+    # Create a flag we can use to track whether the instance has been recoded before.
+    new_instance = False
+
+    # TODO implementation of dealing with duplicate instance IDs when traces are produced by different workflow engines
+
     if stored_process is None and stored_instance is None:
         # Create a new process and a new instance, link them to the event
         process = Process(process_id)
@@ -89,10 +92,17 @@ def create_events_processes_initiators(e, file_name, stored, inst_counter, store
         stored["instances"][instance_id] = instance
         stored["processes"][process_id] = process
 
+        # Set instance flag to True as we have found an instance we haven't encountered before in this run:
+        new_instance = True
+
     elif stored_instance is None:
         # Create a new instance, link it to the already existing process, link the event to the instance
         instance = Instance(instance_id, stored_process)
         stored["instances"][instance_id] = instance
+
+        # Set instance flag to True as we have found an instance we haven't encountered before in this run:
+        new_instance = True
+        
     else:
         # The process is not stored
         process = Process(process_id)
@@ -100,15 +110,15 @@ def create_events_processes_initiators(e, file_name, stored, inst_counter, store
         stored["processes"][process_id] = process
 
     # Link the event to the instance (instance has been linked to the process when it was created)
-    event_id = file_name + "_event_" + str(len(stored["events"]))
+    event_id = instance_id + "_event_" + str(len(stored["events"]))
 
     # Check if event name exist and is not empty in file, otherwise, raise an exception:
     if "concept:name" in e:
         event_name = e.get("concept:name")
         if event_name == "":
-            raise Exception(f"File {file_name} has an event with a missing concept:name field")
+            raise Exception(f"Instance with ID {instance_id} has an event with a missing concept:name field")
     else:
-        raise Exception(f"File {file_name} has an event with a missing concept:name field")
+        raise Exception(f"Instance with ID {instance_id} has an event with a missing concept:name field")
 
     # Check if event timestamp exists in file, otherwise, raise an exception:
     if "time:timestamp" in e:
@@ -117,26 +127,26 @@ def create_events_processes_initiators(e, file_name, stored, inst_counter, store
         # if event was deleted, event never happened, thus, the field is empty:
         timestamp = ""
     else:
-        raise Exception(f"File {file_name} has an event with a missing time:timestamp field")
+        raise Exception(f"Instance with ID {instance_id} has an event with a missing time:timestamp field")
 
     # Check if event resource exists and is not empty in file, otherwise, raise an exception:
     if "org:resource" in e:
         resource = e.get("org:resource")
         if resource == "":
-            raise Exception(f"File {file_name} has an event with a missing org:resource field")
+            raise Exception(f"Instance with ID {instance_id} has an event with a missing org:resource field")
     elif "adaptation:type" in e:
         # if event was deleted, it was not executed by a resource, thus, the field is empty:
         resource = ""
     else:
-        raise Exception(f"File {file_name} has an event with a missing org:resource field")
+        raise Exception(f"Instance with ID {instance_id} has an event with a missing org:resource field")
     
     
     event = Event(event_id, event_name, timestamp, resource, instance)
     stored["events"][event_id] = event
-    return process, instance, event
+    return process, instance, event, new_instance
 
 
-def create_adaptations_initiators(file_name, e, stored):
+def create_adaptations_initiators(e, stored):
     """
     This function finds initiators and adaptations in the event. It ensures that each adaptation
     has an initiator using composition.
@@ -147,12 +157,20 @@ def create_adaptations_initiators(file_name, e, stored):
     :return initiator, adaptation: the initiator and adaptation objects from the event
     """
 
+    # Find the instance ID which will be used for naming purposes:
+    if "instanceId" in e:
+        instance_id = e.get("instanceId")
+    else:
+        raise Exception("Missing instance ID in data")
+    
+
     if "adaption:initiator" in e:
         initiator_name = e.get("adaption:initiator")
     elif "adaptation:initiator" in e:
         initiator_name = e.get("adaptation:initiator")
     else:
-        initiator_name = file_name + "_unknown_initiator_"
+        # Add the instance as an identifier in the name as instance should be unique for each trace:
+        initiator_name = instance_id + "_unknown_initiator_"
 
     stored_initiator = stored["initiators"].get(initiator_name, None)
 
@@ -163,29 +181,29 @@ def create_adaptations_initiators(file_name, e, stored):
         initiator = Initiator(initiator_name)
         stored["initiators"][initiator_name] = initiator
 
-    adaptation_id = file_name + "_adaptation_" + str(len(stored["adaptations"]))
+    adaptation_id =  instance_id + "_adaptation_" + str(len(stored["adaptations"]))
 
     # Check if adaptation type exists and is not empty, otherwise, raise an exception:
     if "adaptation:type" in e:
         adaptation_type = e.get("adaptation:type")
         if adaptation_type == "":
-            raise Exception(f"File {file_name} has an event with a missing adaptation:type field")
+            raise Exception(f"Instance with ID {instance_id} has an event with a missing adaptation:type field")
     else :
-        raise Exception(f"File {file_name} has an event with a missing adaptation:type field")
+        raise Exception(f"Instance with ID {instance_id} has an event with a missing adaptation:type field")
 
     # Check if adaptation timestamp exists, otherwise, raise an exception:
     if "adaptation:timestamp" in e:
         adaptation_timestamp = find_time(e.get("adaptation:timestamp"))
     else :
-        raise Exception(f"File {file_name} as an event with a missing adaptation:timestamp field")
+        raise Exception(f"Instance with ID {instance_id} as an event with a missing adaptation:timestamp field")
     
     # Check if adaptation type exists and is not empty, otherwise, raise an exception:
     if "adaptation:change" in e:
         adaptation_change = e.get("adaptation:change")
         if adaptation_change == "":
-            raise Exception(f"File {file_name} as an event with a missing adaptation:change field")
+            raise Exception(f"Instance with ID {instance_id} as an event with a missing adaptation:change field")
     else :
-        raise Exception(f"File {file_name} as an event with a missing adaptation:change field")
+        raise Exception(f"Instance with ID {instance_id} as an event with a missing adaptation:change field")
 
     
     adaptation = Adaptation(adaptation_id, adaptation_type, adaptation_timestamp, adaptation_change,
@@ -195,7 +213,7 @@ def create_adaptations_initiators(file_name, e, stored):
     return initiator, adaptation
 
 
-def populate_database(e, file_name, stored, inst_counter, stored_instances):
+def populate_database(e, stored):
 
     """
     This function populates the database with the event information.
@@ -208,19 +226,25 @@ def populate_database(e, file_name, stored, inst_counter, stored_instances):
     :return: void
     """
 
-    process, instance, event = create_events_processes_initiators(e, file_name, stored, inst_counter, stored_instances)
+    process, instance, event, new_instance = create_events_processes_initiators(e, stored)
+
+    # create the instance only if it hasn't been created before:
+    if new_instance:
+        # If there already exists an instance with the given ID, the constraint in database will flag it 
+        # and will not proceed.
+        run_query(queries.create_instance, instance)
 
     # Create nodes
     run_query(queries.create_event, event)
     run_query(queries.create_process, process)
-    run_query(queries.create_instance, instance)
+
     # Create relationships
     run_query(queries.create_instance_process_relationship, instance, process)
     run_query(queries.create_event_instance_relationship, event, instance)
 
     # If any label starts with 'adaptation:type' or 'adaptation:change', or 'adaptation:time', an adaptation has happened
     if any(re.match(r"adaptation:(type|change|time)", key) for key in e.keys()):
-        initiator, adaptation = create_adaptations_initiators(file_name, e, stored)
+        initiator, adaptation = create_adaptations_initiators(e, stored)
         # Create nodes
         run_query(queries.create_adaptation, adaptation)
         run_query(queries.create_initiator, initiator)
@@ -238,29 +262,30 @@ def populate_database(e, file_name, stored, inst_counter, stored_instances):
             run_query(queries.create_event_time_relationship, event, list(stored["events"].values())[-2])
 
 
-def add_impact_to_database(c, file_name, stored_instances, stored_impacts):
+def add_impact_to_database(c, stored_impacts):
     """"
     This function records an instance's impact to the database.
 
     :param c: the data block that includes instance_id, impact and its type
     :param file_name: the name of the file we are accessing
-    :param stored: list of objects already stored
+    :param stored_impacts: list of impacts already stored
     """
 
     instance_id = c.get("instance:id")
-    # Check if instance that has this impact is recorded in database:
-    if instance_id not in stored_instances:
-        raise Exception(f"The instance_id: {instance_id} provided does not exist in the database.")
+    # Check if instance that has this impact has already been recorded in database:
+    instance_exists = run_query(queries.check_existing_instance, instance_id)
+    if not instance_exists:
+        raise Exception(f"The provided instance_id '{instance_id}' does not exist in the database.")
 
     if "impact:type" in c:
         impact_type = c.get("impact:type")
     else:
-        raise Exception(f"File {file_name} has an impact with no impact_type")
+        raise Exception(f"Instance with ID {instance_id} has an impact with no impact_type")
 
     if "impact" in c:
         impact= c.get("impact")
     else:
-        raise Exception(f"File {file_name} has an impact with no impact_type")
+        raise Exception(f"Instance with ID {instance_id} has an impact with no impact_type")
 
     # create an impact id unique for each instance:
     n = 1
@@ -276,22 +301,62 @@ def add_impact_to_database(c, file_name, stored_instances, stored_impacts):
     run_query(queries.create_impact_instance_relationship, impact)
 
 
+def process_event_data_helper_func(data, impact_data_files, data_count, stored):
+    """
+    Helper function to reduce code duplication. It takes event data and processes it one by one
+    to record it to the database.
+
+    :param data: event data read from .json file or from HTTP request.
+    :param impact_data_files: dictionary of stored impacts that are to be proccessed.
+    :param file_name: name of file or data that is being processed.
+    :param stored: dictionary to keep track of stored objects.
+    :param stored_instances: dictionary to specifically keep track of instances already processed in one record() run.
+    :param inst_counter: used to keep track of how many instances have already been stored.
+    """
+
+    for case in data:
+        # check if file just adds input for instances:
+        if "instance:id" in case:
+            # store the file's contents:
+            impact_data_files[data_count] = data 
+        else: 
+            for e in case["events"]:
+                # An event is found, call the function to populate the database
+                populate_database(e, stored)
+
+
+
+def record_impacts_helper_function(impact_data_files, stored_impacts):
+    """
+    Helper function to reducce code duplication. Goes through all files and data containing overall impacts
+    and adds them to database.
+
+    :param impact_data_files: dictionary of files or data sent from HTTP request that contain overall impacts of instances.
+    :param stored_impacts: dictionary to keepo track of instances already recorded.
+    """
+
+    # Record impacts of instances in the database if such exist:
+    if impact_data_files:
+        print("Adding impacts of instances to the database.\n")
+        for data_count in impact_data_files:
+            for impact in impact_data_files[data_count]:
+                add_impact_to_database(impact, stored_impacts)
+
+
 def record(json_dir):
 
     """
-    This function goes through the JSON files and tries to find an event. If it is found, it can be stored in d database
+    This function goes through the JSON files and tries to find an event. If it is found, it can be stored in database.
+    This function is used when dealing with files saved in known directory.
 
     :param json_dir: the name of the directory containing the JSON files
     :return: void
     """
 
-    # Dictionary for storing instance_id's for each encountered file:
-    stored_instances = {}
+    # Create a unique constraint for instance and event IDs:
+    run_query(queries.create_instance_constraint)
 
     stored_impacts = {}
-
-    # Counter used to keep track how many traces - instances there are
-    inst_counter = 0
 
     # Used for keeping track which processes, instances, initiators, events, adaptations have already been stored
     stored = {
@@ -307,6 +372,7 @@ def record(json_dir):
 
     # Go through every subdirectory of the directory of the JSON files
     for path, folders, files in os.walk(json_dir):
+        file_counter = 0
         for file in files:
             file_path = os.path.join(path, file)
             file_name = file.replace(".json", "")
@@ -314,26 +380,61 @@ def record(json_dir):
             with open(file_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
 
-            for case in data:
-                # check if file just adds input for instances:
-                if "instance:id" in case:
-                    # store the file's contents:
-                    impact_data_files[file_name] = data 
-                else: 
-                    for e in case["events"]:
-                        # An event is found, call the function to populate the database
-                        populate_database(e, file_name, stored, inst_counter, stored_instances)
-                    inst_counter += 1
-
+            process_event_data_helper_func(data, impact_data_files, file_counter, stored)
 
             # Clear the dictionary for the next file
             for key in stored:
                 stored[key] = {}
 
+            file_counter += 1
 
     # Record impacts of instances in the database if such exist:
-    if impact_data_files:
-        print("Adding impacts of instances to the database.\n")
-        for file_name in impact_data_files:
-            for impact in impact_data_files[file_name]:
-                add_impact_to_database(impact, file_name, stored_instances, stored_impacts)
+    record_impacts_helper_function(impact_data_files, stored_impacts)
+
+
+def record_from_api(data):
+    """
+    Function reads JSON data given by an HTTP POST request and stored found event data in database.
+
+    :param title: title given to the provided data
+    :param data: the actual event data to be processed
+    """
+
+    # Create a unique constraint for instance and event IDs:
+    run_query(queries.create_instance_constraint)
+
+    stored_impacts = {}
+
+    # Used for keeping track which processes, instances, initiators, events, adaptations have already been stored
+    stored = {
+        "processes": {},
+        "instances": {},
+        "initiators": {},
+        "events": {},
+        "adaptations": {},
+    }
+
+    # Dictionary for storing filename and data of file that contains total impact:
+    impact_data_files = {}
+
+    # Record event data along with overall impact of istances if they are given:
+    print ("Recording in progress")
+    process_event_data_helper_func(data, impact_data_files, 0, stored)
+    record_impacts_helper_function(impact_data_files, stored_impacts)
+
+
+def impact_from_api(data):
+    """
+    Function reads JSON data given by HTTP PUT request, where the data contains the overall impact(s) 
+    of existing instances.
+
+    :param title: name given to data
+    :param data: actual impact data to be processed
+    """
+
+    # local dictionary to keep track of the single run's impacts:
+    stored_impacts = {}
+
+    # loop through every impact and record it in database:
+    for case in data:
+        add_impact_to_database(case, stored_impacts)

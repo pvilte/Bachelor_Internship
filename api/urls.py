@@ -19,6 +19,12 @@ urlpatterns = [
     path('trace-single-instance/<str:instance>/', SingleInstance.as_view(), name='single-instance'),
 
     # endpoint for collecting impact of instance:
-    path('impact-of-instance/<str:instance>/', ImpactOfInstance.as_view(), name='impact-instance')
+    path('impact-of-instance/<str:instance>/', ImpactOfInstance.as_view(), name='impact-instance'),
+
+    # endpoint to record data:
+    path('record/', RecordData.as_view(), name='record-json-data'),
+
+    # endpoint to add overall impact to instance in database:
+    path('record/impact/', RecordImpactData.as_view(), name='record-impact-data')
 
 ]
