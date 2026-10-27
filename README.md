@@ -99,9 +99,9 @@ docker compose run --rm -p 8000:8000 server python manage.py runserver 0.0.0.0:8
 
 ### Record
 
-To record JSON format event data, simply use the following request: `http://localhost:8000/api/record/`. In the title input field type the title of the file whose contents you will be providing, and in the content field add the data in JSON format. Finally, click on POST and if the recording is successful, yous should be able to see `"Recording complete!"` and then visualise the data in the Neo4j browser.
+To record JSON format event data, simply use the following request: `http://localhost:8000/api/record/`. In the content field add the data in JSON format. Finally, click on POST and if the recording is successful, yous should be able to see `"Recording complete!"` and then visualise the data in the Neo4j browser.
 
-To record overall impact of instances, use the following request: `http://localhost:8000/api/record/impact/`. In the title, just like before, input the file name, and in the content field add the impact data in JSON format. Finally, click on PUT and if the recording is successful, you should be able to see `"Recording complete!"` and visualise the data in the Neo4j browser.
+To record overall impact of instances, use the following request: `http://localhost:8000/api/record/impact/`. In the content field add the impact data in JSON format. Finally, click on PUT and if the recording is successful, you should be able to see `"Recording complete!"` and visualise the data in the Neo4j browser.
 
 ### Retrieve
 
