@@ -272,10 +272,6 @@ def add_impact_to_database(c, stored_impacts):
     """
 
     instance_id = c.get("instance:id")
-    # Check if instance that has this impact has already been recorded in database:
-    instance_exists = run_query(queries.check_existing_instance, instance_id)
-    if not instance_exists:
-        raise Exception(f"The provided instance_id '{instance_id}' does not exist in the database.")
 
     if "impact:type" in c:
         impact_type = c.get("impact:type")
@@ -297,8 +293,14 @@ def add_impact_to_database(c, stored_impacts):
     stored_impacts[impact_id] = True
 
     impact = Impact(impact_id, instance_id, impact_type, impact)
-    run_query(queries.create_impact, impact)
-    run_query(queries.create_impact_instance_relationship, impact)
+
+    # Try recording the impact, if there is not instance_id that matches in database, it will return 0:
+    check = run_query(queries.create_impact, impact)
+    if check:
+        # Impact was recorded, thus, we create the Impact and Instance relationship:
+        run_query(queries.create_impact_instance_relationship, impact)
+    else:
+        raise Exception("Instance for the impact does not exist in database")
 
 
 def process_event_data_helper_func(data, impact_data_files, data_count, stored):
@@ -353,7 +355,7 @@ def record(json_dir):
     :return: void
     """
 
-    # Create a unique constraint for instance and event IDs:
+    # Create a unique constraint for instance ID:
     run_query(queries.create_instance_constraint)
 
     stored_impacts = {}
@@ -400,7 +402,7 @@ def record_from_api(data):
     :param data: the actual event data to be processed
     """
 
-    # Create a unique constraint for instance and event IDs:
+    # Create a unique constraint for instance ID:
     run_query(queries.create_instance_constraint)
 
     stored_impacts = {}

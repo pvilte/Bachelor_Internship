@@ -56,7 +56,14 @@ def create_impact(tx, impact):
     :param impact: the impact object
     """
 
-    tx.run("MERGE (:Impact {impact_id: $impact_id, type: $type, impact: $impact, instance: $instance_id})", impact_id=impact.impact_id, type=impact.impact_type, impact=impact.name, instance_id=impact.instance_id)
+    check = tx.run("""
+        MATCH (i:Instance)
+        WHERE i.id = $instance_id
+        MERGE (:Impact {impact_id: $impact_id, type: $type, impact: $impact, instance: $instance_id})
+        RETURN count(i) > 0 AS check
+    """, impact_id=impact.impact_id, type=impact.impact_type, impact=impact.name, instance_id=impact.instance_id).single()
+
+    return check["check"]
 
 
 def create_impact_instance_relationship(tx, impact):
@@ -134,22 +141,6 @@ def create_event_time_relationship(tx, curr_event, prev_event):
         MATCH (curr_event:Event{id: $id_curr_event}), (prev_event:Event{id: $id_prev_event})
         MERGE (curr_event)<-[:NEXT]-(prev_event)
     """, id_curr_event=curr_event.event_id, id_prev_event=prev_event.event_id)
-
-
-def check_existing_instance(tx, instance_id):
-    """
-    Function checks if given Instance with the specified instance ID exists in database.
-
-    :param instance_id: ID of the instance we want to find
-    """
-
-    check = tx.run("""
-        MATCH (i:Instance)
-        WHERE i.id = $instance_id
-        RETURN count(i) > 0 AS check
-    """, instance_id=instance_id).single()
-
-    return check["check"]
 
 
 def create_instance_constraint(tx):
