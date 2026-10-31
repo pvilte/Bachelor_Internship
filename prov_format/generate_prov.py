@@ -10,21 +10,19 @@ def create_delete_adaptation(document, adaptation, initiator):
     # Create adaptation event activity:
     change_name = adaptation["change"]
     change_capitalized = change_name.title().replace(" ", "")
-    delete_event = document.activity(f"ex:Adaptation{change_capitalized}", other_attributes={
-        "ex:adaptation_timestamp": f"{adaptation['time']}",
-    },)
+    delete_event = document.activity(f"ex:Adaptation{change_capitalized}", endTime = adaptation['time'])
     # Create an Adaptation entity:
     impact = adaptation["impact"]
     if impact == "":
         adapt_en = document.entity(f"ex:{adaptation['id']}", other_attributes={
-            "ex:adaptation_type": f"{adaptation['type']}",
-            "ex:adaptation_change": f"{adaptation['change']}",
+            "ex:type": f"{adaptation['type']}",
+            "ex:change": f"{adaptation['change']}",
         },)
     else:
         adapt_en = document.entity(f"ex:{adaptation['id']}", other_attributes={
-            "ex:adaptation_type": f"{adaptation['type']}",
-            "ex:adaptation_change": f"{adaptation['change']}",
-            "ex:adaptation_impact": f"{adaptation['impact']}",
+            "ex:type": f"{adaptation['type']}",
+            "ex:change": f"{adaptation['change']}",
+            "ex:impact": f"{impact}",
         },)
 
     # Create attribution between initiator and entity:
@@ -51,20 +49,21 @@ def create_insert_adaptation(document, adaptation, initiator, a):
     change_name = adaptation["change"]
     change_capitalized = change_name.title().replace(" ", "")
     insert_event = document.activity(f"ex:Adaptation{change_capitalized}", other_attributes={
-        "ex:adaptation_timestamp": f"{adaptation['time']}",
+        "prov:label": f"{adaptation['time']}",
     },)
+
     # Create an Adaptation entity:
     impact = adaptation["impact"]
     if impact == "":
         adapt_en = document.entity(f"ex:{adaptation['id']}", other_attributes={
-            "ex:adaptation_type": f"{adaptation['type']}",
-            "ex:adaptation_change": f"{adaptation['change']}",
+            "ex:type": f"{adaptation['type']}",
+            "ex:change": f"{adaptation['change']}",
         },)
     else:
         adapt_en = document.entity(f"ex:{adaptation['id']}", other_attributes={
-            "ex:adaptation_type": f"{adaptation['type']}",
-            "ex:adaptation_change": f"{adaptation['change']}",
-            "ex:adaptation_impact": f"{adaptation['impact']}",
+            "ex:type": f"{adaptation['type']}",
+            "ex:change": f"{adaptation['change']}",
+            "ex:impact": f"{adaptation['impact']}",
         },)
 
     # Create attribution between initiator and entity:
@@ -116,8 +115,8 @@ def create_event_terms(document, event, instance_id):
             else:
                 # Set event as activity:
                 e = instance.activity(f"ex:{ev['id']}", other_attributes={
-                    "prov:label": f"{ev['name']}",
-                    "ex:timestamp": f"{ev['time']}",
+                    "ex:name": f"{ev['name']}",
+                    "prov:label": f"{ev['time']}",
                 },)
                 # Create association between the action and agent:
                 instance.wasAssociatedWith(e, a)

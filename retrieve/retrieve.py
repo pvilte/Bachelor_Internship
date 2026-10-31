@@ -264,8 +264,7 @@ def all_events_with_adaptations():
 
 def adaptations_of_events():
     """
-    This function asks user to select an available event with an adaptation and based on that input
-    retrieves the adaptation.
+    This function finds the list of events with adaptations and returns all adaptations of those events.
     """
 
     events_with_adapt = run_query(queries.events_with_adaptations_list)
@@ -326,7 +325,7 @@ def reason_and_impact_keys_of_adaptation(key: str):
     return result
 
 
-def collect_trace_based_on_trace_id(instance_id: str):
+def collect_trace_based_on_instance_id(instance_id: str):
     """
     This function uses query to display an entire trace using an instance_id and writes result to JSON file.
     """

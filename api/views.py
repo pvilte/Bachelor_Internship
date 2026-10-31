@@ -1,5 +1,4 @@
 from rest_framework.views import APIView
-from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from django.http import HttpResponse
 
@@ -70,7 +69,7 @@ class SingleInstance(APIView):
         """
         retrieval_type = request.query_params.get("type", "default")
 
-        result = collect_trace_based_on_trace_id(instance)
+        result = collect_trace_based_on_instance_id(instance)
 
         if retrieval_type == "prov":
             # Return the RDF file containing generated PROV-O for the result:
@@ -92,7 +91,7 @@ class ImpactOfInstance(APIView):
         return Response(result)
 
 
-class RecordData(APIView):
+class TraceData(APIView):
     """
     View to record provenance data to database.
     """
@@ -107,7 +106,7 @@ class RecordData(APIView):
         return Response("Recording complete!")
 
 
-class RecordImpactData(APIView):
+class ImpactData(APIView):
     """
     View to record overall impact of instance in database.
     """
@@ -118,5 +117,5 @@ class RecordImpactData(APIView):
         # take the JSON data inputted by user:
         data = request.data
         
-        impact_from_api(data)
+        record_impact_from_api(data)
         return Response("Recording complete!")

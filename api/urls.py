@@ -6,25 +6,25 @@ URLs that specify the available API endpoints and link them to their views.
 """
 
 urlpatterns = [
-    # endpoint for collecting all traces:
+    # endpoint to display all traces:
     path('all-traces/', AllTraces.as_view(), name='all-traces'),
 
-    # endpoint for collecting events with adaptations:
+    # endpoint to display events with adaptations:
     path('events-with-adapt/', EventsWithAdapt.as_view(), name='events-with-adaptations'),
 
-    # endpoint for collecting reason or impact of adaptation:
+    # endpoint to display reason or impact of adaptation:
     path('reason-impact/<str:key>/', ReasonImpact.as_view(), name='reason-impact-of-adaptation'),
 
-    # endpoint for collecting a single trace by its ID:
+    # endpoint to display a single trace by its ID:
     path('trace-single-instance/<str:instance>/', SingleInstance.as_view(), name='single-instance'),
 
-    # endpoint for collecting impact of instance:
+    # endpoint to display impact of instance:
     path('impact-of-instance/<str:instance>/', ImpactOfInstance.as_view(), name='impact-instance'),
 
-    # endpoint to record data:
-    path('record/', RecordData.as_view(), name='record-json-data'),
+    # endpoint that accepts new traces that are then added to database:
+    path('traces/', TraceData.as_view(), name='record-traces-to-database'),
 
-    # endpoint to add overall impact to instance in database:
-    path('record/impact/', RecordImpactData.as_view(), name='record-impact-data')
+    # endpoint that accepts a trace's overall impact(s) which is then added to the database:
+    path('trace/impact/', ImpactData.as_view(), name='record-impact-of-trace')
 
 ]

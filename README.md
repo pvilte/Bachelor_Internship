@@ -13,7 +13,7 @@ in the main directory of the project.
 [generate_prov.py](prov_format/generate_prov.py) creates a PROV-O document from the result.json file
 and visualises the provenance in PNG format. 
 
-[program.py](program.py) parses command-line arguments and calls selected functions:
+[cli.py](cli.py) parses command-line arguments and calls selected functions:
 
 | Command     | Description               |
 |-------------|---------------------------|
@@ -41,10 +41,10 @@ docker compose run --rm server python -m xes_to_json
 To record the JSON files to the graph database, run the following command in the terminal:
 
 ```
-docker compose run --rm server python -m program record
+docker compose run --rm server python -m cli record
 ```
 
-To retrieve information from the database, run `docker compose run --rm server python -m program retrieve` 
+To retrieve information from the database, run `docker compose run --rm server python -m cli retrieve` 
 followed by what we want to retrive:
 
 | Command                                       | Description               |
@@ -77,7 +77,7 @@ To convert retrieved results ([output/result.json](output/result.json)) to PROV-
 The command bellow retrieves all traces from database and generates a PROV-O document for that result.
 
 ```
-docker compose run --rm server python -m program retrieve --prov all_traces
+docker compose run --rm server python -m cli retrieve --prov all_traces
 ```
 
 ### Note: 
@@ -99,9 +99,9 @@ docker compose run --rm -p 8000:8000 server python manage.py runserver 0.0.0.0:8
 
 ### Record
 
-To record JSON format event data, simply use the following request: `http://localhost:8000/api/record/`. In the content field add the data in JSON format. Finally, click on POST and if the recording is successful, yous should be able to see `"Recording complete!"` and then visualise the data in the Neo4j browser.
+To record JSON format event data, simply use the following request: `http://localhost:8000/api/traces/`. In the content field add the data in JSON format. Finally, click on POST and if the recording is successful, yous should be able to see `"Recording complete!"` and then visualise the data in the Neo4j browser.
 
-To record overall impact of instances, use the following request: `http://localhost:8000/api/record/impact/`. In the content field add the impact data in JSON format. Finally, click on PUT and if the recording is successful, you should be able to see `"Recording complete!"` and visualise the data in the Neo4j browser.
+To record overall impact of instances, use the following request: `http://localhost:8000/api/trace/impact/`. In the content field add the impact data in JSON format. Finally, click on PUT and if the recording is successful, you should be able to see `"Recording complete!"` and visualise the data in the Neo4j browser.
 
 ### Retrieve
 

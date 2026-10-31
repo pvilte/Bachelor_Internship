@@ -181,7 +181,7 @@ def main():
             case 16:
                 result = reason_and_impact_keys_of_adaptation(args.key)
             case 17:
-                result = collect_trace_based_on_trace_id(args.instance_id)
+                result = collect_trace_based_on_instance_id(args.instance_id)
             case 18:
                 result = collect_all_traces()
             case 19:

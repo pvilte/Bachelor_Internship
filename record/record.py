@@ -17,14 +17,14 @@ auth = (os.getenv("NEO4J_USER"), os.getenv("NEO4J_PASSWORD"))
 
 def find_time(time):
     """
-    This function tries to convert the datatype from JSON string to time. If it is not successful, return current time
+    This function tries to convert the datatype from JSON string to time. If it is not successful, return empty string.
     :param time: JSON string representing time
     :return: final time as a datetime object
     """
     try:
         result_time = datetime.fromisoformat(time)
     except:
-        result_time = datetime.now()
+        result_time = ""
 
     return result_time
 
@@ -50,11 +50,7 @@ def create_events_processes_initiators(e, stored):
     This function creates events, processes, initiators, for a given event.
 
     :param e: event object
-    :param file_name: name of the file
     :param stored: the dictionary of stored processes, instances, events, initiators, adaptations
-    :param inst_counter: the number of instances this far
-    :param stored_instances: dictionary to keep track which instance_id's have already been used by previous files
-    :return process, instance, event: the process, instance, and event from the event
     """
 
     # If an ID of a process is given in the event, save the ID of the process; if not, give the ID as the file name
@@ -62,15 +58,13 @@ def create_events_processes_initiators(e, stored):
     if "processId" in e:
         process_id = e.get("processId")
     else:
-        # Assume file names are unique
-        # process_id = file_name + "_process_"
+        # Raise exception if the process ID is missing:
         raise Exception("Missing process ID in data")
 
     if "instanceId" in e:
         instance_id = e.get("instanceId")
     else:
-        # In each file, there could be multiple traces, each trace showing a different instance
-        # instance_id = file_name + "_instance_" + str(inst_counter)
+        # Raise exception if the instance ID is missing:
         raise Exception("Missing instance ID in data")
 
     # There should be one process and instance per run:
@@ -151,10 +145,8 @@ def create_adaptations_initiators(e, stored):
     This function finds initiators and adaptations in the event. It ensures that each adaptation
     has an initiator using composition.
 
-    :param file_name: the name of the file
     :param e: the event object
     :param stored: the dictionary of stored processes, instances, events, initiators, adaptations
-    :return initiator, adaptation: the initiator and adaptation objects from the event
     """
 
     # Find the instance ID which will be used for naming purposes:
@@ -219,10 +211,7 @@ def populate_database(e, stored):
     This function populates the database with the event information.
 
     :param e: event object
-    :param file_name: name of the file to give an ID to a process in case no ID is given in the event
     :param stored: the dictionary of stored processes, instances, events, initiators, adaptations
-    :param inst_counter: number of traces this far
-    :param stored_instances: dictionary to keep track which instance_id's have already been used by previous files
     :return: void
     """
 
@@ -267,7 +256,6 @@ def add_impact_to_database(c, stored_impacts):
     This function records an instance's impact to the database.
 
     :param c: the data block that includes instance_id, impact and its type
-    :param file_name: the name of the file we are accessing
     :param stored_impacts: list of impacts already stored
     """
 
@@ -282,6 +270,8 @@ def add_impact_to_database(c, stored_impacts):
         impact= c.get("impact")
     else:
         raise Exception(f"Instance with ID {instance_id} has an impact with no impact_type")
+
+    # TODO: handle duplicate IDs when overall impact for one instance is sent via multiple different requests
 
     # create an impact id unique for each instance:
     n = 1
@@ -303,46 +293,26 @@ def add_impact_to_database(c, stored_impacts):
         raise Exception("Instance for the impact does not exist in database")
 
 
-def process_event_data_helper_func(data, impact_data_files, data_count, stored):
+def process_event_data_helper_func(data, impact_data_files, file_index, stored):
     """
     Helper function to reduce code duplication. It takes event data and processes it one by one
     to record it to the database.
 
     :param data: event data read from .json file or from HTTP request.
     :param impact_data_files: dictionary of stored impacts that are to be proccessed.
-    :param file_name: name of file or data that is being processed.
+    :param file_index: file index that identifies the file being read from.
     :param stored: dictionary to keep track of stored objects.
-    :param stored_instances: dictionary to specifically keep track of instances already processed in one record() run.
-    :param inst_counter: used to keep track of how many instances have already been stored.
     """
 
     for case in data:
         # check if file just adds input for instances:
         if "instance:id" in case:
             # store the file's contents:
-            impact_data_files[data_count] = data 
+            impact_data_files[file_index] = data 
         else: 
             for e in case["events"]:
                 # An event is found, call the function to populate the database
                 populate_database(e, stored)
-
-
-
-def record_impacts_helper_function(impact_data_files, stored_impacts):
-    """
-    Helper function to reducce code duplication. Goes through all files and data containing overall impacts
-    and adds them to database.
-
-    :param impact_data_files: dictionary of files or data sent from HTTP request that contain overall impacts of instances.
-    :param stored_impacts: dictionary to keepo track of instances already recorded.
-    """
-
-    # Record impacts of instances in the database if such exist:
-    if impact_data_files:
-        print("Adding impacts of instances to the database.\n")
-        for data_count in impact_data_files:
-            for impact in impact_data_files[data_count]:
-                add_impact_to_database(impact, stored_impacts)
 
 
 def record(json_dir):
@@ -374,7 +344,7 @@ def record(json_dir):
 
     # Go through every subdirectory of the directory of the JSON files
     for path, folders, files in os.walk(json_dir):
-        file_counter = 0
+        file_index = 0
         for file in files:
             file_path = os.path.join(path, file)
             file_name = file.replace(".json", "")
@@ -382,30 +352,31 @@ def record(json_dir):
             with open(file_path, "r", encoding="utf-8") as f:
                 data = json.load(f)
 
-            process_event_data_helper_func(data, impact_data_files, file_counter, stored)
+            process_event_data_helper_func(data, impact_data_files, file_index, stored)
 
             # Clear the dictionary for the next file
             for key in stored:
                 stored[key] = {}
 
-            file_counter += 1
+            file_index += 1
 
     # Record impacts of instances in the database if such exist:
-    record_impacts_helper_function(impact_data_files, stored_impacts)
+    if impact_data_files:
+        print("Adding impacts of instances to the database.\n")
+        for file_index in impact_data_files:
+            for impact in impact_data_files[file_index]:
+                add_impact_to_database(impact, stored_impacts)
 
 
 def record_from_api(data):
     """
     Function reads JSON data given by an HTTP POST request and stored found event data in database.
 
-    :param title: title given to the provided data
     :param data: the actual event data to be processed
     """
 
     # Create a unique constraint for instance ID:
     run_query(queries.create_instance_constraint)
-
-    stored_impacts = {}
 
     # Used for keeping track which processes, instances, initiators, events, adaptations have already been stored
     stored = {
@@ -416,21 +387,21 @@ def record_from_api(data):
         "adaptations": {},
     }
 
-    # Dictionary for storing filename and data of file that contains total impact:
-    impact_data_files = {}
+    # TODO implement reading only single events
+
+    if data[0].get("impact"):
+        raise Exception("You are trying to record overall impact using record/ endpoint. Please use record/impact/")
 
     # Record event data along with overall impact of istances if they are given:
     print ("Recording in progress")
-    process_event_data_helper_func(data, impact_data_files, 0, stored)
-    record_impacts_helper_function(impact_data_files, stored_impacts)
+    process_event_data_helper_func(data, {}, 0, stored)
 
 
-def impact_from_api(data):
+def record_impact_from_api(data):
     """
     Function reads JSON data given by HTTP PUT request, where the data contains the overall impact(s) 
     of existing instances.
 
-    :param title: name given to data
     :param data: actual impact data to be processed
     """
 
