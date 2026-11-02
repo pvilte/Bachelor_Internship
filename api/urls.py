@@ -10,7 +10,7 @@ URLs that specify the available API endpoints and link them to their views.
 # Creates the Swagger documentation for testing the API endpoints:
 schema_view = get_schema_view(
     openapi.Info(
-        title="Event Provenance API",
+        title="Provenance API",
         default_version='v1',
     ),
     public=True,

@@ -144,7 +144,7 @@ def main():
 
     # depending on selected command, run the function:
     if args.chosen == 'record':
-        record("json_files")
+        record("example_json_files")
         print("Record complete!\n")
     elif args.chosen == 'retrieve':
         match args.case_nr:
