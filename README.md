@@ -120,3 +120,8 @@ To view retrieved results in browser, add one of the endpoints specified in tabl
 To generate PROV-O for all-traces/, events-with-adapt/, and impact-of-instance/instance/, simply add `?type=prov` to the endpoint. The RDF file content will appear in the browser. 
 
 For example, to generate PROV-O for a single trace with instance ID "Instance-95382", we use the following HTTP request: `http://localhost:8000/api/trace-single-instance/Instance-95382/?type=prov`.
+
+
+### Swagger Documentation
+
+To view and test all endpoints in one browser, swagger was used, which can be accessed by running the following request: `http://localhost:8000/api/swagger/`.

@@ -55,16 +55,14 @@ def create_events_processes_initiators(e, stored):
 
     # If an ID of a process is given in the event, save the ID of the process; if not, give the ID as the file name
     # If any event is written in the XES file, there must be a process and an instance the event is a part of
-    if "processId" in e:
-        process_id = e.get("processId")
-    else:
+    process_id = e.get("processId")
+    if not process_id:
         # Raise exception if the process ID is missing:
         raise Exception("Missing process ID in data")
 
-    if "instanceId" in e:
-        instance_id = e.get("instanceId")
-    else:
-        # Raise exception if the instance ID is missing:
+    instance_id = e.get("instanceId")
+    if not instance_id:
+        # Raise exception if the instance ID is missing or is empty:
         raise Exception("Missing instance ID in data")
 
     # There should be one process and instance per run:
