@@ -124,4 +124,4 @@ For example, to generate PROV-O for a single trace with instance ID "Instance-95
 
 ### Swagger Documentation
 
-To view and test all endpoints in one browser, swagger was used, which can be accessed by running the following request: `http://localhost:8000/api/swagger/`.
+To view and test all endpoints in one browser, Swagger UI was used, which can be accessed by running the following request: `http://localhost:8000/api/swagger/`.
