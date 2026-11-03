@@ -1,0 +1,66 @@
+@prefix : <http://example.org/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+:Instance-37999 {
+    :Instance-37999_adaptation_4 a prov:Entity ;
+        :change "delete E-Mail to request further information from client" ;
+        :type "delete" ;
+        prov:qualifiedGeneration _:N14a2438545984a6cb93e17d4d453b0a9 ;
+        prov:wasAttributedTo :Dan .
+
+    :Instance-37999_adaptation_5 a prov:Entity ;
+        :change "insert Call to request further information from client" ;
+        :type "insert" ;
+        prov:qualifiedGeneration _:N79c0a4bf41d74dc39b108a5bff94fcb1 ;
+        prov:wasAttributedTo :Mary,
+            :Resource-2363 .
+
+    :Instance-37999_event_33 a prov:Activity ;
+        rdfs:label "2025-11-21T17:36:17.906660000+00:00" ;
+        :name "Submit loan application" ;
+        prov:wasAssociatedWith :Resource-2363 .
+
+    :Instance-37999_event_36 a prov:Activity ;
+        rdfs:label "2025-11-21T17:38:24.032660000+00:00" ;
+        :name "Application decision" ;
+        prov:wasAssociatedWith :Resource-2363 .
+
+    :Instance-37999_event_37 a prov:Activity ;
+        rdfs:label "2025-11-21T17:39:06.074660000+00:00" ;
+        :name "Inform Client about decision" ;
+        prov:wasAssociatedWith :Resource-2363 .
+
+    :AdaptationDeleteE-MailToRequestFurtherInformationFromClient a prov:Activity ;
+        rdfs:label "2025-11-20T17:16:02.693185000+00:00" ;
+        prov:qualifiedAssociation _:N92d9a9805dab41c6abeaec224fc020eb .
+
+    :AdaptationInsertCallToRequestFurtherInformationFromClient a prov:Activity ;
+        rdfs:label "2025-11-20T17:16:45.736185000+00:00" ;
+        prov:qualifiedAssociation _:Nd614fb7f10b5415c9b90718b76e21a7f .
+
+    _:N14a2438545984a6cb93e17d4d453b0a9 a prov:Generation ;
+        :reason "Getting a faster response." ;
+        prov:activity :AdaptationDeleteE-MailToRequestFurtherInformationFromClient .
+
+    _:N79c0a4bf41d74dc39b108a5bff94fcb1 a prov:Generation ;
+        :reason "Getting a faster response." ;
+        prov:activity :AdaptationInsertCallToRequestFurtherInformationFromClient .
+
+    _:N92d9a9805dab41c6abeaec224fc020eb a prov:Association ;
+        prov:agent :Dan ;
+        prov:hadRole "ex:Initiator" .
+
+    _:Nd614fb7f10b5415c9b90718b76e21a7f a prov:Association ;
+        prov:agent :Mary ;
+        prov:hadRole "ex:Initiator" .
+}
+
+{
+    :Dan a prov:Agent .
+
+    :Mary a prov:Agent .
+
+    :Resource-2363 a prov:Agent .
+}
+

@@ -1,0 +1,283 @@
+<?xml version="1.0" ?>
+<!--Created by Python XES https://pypi.python.org/pypi/xes-->
+<!--(c) Jonathan Sumrall - http://www.sumrall.nl-->
+<log xmlns="http://www.xes-standard.org" xes.version="1.0" xes.creator="Python XES v1.2">
+  <extension name="Concept" prefix="concept" uri="http://www.xes-standard.org/concept.xesext"/>
+  <extension name="Lifecycle" prefix="lifecycle" uri="http://www.xes-standard.org/lifecycle.xesext"/>
+  <extension name="Time" prefix="time" uri="http://www.xes-standard.org/time.xesext"/>
+  <extension name="Organizational" prefix="org" uri="http://www.xes-standard.org/org.xesext"/>
+  <global scope="trace"/>
+  <global scope="event">
+    <string key="concept:name" value="string"/>
+    <string key="processId" value="string"/>
+    <string key="instanceId" value="string"/>
+    <string key="org:resource" value="string"/>
+    <date key="time:timestamp" value="string"/>
+    <string key="adaptation:type" value="string"/>
+    <date key="adaptation:timestamp" value="string"/>
+    <string key="adaptation:change" value="string"/>
+    <string key="adaptation:initiator" value="string"/>
+  </global>
+  <classifier name="org:resource" keys="org:resource"/>
+  <classifier name="concept:name" keys="concept:name"/>
+  <string key="creator" value="Python XES v1.2"/>
+  <trace>
+    <event>
+      <string key="concept:name" value="Register"/>
+      <string key="processId" value="contract-drafting"/>
+      <string key="instanceId" value="Instance-37594"/>
+      <string key="org:resource" value="Resource-3264"/>
+      <date key="time:timestamp" value="2025-11-14T11:56:29.224845"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Negotiate"/>
+      <string key="processId" value="contract-drafting"/>
+      <string key="instanceId" value="Instance-37594"/>
+      <string key="org:resource" value="Resource-3264"/>
+      <date key="time:timestamp" value="2025-11-14T11:57:11.266845"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Negotiate"/>
+      <string key="processId" value="contract-drafting"/>
+      <string key="instanceId" value="Instance-37594"/>
+      <string key="org:resource" value="Resource-3264"/>
+      <date key="time:timestamp" value="2025-11-14T11:57:53.308845"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Sign"/>
+      <string key="processId" value="contract-drafting"/>
+      <string key="instanceId" value="Instance-37594"/>
+      <string key="org:resource" value="Resource-3264"/>
+      <date key="time:timestamp" value="2025-11-14T11:58:35.350845"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Sendoff"/>
+      <string key="processId" value="contract-drafting"/>
+      <string key="instanceId" value="Instance-37594"/>
+      <string key="org:resource" value="Resource-3264"/>
+      <date key="time:timestamp" value="2025-11-14T11:59:17.392845"/>
+    </event>
+  </trace>
+  <trace>
+    <event>
+      <string key="concept:name" value="Register"/>
+      <string key="processId" value="contract-drafting"/>
+      <string key="instanceId" value="Instance-35748"/>
+      <string key="org:resource" value="Resource-3837"/>
+      <date key="time:timestamp" value="2025-11-14T11:59:59.434845"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Negotiate"/>
+      <string key="processId" value="contract-drafting"/>
+      <string key="instanceId" value="Instance-35748"/>
+      <string key="org:resource" value="Resource-3837"/>
+      <date key="time:timestamp" value="2025-11-14T12:00:41.476845"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Sign"/>
+      <string key="processId" value="contract-drafting"/>
+      <string key="instanceId" value="Instance-35748"/>
+      <string key="org:resource" value="Resource-3837"/>
+      <date key="time:timestamp" value="2025-11-14T12:01:23.518845"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Sendoff"/>
+      <string key="processId" value="contract-drafting"/>
+      <string key="instanceId" value="Instance-35748"/>
+      <string key="org:resource" value="Resource-3837"/>
+      <date key="time:timestamp" value="2025-11-14T12:02:05.560845"/>
+    </event>
+  </trace>
+  <trace>
+    <event>
+      <string key="concept:name" value="Register"/>
+      <string key="processId" value="contract-drafting"/>
+      <string key="instanceId" value="Instance-85886"/>
+      <string key="org:resource" value="Resource-1053"/>
+      <date key="time:timestamp" value="2025-11-14T12:02:47.602845"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Negotiate"/>
+      <string key="processId" value="contract-drafting"/>
+      <string key="instanceId" value="Instance-85886"/>
+      <string key="org:resource" value="Resource-1053"/>
+      <date key="time:timestamp" value="2025-11-14T12:03:29.644845"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Sign"/>
+      <string key="processId" value="contract-drafting"/>
+      <string key="instanceId" value="Instance-85886"/>
+      <string key="org:resource" value="Resource-1053"/>
+      <date key="time:timestamp" value="2025-11-14T12:04:11.686845"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Negotiate"/>
+      <string key="processId" value="contract-drafting"/>
+      <string key="instanceId" value="Instance-85886"/>
+      <string key="org:resource" value="Resource-1053"/>
+      <date key="time:timestamp" value="2025-11-14T12:04:53.728845"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Sendoff"/>
+      <string key="processId" value="contract-drafting"/>
+      <string key="instanceId" value="Instance-85886"/>
+      <string key="org:resource" value="Resource-1053"/>
+      <date key="time:timestamp" value="2025-11-14T12:05:35.770845"/>
+    </event>
+  </trace>
+  <trace>
+    <event>
+      <string key="concept:name" value="Register"/>
+      <string key="processId" value="contract-drafting"/>
+      <string key="instanceId" value="Instance-88454"/>
+      <string key="org:resource" value="Resource-8868"/>
+      <date key="time:timestamp" value="2025-11-14T12:06:17.812845"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Sign"/>
+      <string key="processId" value="contract-drafting"/>
+      <string key="instanceId" value="Instance-88454"/>
+      <string key="org:resource" value="Resource-8868"/>
+      <date key="time:timestamp" value="2025-11-14T12:06:59.854845"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Sendoff"/>
+      <string key="processId" value="contract-drafting"/>
+      <string key="adaptation:type" value="insert"/>
+      <string key="instanceId" value="Instance-88454"/>
+      <string key="org:resource" value="Resource-8868"/>
+      <date key="time:timestamp" value="2025-11-14T12:07:41.896845"/>
+      <date key="adaptation:timestamp" value="2025-11-13T11:56:29.226235"/>
+      <string key="adaptation:change" value="insert Sendoff"/>
+      <string key="adaptation:initiator" value="Bob"/>
+    </event>
+  </trace>
+  <trace>
+    <event>
+      <string key="concept:name" value="Register"/>
+      <string key="processId" value="contract-drafting"/>
+      <string key="instanceId" value="Instance-70742"/>
+      <string key="org:resource" value="Resource-3222"/>
+      <date key="time:timestamp" value="2025-11-14T12:08:23.938845"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Sign"/>
+      <string key="processId" value="contract-drafting"/>
+      <string key="instanceId" value="Instance-70742"/>
+      <string key="org:resource" value="Resource-3222"/>
+      <date key="time:timestamp" value="2025-11-14T12:09:05.980845"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Sendoff"/>
+      <string key="processId" value="contract-drafting"/>
+      <string key="instanceId" value="Instance-70742"/>
+      <string key="org:resource" value="Resource-3222"/>
+      <date key="time:timestamp" value="2025-11-14T12:09:48.022845"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Cancel"/>
+      <string key="processId" value="contract-drafting"/>
+      <string key="adaptation:type" value="delete"/>
+      <string key="instanceId" value="Instance-70742"/>
+      <date key="adaptation:timestamp" value="2025-11-13T11:57:12.269235"/>
+      <string key="adaptation:change" value="delete Cancel"/>
+      <string key="adaptation:initiator" value="Bob"/>
+    </event>
+  </trace>
+  <trace>
+    <event>
+      <string key="concept:name" value="Submit loan application"/>
+      <string key="processId" value="loan-origination"/>
+      <string key="instanceId" value="Instance-58439"/>
+      <string key="org:resource" value="Resource-8647"/>
+      <date key="time:timestamp" value="2025-11-14T12:11:12.106845"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Application decision"/>
+      <string key="processId" value="loan-origination"/>
+      <string key="instanceId" value="Instance-58439"/>
+      <string key="org:resource" value="Resource-8647"/>
+      <date key="time:timestamp" value="2025-11-14T12:11:54.148845"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Inform Client about decision"/>
+      <string key="processId" value="loan-origination"/>
+      <string key="instanceId" value="Instance-58439"/>
+      <string key="org:resource" value="Resource-8647"/>
+      <date key="time:timestamp" value="2025-11-14T12:12:36.190845"/>
+    </event>
+  </trace>
+  <trace>
+    <event>
+      <string key="concept:name" value="Submit loan application"/>
+      <string key="processId" value="loan-origination"/>
+      <string key="instanceId" value="Instance-42897"/>
+      <string key="org:resource" value="Resource-8320"/>
+      <date key="time:timestamp" value="2025-11-14T12:13:18.232845"/>
+    </event>
+    <event>
+      <string key="concept:name" value="E-Mail to request further information from client"/>
+      <string key="processId" value="loan-origination"/>
+      <string key="instanceId" value="Instance-42897"/>
+      <string key="org:resource" value="Resource-8320"/>
+      <date key="time:timestamp" value="2025-11-14T12:14:00.274845"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Application decision"/>
+      <string key="processId" value="loan-origination"/>
+      <string key="instanceId" value="Instance-42897"/>
+      <string key="org:resource" value="Resource-8320"/>
+      <date key="time:timestamp" value="2025-11-14T12:14:42.316845"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Inform Client about decision"/>
+      <string key="processId" value="loan-origination"/>
+      <string key="instanceId" value="Instance-42897"/>
+      <string key="org:resource" value="Resource-8320"/>
+      <date key="time:timestamp" value="2025-11-14T12:15:24.358845"/>
+    </event>
+  </trace>
+  <trace>
+    <event>
+      <string key="concept:name" value="Submit loan application"/>
+      <string key="processId" value="loan-origination"/>
+      <string key="instanceId" value="Instance-49499"/>
+      <string key="org:resource" value="Resource-3494"/>
+      <date key="time:timestamp" value="2025-11-14T12:16:06.400845"/>
+    </event>
+    <event>
+      <string key="concept:name" value="E-Mail to request further information from client"/>
+      <string key="processId" value="loan-origination"/>
+      <string key="adaptation:type" value="delete"/>
+      <string key="instanceId" value="Instance-49499"/>
+      <date key="adaptation:timestamp" value="2025-11-13T11:57:55.312235"/>
+      <string key="adaptation:change" value="delete E-Mail to request further information from client"/>
+      <string key="adaptation:initiator" value="Dan"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Call to request further information from client"/>
+      <string key="processId" value="loan-origination"/>
+      <string key="adaptation:type" value="insert"/>
+      <string key="instanceId" value="Instance-49499"/>
+      <string key="org:resource" value="Resource-3494"/>
+      <date key="time:timestamp" value="2025-11-14T12:17:30.484845"/>
+      <date key="adaptation:timestamp" value="2025-11-13T11:58:38.355235"/>
+      <string key="adaptation:change" value="insert Call to request further information from client"/>
+      <string key="adaptation:initiator" value="Bob"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Application decision"/>
+      <string key="processId" value="loan-origination"/>
+      <string key="instanceId" value="Instance-49499"/>
+      <string key="org:resource" value="Resource-3494"/>
+      <date key="time:timestamp" value="2025-11-14T12:18:12.526845"/>
+    </event>
+    <event>
+      <string key="concept:name" value="Inform Client about decision"/>
+      <string key="processId" value="loan-origination"/>
+      <string key="instanceId" value="Instance-49499"/>
+      <string key="org:resource" value="Resource-3494"/>
+      <date key="time:timestamp" value="2025-11-14T12:18:54.568845"/>
+    </event>
+  </trace>
+</log>

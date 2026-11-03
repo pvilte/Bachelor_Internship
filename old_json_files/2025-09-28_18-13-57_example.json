@@ -1,0 +1,180 @@
+[
+    {
+        "trace_attributes": {},
+        "events": [
+            {
+                "concept:name": "Register",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-50156",
+                "org:resource": "Resource-9311",
+                "time:timestamp": "2025-07-28 18:27:57.864267+00:00"
+            },
+            {
+                "concept:name": "Negotiate",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-50156",
+                "org:resource": "Resource-9311",
+                "time:timestamp": "2025-07-28 18:27:15.822267+00:00"
+            },
+            {
+                "concept:name": "Negotiate",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-50156",
+                "org:resource": "Resource-9311",
+                "time:timestamp": "2025-07-28 18:26:33.780267+00:00"
+            },
+            {
+                "concept:name": "Sign",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-50156",
+                "org:resource": "Resource-9311",
+                "time:timestamp": "2025-07-28 18:25:51.738267+00:00"
+            },
+            {
+                "concept:name": "Sendoff",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-50156",
+                "org:resource": "Resource-9311",
+                "time:timestamp": "2025-07-28 18:25:09.696267+00:00"
+            }
+        ]
+    },
+    {
+        "trace_attributes": {},
+        "events": [
+            {
+                "concept:name": "Register",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-50156",
+                "org:resource": "Resource-9311",
+                "time:timestamp": "2025-07-28 18:24:27.654267+00:00"
+            },
+            {
+                "concept:name": "Negotiate",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-50156",
+                "org:resource": "Resource-9311",
+                "time:timestamp": "2025-07-28 18:23:45.612267+00:00"
+            },
+            {
+                "concept:name": "Sign",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-50156",
+                "org:resource": "Resource-9311",
+                "time:timestamp": "2025-07-28 18:23:03.570267+00:00"
+            },
+            {
+                "concept:name": "Sendoff",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-50156",
+                "org:resource": "Resource-9311",
+                "time:timestamp": "2025-07-28 18:22:21.528267+00:00"
+            }
+        ]
+    },
+    {
+        "trace_attributes": {},
+        "events": [
+            {
+                "concept:name": "Register",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-50156",
+                "org:resource": "Resource-9311",
+                "time:timestamp": "2025-07-28 18:21:39.486267+00:00"
+            },
+            {
+                "concept:name": "Negotiate",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-50156",
+                "org:resource": "Resource-9311",
+                "time:timestamp": "2025-07-28 18:20:57.444267+00:00"
+            },
+            {
+                "concept:name": "Sign",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-50156",
+                "org:resource": "Resource-9311",
+                "time:timestamp": "2025-07-28 18:20:15.402267+00:00"
+            },
+            {
+                "concept:name": "Negotiate",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-50156",
+                "org:resource": "Resource-9311",
+                "time:timestamp": "2025-07-28 18:19:33.360267+00:00"
+            },
+            {
+                "concept:name": "Sendoff",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-50156",
+                "org:resource": "Resource-9311",
+                "time:timestamp": "2025-07-28 18:18:51.318267+00:00"
+            }
+        ]
+    },
+    {
+        "trace_attributes": {},
+        "events": [
+            {
+                "concept:name": "Register",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-50156",
+                "org:resource": "Resource-9311",
+                "time:timestamp": "2025-07-28 18:18:09.276267+00:00"
+            },
+            {
+                "concept:name": "Sign",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-50156",
+                "org:resource": "Resource-9311",
+                "time:timestamp": "2025-07-28 18:17:27.234267+00:00"
+            },
+            {
+                "concept:name": "Sendoff",
+                "processId": "contract-drafting",
+                "adaptation:type": "insert",
+                "instanceId": "Instance-50156",
+                "org:resource": "Resource-9311",
+                "time:timestamp": "2025-07-28 18:16:45.192267+00:00",
+                "adaptation:timestamp": "2025-07-27 18:28:17.888678+00:00",
+                "adaptation:change": "insert Sendoff",
+                "adaption:initiator": "Mary"
+            }
+        ]
+    },
+    {
+        "trace_attributes": {},
+        "events": [
+            {
+                "concept:name": "Register",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-50156",
+                "org:resource": "Resource-9311",
+                "time:timestamp": "2025-07-28 18:16:03.150267+00:00"
+            },
+            {
+                "concept:name": "Sign",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-50156",
+                "org:resource": "Resource-9311",
+                "time:timestamp": "2025-07-28 18:15:21.108267+00:00"
+            },
+            {
+                "concept:name": "Sendoff",
+                "processId": "contract-drafting",
+                "instanceId": "Instance-50156",
+                "org:resource": "Resource-9311",
+                "time:timestamp": "2025-07-28 18:14:39.066267+00:00"
+            },
+            {
+                "concept:name": "Cancel",
+                "processId": "contract-drafting",
+                "adaptation:type": "delete",
+                "instanceId": "Instance-50156",
+                "adaptation:timestamp": "2025-07-27 18:27:34.845678+00:00",
+                "adaptation:change": "delete Cancel",
+                "adaption:initiator": "Mary"
+            }
+        ]
+    }
+]

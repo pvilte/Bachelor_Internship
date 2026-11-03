@@ -1,0 +1,363 @@
+@prefix : <http://example.org/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+:Instance-76745 {
+    :Instance-76745_event_21 a prov:Activity ;
+        rdfs:label "2025-11-21T17:27:53.402660000+00:00" ;
+        :name "Submit loan application" ;
+        prov:wasAssociatedWith :Resource-3929 .
+
+    :Instance-76745_event_22 a prov:Activity ;
+        rdfs:label "2025-11-21T17:28:35.444660000+00:00" ;
+        :name "Application decision" ;
+        prov:wasAssociatedWith :Resource-3929 .
+
+    :Instance-76745_event_23 a prov:Activity ;
+        rdfs:label "2025-11-21T17:29:17.486660000+00:00" ;
+        :name "Inform Client about decision" ;
+        prov:wasAssociatedWith :Resource-3929 .
+}
+
+:Instance-82719 {
+    :Instance-82719_event_5 a prov:Activity ;
+        rdfs:label "2025-11-21T17:16:40.730660000+00:00" ;
+        :name "Register" ;
+        prov:wasAssociatedWith :Resource-5221 .
+
+    :Instance-82719_event_6 a prov:Activity ;
+        rdfs:label "2025-11-21T17:17:22.772660000+00:00" ;
+        :name "Negotiate" ;
+        prov:wasAssociatedWith :Resource-5221 .
+
+    :Instance-82719_event_7 a prov:Activity ;
+        rdfs:label "2025-11-21T17:18:04.814660000+00:00" ;
+        :name "Sign" ;
+        prov:wasAssociatedWith :Resource-5221 .
+
+    :Instance-82719_event_8 a prov:Activity ;
+        rdfs:label "2025-11-21T17:18:46.856660000+00:00" ;
+        :name "Sendoff" ;
+        prov:wasAssociatedWith :Resource-5221 .
+}
+
+:Instance-21896 {
+    :Instance-21896_event_0 a prov:Activity ;
+        rdfs:label "2025-11-21T17:13:10.520660000+00:00" ;
+        :name "Register" ;
+        prov:wasAssociatedWith :Resource-8909 .
+
+    :Instance-21896_event_1 a prov:Activity ;
+        rdfs:label "2025-11-21T17:13:52.562660000+00:00" ;
+        :name "Negotiate" ;
+        prov:wasAssociatedWith :Resource-8909 .
+
+    :Instance-21896_event_2 a prov:Activity ;
+        rdfs:label "2025-11-21T17:14:34.604660000+00:00" ;
+        :name "Negotiate" ;
+        prov:wasAssociatedWith :Resource-8909 .
+
+    :Instance-21896_event_3 a prov:Activity ;
+        rdfs:label "2025-11-21T17:15:16.646660000+00:00" ;
+        :name "Sign" ;
+        prov:wasAssociatedWith :Resource-8909 .
+
+    :Instance-21896_event_4 a prov:Activity ;
+        rdfs:label "2025-11-21T17:15:58.688660000+00:00" ;
+        :name "Sendoff" ;
+        prov:wasAssociatedWith :Resource-8909 .
+}
+
+:Instance-37999 {
+    :Instance-37999_adaptation_4 a prov:Entity ;
+        :change "delete E-Mail to request further information from client" ;
+        :type "delete" ;
+        prov:qualifiedGeneration _:N80079b6110904189934b8ad60a1541d4 ;
+        prov:wasAttributedTo :Dan .
+
+    :Instance-37999_adaptation_5 a prov:Entity ;
+        :change "insert Call to request further information from client" ;
+        :type "insert" ;
+        prov:qualifiedGeneration _:N05d2481aa3da4d9abd19c0ea162b9696 ;
+        prov:wasAttributedTo :Mary,
+            :Resource-2363 .
+
+    :Instance-37999_event_33 a prov:Activity ;
+        rdfs:label "2025-11-21T17:36:17.906660000+00:00" ;
+        :name "Submit loan application" ;
+        prov:wasAssociatedWith :Resource-2363 .
+
+    :Instance-37999_event_36 a prov:Activity ;
+        rdfs:label "2025-11-21T17:38:24.032660000+00:00" ;
+        :name "Application decision" ;
+        prov:wasAssociatedWith :Resource-2363 .
+
+    :Instance-37999_event_37 a prov:Activity ;
+        rdfs:label "2025-11-21T17:39:06.074660000+00:00" ;
+        :name "Inform Client about decision" ;
+        prov:wasAssociatedWith :Resource-2363 .
+
+    :AdaptationDeleteE-MailToRequestFurtherInformationFromClient a prov:Activity ;
+        rdfs:label "2025-11-20T17:16:02.693185000+00:00" ;
+        prov:qualifiedAssociation _:Nca6bff3a7029442c95ef7cb9f4510526 .
+
+    :AdaptationInsertCallToRequestFurtherInformationFromClient a prov:Activity ;
+        rdfs:label "2025-11-20T17:16:45.736185000+00:00" ;
+        prov:qualifiedAssociation _:N8fafc6849f544b7981eea3479b8ea732 .
+
+    _:N05d2481aa3da4d9abd19c0ea162b9696 a prov:Generation ;
+        :reason "Getting a faster response." ;
+        prov:activity :AdaptationInsertCallToRequestFurtherInformationFromClient .
+
+    _:N80079b6110904189934b8ad60a1541d4 a prov:Generation ;
+        :reason "Getting a faster response." ;
+        prov:activity :AdaptationDeleteE-MailToRequestFurtherInformationFromClient .
+
+    _:N8fafc6849f544b7981eea3479b8ea732 a prov:Association ;
+        prov:agent :Mary ;
+        prov:hadRole "ex:Initiator" .
+
+    _:Nca6bff3a7029442c95ef7cb9f4510526 a prov:Association ;
+        prov:agent :Dan ;
+        prov:hadRole "ex:Initiator" .
+}
+
+:Instance-56511 {
+    :Instance-56511_event_24 a prov:Activity ;
+        rdfs:label "2025-11-21T17:29:59.528660000+00:00" ;
+        :name "Submit loan application" ;
+        prov:wasAssociatedWith :Resource-1163 .
+
+    :Instance-56511_event_25 a prov:Activity ;
+        rdfs:label "2025-11-21T17:30:41.570660000+00:00" ;
+        :name "E-Mail to request further information from client" ;
+        prov:wasAssociatedWith :Resource-1163 .
+
+    :Instance-56511_event_26 a prov:Activity ;
+        rdfs:label "2025-11-21T17:31:23.612660000+00:00" ;
+        :name "Application decision" ;
+        prov:wasAssociatedWith :Resource-1163 .
+
+    :Instance-56511_event_27 a prov:Activity ;
+        rdfs:label "2025-11-21T17:32:05.654660000+00:00" ;
+        :name "Inform Client about decision" ;
+        prov:wasAssociatedWith :Resource-1163 .
+}
+
+:Instance-95382 {
+    :Instance-95382_adaptation_6 a prov:Entity ;
+        :change "delete E-Mail to request further information from client" ;
+        :impact "Process speedup" ;
+        :type "delete" ;
+        prov:qualifiedGeneration _:N9b73b95d0653455c9361ea8a0f4edb58 ;
+        prov:wasAttributedTo :Sally .
+
+    :Instance-95382_adaptation_7 a prov:Entity ;
+        :change "insert Call to request further information from client" ;
+        :impact "Process speedup" ;
+        :type "insert" ;
+        prov:qualifiedGeneration _:N996462055bb04f598257429fe314436b ;
+        prov:wasAttributedTo :Bob,
+            :Resource-8247 .
+
+    :Instance-95382_event_38 a prov:Activity ;
+        rdfs:label "2025-11-21T17:39:48.116660000+00:00" ;
+        :name "Submit loan application" ;
+        prov:wasAssociatedWith :Resource-8247 .
+
+    :Instance-95382_event_41 a prov:Activity ;
+        rdfs:label "2025-11-21T17:41:54.242660000+00:00" ;
+        :name "Application decision" ;
+        prov:wasAssociatedWith :Resource-8247 .
+
+    :Instance-95382_event_42 a prov:Activity ;
+        rdfs:label "2025-11-21T17:42:36.284660000+00:00" ;
+        :name "Inform Client about decision" ;
+        prov:wasAssociatedWith :Resource-8247 .
+
+    :AdaptationDeleteE-MailToRequestFurtherInformationFromClient a prov:Activity ;
+        rdfs:label "2025-11-20T17:17:28.779185000+00:00" ;
+        prov:qualifiedAssociation _:N866e45101f744c3e9b57c6704a332e45 .
+
+    :AdaptationInsertCallToRequestFurtherInformationFromClient a prov:Activity ;
+        rdfs:label "2025-11-20T17:18:11.822185000+00:00" ;
+        prov:qualifiedAssociation _:Nd62bd980350b40afa295879d8a8abb2b .
+
+    _:N866e45101f744c3e9b57c6704a332e45 a prov:Association ;
+        prov:agent :Sally ;
+        prov:hadRole "ex:Initiator" .
+
+    _:N996462055bb04f598257429fe314436b a prov:Generation ;
+        :reason "Getting a faster response." ;
+        prov:activity :AdaptationInsertCallToRequestFurtherInformationFromClient .
+
+    _:N9b73b95d0653455c9361ea8a0f4edb58 a prov:Generation ;
+        :reason "Getting a faster response." ;
+        prov:activity :AdaptationDeleteE-MailToRequestFurtherInformationFromClient .
+
+    _:Nd62bd980350b40afa295879d8a8abb2b a prov:Association ;
+        prov:agent :Bob ;
+        prov:hadRole "ex:Initiator" .
+}
+
+:Instance-91321 {
+    :Instance-91321_adaptation_0 a prov:Entity ;
+        :change "insert Sendoff" ;
+        :type "insert" ;
+        prov:wasAttributedTo :Dan,
+            :Resource-5814 ;
+        prov:wasGeneratedBy :AdaptationInsertSendoff .
+
+    :Instance-91321_event_14 a prov:Activity ;
+        rdfs:label "2025-11-21T17:22:59.108660000+00:00" ;
+        :name "Register" ;
+        prov:wasAssociatedWith :Resource-5814 .
+
+    :Instance-91321_event_15 a prov:Activity ;
+        rdfs:label "2025-11-21T17:23:41.150660000+00:00" ;
+        :name "Sign" ;
+        prov:wasAssociatedWith :Resource-5814 .
+
+    :AdaptationInsertSendoff a prov:Activity ;
+        rdfs:label "2025-11-20T17:13:10.521185000+00:00" ;
+        prov:qualifiedAssociation _:N43d3f229ac664565858bca35e7946407 .
+
+    _:N43d3f229ac664565858bca35e7946407 a prov:Association ;
+        prov:agent :Dan ;
+        prov:hadRole "ex:Initiator" .
+}
+
+{
+    :Bob a prov:Agent .
+
+    :Mary a prov:Agent .
+
+    :Resource-2198 a prov:Agent .
+
+    :Resource-3929 a prov:Agent .
+
+    :Resource-5814 a prov:Agent .
+
+    :Resource-1163 a prov:Agent .
+
+    :Resource-2363 a prov:Agent .
+
+    :Resource-5221 a prov:Agent .
+
+    :Resource-7950 a prov:Agent .
+
+    :Resource-8247 a prov:Agent .
+
+    :Resource-1108 a prov:Agent .
+
+    :Resource-8909 a prov:Agent .
+
+    :Dan a prov:Agent .
+
+    :Sally a prov:Agent .
+}
+
+:Instance-30007 {
+    :Instance-30007_adaptation_1 a prov:Entity ;
+        :change "delete Cancel" ;
+        :type "delete" ;
+        prov:wasAttributedTo :Dan ;
+        prov:wasGeneratedBy :AdaptationDeleteCancel .
+
+    :Instance-30007_event_17 a prov:Activity ;
+        rdfs:label "2025-11-21T17:25:05.234660000+00:00" ;
+        :name "Register" ;
+        prov:wasAssociatedWith :Resource-2198 .
+
+    :Instance-30007_event_18 a prov:Activity ;
+        rdfs:label "2025-11-21T17:25:47.276660000+00:00" ;
+        :name "Sign" ;
+        prov:wasAssociatedWith :Resource-2198 .
+
+    :Instance-30007_event_19 a prov:Activity ;
+        rdfs:label "2025-11-21T17:26:29.318660000+00:00" ;
+        :name "Sendoff" ;
+        prov:wasAssociatedWith :Resource-2198 .
+
+    :AdaptationDeleteCancel a prov:Activity ;
+        rdfs:label "2025-11-20T17:13:53.564185000+00:00" ;
+        prov:qualifiedAssociation _:N5ec949b58ce84d7c8c5d9c6577273359 .
+
+    _:N5ec949b58ce84d7c8c5d9c6577273359 a prov:Association ;
+        prov:agent :Dan ;
+        prov:hadRole "ex:Initiator" .
+}
+
+:Instance-85632 {
+    :Instance-85632_adaptation_2 a prov:Entity ;
+        :change "delete E-Mail to request further information from client" ;
+        :type "delete" ;
+        prov:wasAttributedTo :Sally ;
+        prov:wasGeneratedBy :AdaptationDeleteE-MailToRequestFurtherInformationFromClient .
+
+    :Instance-85632_adaptation_3 a prov:Entity ;
+        :change "insert Call to request further information from client" ;
+        :type "insert" ;
+        prov:wasAttributedTo :Resource-7950,
+            :Sally ;
+        prov:wasGeneratedBy :AdaptationInsertCallToRequestFurtherInformationFromClient .
+
+    :Instance-85632_event_28 a prov:Activity ;
+        rdfs:label "2025-11-21T17:32:47.696660000+00:00" ;
+        :name "Submit loan application" ;
+        prov:wasAssociatedWith :Resource-7950 .
+
+    :Instance-85632_event_31 a prov:Activity ;
+        rdfs:label "2025-11-21T17:34:53.822660000+00:00" ;
+        :name "Application decision" ;
+        prov:wasAssociatedWith :Resource-7950 .
+
+    :Instance-85632_event_32 a prov:Activity ;
+        rdfs:label "2025-11-21T17:35:35.864660000+00:00" ;
+        :name "Inform Client about decision" ;
+        prov:wasAssociatedWith :Resource-7950 .
+
+    :AdaptationDeleteE-MailToRequestFurtherInformationFromClient a prov:Activity ;
+        rdfs:label "2025-11-20T17:14:36.607185000+00:00" ;
+        prov:qualifiedAssociation _:N0ea3fb85989a4e2185b5cfa26154bac1 .
+
+    :AdaptationInsertCallToRequestFurtherInformationFromClient a prov:Activity ;
+        rdfs:label "2025-11-20T17:15:19.650185000+00:00" ;
+        prov:qualifiedAssociation _:N59b3301b8d5a45fcbf6e9a614f5eb995 .
+
+    _:N0ea3fb85989a4e2185b5cfa26154bac1 a prov:Association ;
+        prov:agent :Sally ;
+        prov:hadRole "ex:Initiator" .
+
+    _:N59b3301b8d5a45fcbf6e9a614f5eb995 a prov:Association ;
+        prov:agent :Sally ;
+        prov:hadRole "ex:Initiator" .
+}
+
+:Instance-68256 {
+    :Instance-68256_event_10 a prov:Activity ;
+        rdfs:label "2025-11-21T17:20:10.940660000+00:00" ;
+        :name "Negotiate" ;
+        prov:wasAssociatedWith :Resource-1108 .
+
+    :Instance-68256_event_11 a prov:Activity ;
+        rdfs:label "2025-11-21T17:20:52.982660000+00:00" ;
+        :name "Sign" ;
+        prov:wasAssociatedWith :Resource-1108 .
+
+    :Instance-68256_event_12 a prov:Activity ;
+        rdfs:label "2025-11-21T17:21:35.024660000+00:00" ;
+        :name "Negotiate" ;
+        prov:wasAssociatedWith :Resource-1108 .
+
+    :Instance-68256_event_13 a prov:Activity ;
+        rdfs:label "2025-11-21T17:22:17.066660000+00:00" ;
+        :name "Sendoff" ;
+        prov:wasAssociatedWith :Resource-1108 .
+
+    :Instance-68256_event_9 a prov:Activity ;
+        rdfs:label "2025-11-21T17:19:28.898660000+00:00" ;
+        :name "Register" ;
+        prov:wasAssociatedWith :Resource-1108 .
+}
+

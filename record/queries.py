@@ -28,7 +28,8 @@ def create_adaptation(tx, adaptation):
 
     :param adaptation: the adaptation to be created
     """
-    tx.run("MERGE (:Adaptation {id: $id, type: $adaptation_type, time: $time, change: $change})", id=adaptation.adaptation_id, adaptation_type=adaptation.adaptation_type, time=adaptation.time, change=adaptation.change)
+    tx.run("MERGE (:Adaptation {id: $id, type: $adaptation_type, time: $time, change: $change, reason: $reason, impact: $impact})", 
+           id=adaptation.adaptation_id, adaptation_type=adaptation.adaptation_type, time=adaptation.time, change=adaptation.change, reason=adaptation.reason, impact=adaptation.impact)
 
 def create_instance(tx, instance):
     """
@@ -36,7 +37,7 @@ def create_instance(tx, instance):
 
     :param instance: the instance object
     """
-    tx.run("MERGE (:Instance {id: $instance_id})", instance_id=instance.instance_id)
+    tx.run("CREATE (:Instance {id: $instance_id})", instance_id=instance.instance_id)
 
 def create_initiator(tx, initiator):
     """
@@ -46,6 +47,36 @@ def create_initiator(tx, initiator):
     """
 
     tx.run("MERGE (:Initiator {name: $initiator_name})", initiator_name=initiator.name)
+
+
+def create_impact(tx, impact):
+    """
+    This function creates an impact node in the database.
+
+    :param impact: the impact object
+    """
+
+    check = tx.run("""
+        MATCH (i:Instance)
+        WHERE i.id = $instance_id
+        MERGE (:Impact {impact_id: $impact_id, type: $type, impact: $impact, instance: $instance_id})
+        RETURN count(i) > 0 AS check
+    """, impact_id=impact.impact_id, type=impact.impact_type, impact=impact.name, instance_id=impact.instance_id).single()
+
+    return check["check"]
+
+
+def create_impact_instance_relationship(tx, impact):
+    """
+    This function creates a relationship between an instance and its impact in the database
+
+    :param impact: the impact object
+    """
+
+    tx.run("""
+        MATCH (instance:Instance {id: $instance_id}), (impact:Impact {impact_id: $impact_id})
+        MERGE (instance)-[:HAS_IMPACT]->(impact)
+    """, instance_id=impact.instance_id, impact_id=impact.impact_id)
 
 
 def create_instance_process_relationship(tx, instance, process):
@@ -111,3 +142,15 @@ def create_event_time_relationship(tx, curr_event, prev_event):
         MERGE (curr_event)<-[:NEXT]-(prev_event)
     """, id_curr_event=curr_event.event_id, id_prev_event=prev_event.event_id)
 
+
+def create_instance_constraint(tx):
+    """
+    Function creates a unique instance constraint that ensures that no two instances
+    will share an ID.
+    """
+
+    tx.run("""
+        CREATE CONSTRAINT unique_instance_id IF NOT EXISTS
+        FOR (i:Instance)
+        REQUIRE i.id IS UNIQUE
+    """)
