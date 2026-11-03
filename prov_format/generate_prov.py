@@ -10,7 +10,9 @@ def create_delete_adaptation(document, adaptation, initiator):
     # Create adaptation event activity:
     change_name = adaptation["change"]
     change_capitalized = change_name.title().replace(" ", "")
-    delete_event = document.activity(f"ex:Adaptation{change_capitalized}", endTime = adaptation['time'])
+    delete_event = document.activity(f"ex:Adaptation{change_capitalized}", other_attributes={
+        "prov:label": f"{adaptation['time']}",
+    },)
     # Create an Adaptation entity:
     impact = adaptation["impact"]
     if impact == "":
@@ -103,7 +105,7 @@ def create_event_terms(document, event, instance_id):
             initiator = document.agent(f"ex:{adapt_initiator}")
 
         if resource == "":
-            # Create adaptation delete
+            # Create adaptation of type delete
             create_delete_adaptation(instance, adaptation, initiator)
         else:
             # Set unique event resource as agent:
@@ -159,7 +161,7 @@ def generate_prov(json_dir):
             # Save the result to an RDF file in the prov_format directory
             document.serialize(format="rdf", destination=str(output_dir /"prov_result.rdf"))
 
-            # for debugging and checking the mapping, we can create a visualization:
+            # for debugging and checking the mapping, we can create a simple visualization:
             dot = prov_to_dot(document)
             dot.write_png(str(output_dir /"prov_result_vis.png"))
             

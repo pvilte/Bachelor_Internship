@@ -11,7 +11,7 @@ to retrieve from the database. The resulting JSON file with the query should be 
 in the main directory of the project.
 
 [generate_prov.py](prov_format/generate_prov.py) creates a PROV-O document from the result.json file
-and visualises the provenance in PNG format. 
+and saves it in RDF and PNG files in the output directory. 
 
 [cli.py](cli.py) parses command-line arguments and calls selected functions:
 
@@ -19,7 +19,7 @@ and visualises the provenance in PNG format.
 |-------------|---------------------------|
 | record      | calls [record.py](record/record.py)   |
 | retrieve    | calls selected function from [retrieve](retrieve) (see below the arguments for different retrieval functions) |
-| prov        | calls [generate_prov.py](prov_format/generate_prov.py) |
+| --prov        | calls [generate_prov.py](prov_format/generate_prov.py) and is used in the same command as retrieve|
 
 Please see [requirements.txt](requirements.txt) for dependencies.
 
@@ -99,7 +99,7 @@ docker compose run --rm -p 8000:8000 server python manage.py runserver 0.0.0.0:8
 
 ### Record
 
-To record JSON format event data, simply use the following request: `http://localhost:8000/api/traces/`. In the content field add the data in JSON format. Finally, click on POST and if the recording is successful, yous should be able to see `"Recording complete!"` and then visualise the data in the Neo4j browser.
+To record event data given in JSON format, simply use the following request: `http://localhost:8000/api/traces/`. In the content field add the data in JSON format. Finally, click on POST and if the recording is successful, you should be able to see `"Recording complete!"` and then see the new data in the Neo4j browser.
 
 To record overall impact of instances, use the following request: `http://localhost:8000/api/trace/impact/`. In the content field add the impact data in JSON format. Finally, click on PUT and if the recording is successful, you should be able to see `"Recording complete!"` and visualise the data in the Neo4j browser.
 
@@ -119,7 +119,7 @@ To view retrieved results in browser, add one of the endpoints specified in tabl
 
 To generate PROV-O for all-traces/, events-with-adapt/, and impact-of-instance/instance/, simply add `?type=prov` to the endpoint. The RDF file content will appear in the browser. 
 
-For example, to generate PROV-O for a single trace with instance ID "Instance-95382", we use the following HTTP request: `http://localhost:8000/api/trace-single-instance/Instance-95382/?type=prov`.
+For example, to generate PROV-O for a single trace with instance ID "Instance-95382", we use the following HTTP request: `http://localhost:8000/api/trace-single-instance/Instance-95382/?type=prov`. 
 
 
 ### Swagger Documentation

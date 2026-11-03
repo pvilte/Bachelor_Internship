@@ -11,7 +11,7 @@ def main():
     Commands available:
     - record: calls record() from record/record.py
     - retrieve: calls selected function from retrieve/retrieve.py
-    - prov: calls generate_prov() from prov_format/generate_prov.py
+    - --prov: calls generate_prov() from prov_format/generate_prov.py
 
     """
 
@@ -188,7 +188,7 @@ def main():
                 result = collect_impact_of_instance(args.instance_id)
         print("Retrieval complete!\n")
 
-        # If generating prov was selected, check if it can be created for the case:
+        # If --prov was used, check if it can be created for the case:
         allowed_cases = {15, 17, 18}
         
         if args.prov and (args.case_nr in allowed_cases):

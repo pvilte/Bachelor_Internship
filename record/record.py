@@ -53,7 +53,7 @@ def create_events_processes_initiators(e, stored):
     :param stored: the dictionary of stored processes, instances, events, initiators, adaptations
     """
 
-    # If an ID of a process is given in the event, save the ID of the process; if not, give the ID as the file name
+    # If an ID of a process is given in the event, save the ID of the process; if not, raise exception
     # If any event is written in the XES file, there must be a process and an instance the event is a part of
     process_id = e.get("processId")
     if not process_id:
@@ -147,10 +147,10 @@ def create_adaptations_initiators(e, stored):
     :param stored: the dictionary of stored processes, instances, events, initiators, adaptations
     """
 
-    # Find the instance ID which will be used for naming purposes:
-    if "instanceId" in e:
-        instance_id = e.get("instanceId")
-    else:
+    # Find the instance ID which will be used for naming purposes and raise exception if the field is empty or nonexistent:
+    instance_id = e.get("instanceId")
+    if not instance_id:
+        # Raise exception if the instance ID is missing or is empty:
         raise Exception("Missing instance ID in data")
     
 
@@ -259,6 +259,7 @@ def add_impact_to_database(c, stored_impacts):
 
     instance_id = c.get("instance:id")
 
+    # Check if type and impact fields exist in the data, otherwise raise exceptions:
     if "impact:type" in c:
         impact_type = c.get("impact:type")
     else:
@@ -385,7 +386,7 @@ def record_from_api(data):
         "adaptations": {},
     }
 
-    # TODO implement reading only single events
+    # TODO implement reading single events in request
 
     if data[0].get("impact"):
         raise Exception("You are trying to record overall impact using record/ endpoint. Please use record/impact/")
