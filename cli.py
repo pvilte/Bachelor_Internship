@@ -22,7 +22,7 @@ def main():
 
     # add subparsers for retrieve and record functions:
     subparsers = parser.add_subparsers(help='choose either retrieve, record or prov_format', dest='chosen', required=True)
-    subparsers.add_parser('record', help='Record event data to graph database')
+    record_parser = subparsers.add_parser('record', help='Record event data to graph database')
     retrieve_parser = subparsers.add_parser('retrieve', help='Retrieve selected event data from database')
     # create a prov argument for retrieve to run generate_prov() function on results:
     retrieve_parser.add_argument('--prov', action='store_true', help='Return retrieval result in PROV-O format')

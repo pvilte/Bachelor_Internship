@@ -72,7 +72,7 @@ followed by what we want to retrive:
 Additionally, the query used in the retrieval will be displayed in the command-line interface (CLI)
 which then can be copied and pasted directly to the Neo4j browser which can be accessed through: `http://localhost:7474/browser/`.
 
-To convert retrieved results ([output/result.json](output/result.json)) to PROV-O format, use `--prov` after using `retrieve` command. The output given in RDF and PNG formats can then be viewed in the [output](output/) directory. 
+To represent retrieved results ([output/result.json](output/result.json)) to PROV-O, use `--prov` after using `retrieve` command. The output given in RDF and PNG formats can then be viewed in the [output](output/) directory. 
 
 The command bellow retrieves all traces from database and generates a PROV-O document for that result.
 

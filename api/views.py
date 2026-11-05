@@ -14,7 +14,7 @@ class AllTraces(APIView):
     View to retrieve all traces in the database.
     """
 
-    # Document the optional query parameter for returning results either in PROV-O or JSON format:
+    # Document the optional query parameter for returning results either in PROV-O representation or JSON format:
     @swagger_auto_schema(
         manual_parameters=[
             openapi.Parameter(
@@ -24,7 +24,7 @@ class AllTraces(APIView):
                 required=False,
                 default='default',
                 enum=['default', 'prov'],
-                description='Return the result in PROV-O format by selecting "prov", or in JSON by selecting "default"'
+                description='Return the result in PROV-O by selecting "prov", or in JSON format by selecting "default"'
             )
         ]
     )
@@ -50,7 +50,7 @@ class EventsWithAdapt(APIView):
     View to retrieve all events with adaptations.
     """
 
-    # Document the optional query parameter for returning results either in PROV-O or JSON format:
+    # Document the optional query parameter for returning results either in PROV-O representation or JSON format:
     @swagger_auto_schema(
         manual_parameters=[
             openapi.Parameter(
@@ -60,7 +60,7 @@ class EventsWithAdapt(APIView):
                 required=False,
                 default='default',
                 enum=['default', 'prov'],
-                description='Return the result in PROV-O format by selecting "prov", or in JSON by selecting "default"'
+                description='Return the result in PROV-O by selecting "prov", or in JSON format by selecting "default"'
             )
         ]
     )
@@ -98,7 +98,7 @@ class SingleInstance(APIView):
     View to retrieve trace by the instance ID.
     """
 
-    # Document the optional query parameter for returning results either in PROV-O or JSON format:
+    # Document the optional query parameter for returning results either in PROV-O representation or JSON format:
     @swagger_auto_schema(
         manual_parameters=[
             openapi.Parameter(
@@ -108,7 +108,7 @@ class SingleInstance(APIView):
                 required=False,
                 default='default',
                 enum=['default', 'prov'],
-                description='Return the result in PROV-O format by selecting "prov", or in JSON by selecting "default"'
+                description='Return the result in PROV-O by selecting "prov", or in JSON format by selecting "default"'
             )
         ]
     )

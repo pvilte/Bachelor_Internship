@@ -6,6 +6,13 @@ import json
 import os
 
 def create_delete_adaptation(document, adaptation, initiator):
+    """
+    Function creates a delete adaptation entity and links it to to initiator and event activity.
+
+    :params document: ProvDocument to which the data is saved.
+    :params adaptation: adaptation object
+    :param initiator: adaptation initiator
+    """
 
     # Create adaptation event activity:
     change_name = adaptation["change"]
@@ -46,6 +53,15 @@ def create_delete_adaptation(document, adaptation, initiator):
 
 
 def create_insert_adaptation(document, adaptation, initiator, a):
+    """
+    Function creates an insert adaptation entity and links it to to initiator, resource agents
+    and event activity.
+
+    :params document: ProvDocument to which the data is saved.
+    :params adaptation: adaptation object
+    :param initiator: adaptation initiator
+    :param a: resource agent
+    """
 
     # Create adaptation event activity:
     change_name = adaptation["change"]
@@ -89,6 +105,13 @@ def create_insert_adaptation(document, adaptation, initiator, a):
     
 
 def create_event_terms(document, event, instance_id):
+    """
+    Function creates terms based on PROV-O specification and adds them to a ProvDocument.
+
+    :param document: ProvDocument to which the data is added
+    :param event: event data from results file
+    :param instance_id: the ID of the instance being processed.
+    """
 
     # create an instance bundle which groups all terms relevant to that instance:
     instance = document.bundle(f"ex:{instance_id}")
@@ -126,6 +149,13 @@ def create_event_terms(document, event, instance_id):
 
 
 def generate_prov(json_dir):
+    """
+    Function represents results in given json_dir in PROV-O specification and saves the result
+    in RDF and PNG formats in output/ directory. Additionally returns the result in TriG format
+    which is then sent to the API view.
+
+    :param jason_dir: directory where the result.json is saved.
+    """
 
     # Walk through the directory and process one file at a time:
     for path, folders, files in os.walk(json_dir):
