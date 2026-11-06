@@ -10,7 +10,7 @@ database.
 to retrieve from the database. The resulting JSON file with the query should be saved in a file
 in the main directory of the project.
 
-[generate_prov.py](prov_format/generate_prov.py) creates a PROV-O document from the result.json file
+[generate_prov.py](prov_format/generate_prov.py) creates a ProvDocument from the result.json file
 and saves it in RDF and PNG files in the output directory. 
 
 [cli.py](cli.py) parses command-line arguments and calls selected functions:
@@ -72,7 +72,7 @@ followed by what we want to retrive:
 Additionally, the query used in the retrieval will be displayed in the command-line interface (CLI)
 which then can be copied and pasted directly to the Neo4j browser which can be accessed through: `http://localhost:7474/browser/`.
 
-To represent retrieved results ([output/result.json](output/result.json)) to PROV-O, use `--prov` after using `retrieve` command. The output given in RDF and PNG formats can then be viewed in the [output](output/) directory. 
+To represent retrieved results ([output/result.json](output/result.json)) in PROV-O, use `--prov` after using `retrieve` command. The output given in RDF and PNG formats can then be viewed in the [output](output/) directory. 
 
 The command bellow retrieves all traces from database and generates a PROV-O document for that result.
 
@@ -114,6 +114,11 @@ To view retrieved results in browser, add one of the endpoints specified in tabl
 | reason-impact/key/                            | Retreive reason or impact of adaptations (instead of 'key' input either reason, impact or both depending what you would like to retrieve)  |
 | trace-single-instance/instance/               | Retrieve trace of an instance whose ID is specified instead of 'instance' |
 | impact-of-instance/instance/                  | Retrieve impact of instance where 'instance' specified the instance ID|
+
+To test these retrieval endpoints, first, record the test data in [test_json_files/](test_json_files/) to the database by changing the record() function parameter in [cli.py](cli.py) to "test_json_files". The tests in [api/tests.py](api/tests.py) check if the API runs and successfully retrieves the requested data. To run the tests, the following command is used in the terminal:
+```
+docker compose run --rm server python manage.py test api.tests.APITests
+```
 
 ### Generating PROV-O
 

@@ -1,0 +1,52 @@
+[
+    {
+        "trace_attributes": {},
+        "events": [
+            {
+                "concept:name": "Submit loan application",
+                "processId": "loan-origination",
+                "instanceId": "Instance-95382",
+                "org:resource": "Resource-8247",
+                "time:timestamp": "2025-11-21 17:39:48.116660+00:00"
+            },
+            {
+                "concept:name": "E-Mail to request further information from client",
+                "processId": "loan-origination",
+                "adaptation:type": "delete",
+                "adaptation:reason": "Getting a faster response.",
+                "adaptation:impact": "Process speedup",
+                "instanceId": "Instance-95382",
+                "adaptation:timestamp": "2025-11-20 17:17:28.779185+00:00",
+                "adaptation:change": "delete E-Mail to request further information from client",
+                "adaptation:initiator": "Sally"
+            },
+            {
+                "concept:name": "Call to request further information from client",
+                "processId": "loan-origination",
+                "adaptation:type": "insert",
+                "adaptation:reason": "Getting a faster response.",
+                "adaptation:impact": "Process speedup",
+                "instanceId": "Instance-95382",
+                "org:resource": "Resource-8247",
+                "time:timestamp": "2025-11-21 17:41:12.200660+00:00",
+                "adaptation:timestamp": "2025-11-20 17:18:11.822185+00:00",
+                "adaptation:change": "insert Call to request further information from client",
+                "adaptation:initiator": "Bob"
+            },
+            {
+                "concept:name": "Application decision",
+                "processId": "loan-origination",
+                "instanceId": "Instance-95382",
+                "org:resource": "Resource-8247",
+                "time:timestamp": "2025-11-21 17:41:54.242660+00:00"
+            },
+            {
+                "concept:name": "Inform Client about decision",
+                "processId": "loan-origination",
+                "instanceId": "Instance-95382",
+                "org:resource": "Resource-8247",
+                "time:timestamp": "2025-11-21 17:42:36.284660+00:00"
+            }
+        ]
+    }
+]

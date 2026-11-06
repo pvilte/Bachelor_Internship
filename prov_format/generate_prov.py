@@ -104,17 +104,17 @@ def create_insert_adaptation(document, adaptation, initiator, a):
     },)
     
 
-def create_event_terms(document, event, instance_id):
+def create_event_terms(prov_document, event, instance_id):
     """
     Function creates terms based on PROV-O specification and adds them to a ProvDocument.
 
-    :param document: ProvDocument to which the data is added
+    :param prov_document: ProvDocument to which the data is added
     :param event: event data from results file
     :param instance_id: the ID of the instance being processed.
     """
 
     # create an instance bundle which groups all terms relevant to that instance:
-    instance = document.bundle(f"ex:{instance_id}")
+    instance = prov_document.bundle(f"ex:{instance_id}")
     
     for e in event:
         ev = e["event"]
@@ -125,14 +125,14 @@ def create_event_terms(document, event, instance_id):
 
         # Create initiator agent only if initiator exists:
         if adapt_initiator is not None:
-            initiator = document.agent(f"ex:{adapt_initiator}")
+            initiator = prov_document.agent(f"ex:{adapt_initiator}")
 
         if resource == "":
             # Create adaptation of type delete
             create_delete_adaptation(instance, adaptation, initiator)
         else:
             # Set unique event resource as agent:
-            a = document.agent(f"ex:{resource}")
+            a = prov_document.agent(f"ex:{resource}")
 
             # Check if event has insert adaptation:
             if adapt_initiator is not None:
@@ -174,25 +174,25 @@ def generate_prov(json_dir):
                 data = json.load(f)
 
             # Create a prov document:
-            document = pm.ProvDocument()
-            document.set_default_namespace("http://example.org/")
+            prov_document = pm.ProvDocument()
+            prov_document.set_default_namespace("http://example.org/")
             # add namespace for custom attributes:
-            document.add_namespace("ex", "http://example.org/")
+            prov_document.add_namespace("ex", "http://example.org/")
 
             # take each trace in the data and process it:
             for block in data:
                 # save instance_id of the trace:
                 instance_id = block.get("instance_id")
-                create_event_terms(document, block["events"], instance_id)
+                create_event_terms(prov_document, block["events"], instance_id)
 
             output_dir = Path(json_dir)
             output_dir.mkdir(parents=True, exist_ok=True)
 
             # Save the result to an RDF file in the prov_format directory
-            document.serialize(format="rdf", destination=str(output_dir /"prov_result.rdf"))
+            prov_document.serialize(format="rdf", destination=str(output_dir /"prov_result.rdf"))
 
             # for debugging and checking the mapping, we can create a simple visualization:
-            dot = prov_to_dot(document)
+            dot = prov_to_dot(prov_document)
             dot.write_png(str(output_dir /"prov_result_vis.png"))
             
             # Save the result so it can be returned to the API:
